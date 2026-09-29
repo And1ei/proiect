@@ -15,7 +15,9 @@
     "audit:ds": "node scripts/audit-ds.mjs",
     "audit:ro": "node scripts/audit-ro.mjs",
     "assets:check": "node scripts/assets-check.mjs",
-    "assets:clean": "node scripts/assets-clean.mjs"
+    "assets:clean": "node scripts/assets-clean.mjs",
+    "audit:offline": "node scripts/audit-offline.mjs",
+    "pwa:icons": "node scripts/pwa-icons.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "6.3.1",

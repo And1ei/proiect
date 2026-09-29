@@ -1,0 +1,7 @@
+* text=auto eol=lf
+# Downloaded originals stay byte-exact
+assets-src/** -text
+*.png binary
+*.mp3 binary
+*.ogg binary
+*.woff2 binary

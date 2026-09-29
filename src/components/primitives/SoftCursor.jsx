@@ -7,6 +7,8 @@ import { useMediaQuery } from '../../lib/useMediaQuery';
 
 const INTERACTIVE = 'a[href], button:not([disabled]), [role="button"], [role="switch"], select, label[for], summary, [data-cursor]';
 const TEXT_ENTRY = 'input:not([type="button"],[type="submit"],[type="reset"],[type="checkbox"],[type="radio"],[type="range"],[type="color"],[type="file"]), textarea, [contenteditable="true"]';
+// Game stages need the exact pointer: a spring-trailing ring would lag behind the aim
+const NATIVE_CURSOR = `${TEXT_ENTRY}, [data-game-stage]`;
 const PULL = 0.2; // how far the ring leans toward a hovered element's centre (0–1)
 const stretch = { type: 'spring', stiffness: 180, damping: 16 };
 
@@ -42,8 +44,8 @@ function Ring() {
     const hit = document.elementFromPoint(px, py);
     const press = pressed.current ? 0.82 : 1;
 
-    if (hit?.closest(TEXT_ENTRY)) {
-      setVisible(false); // native text cursor takes over (see global.css)
+    if (hit?.closest(NATIVE_CURSOR)) {
+      setVisible(false); // native cursor takes over (see global.css)
       return;
     }
     setVisible(true);
