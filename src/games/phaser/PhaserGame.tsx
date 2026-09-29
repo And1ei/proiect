@@ -110,7 +110,8 @@ export default function PhaserGame({ session, scenes, design, label, maxHeight =
         bus.on('miss', ({ at }) => session.miss(toViewport(at))),
         bus.on('life-lost', ({ at }) => session.loseLife(toViewport(at))),
         bus.on('near-win', () => session.nearWin()),
-        bus.on('finished', ({ outcome }) => session.finish(outcome)),
+        bus.on('finished', ({ outcome, recap }) => session.finish(outcome, recap)),
+        bus.on('recap', ({ items }) => session.setRecap(items)),
         bus.on('sfx', ({ name }) => play(name)),
       );
 

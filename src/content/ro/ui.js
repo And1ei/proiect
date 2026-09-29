@@ -198,6 +198,7 @@ const ui = {
       bestStreak: 'Cea mai lungă serie',
       again: 'Din nou',
       back: 'Înapoi la lecție',
+      recapHeading: 'Ce ai învățat',
     },
   },
 

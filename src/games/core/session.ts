@@ -2,7 +2,7 @@
 // runs). Games call the actions; the shell reads the state for the HUD, feel and progress.
 // Phaser scenes never touch this directly: they emit bus events that <PhaserGame> maps to actions.
 import { createStore, type StoreApi } from 'zustand/vanilla';
-import type { GameStatus, HudConfig, Outcome, RunResult } from './types';
+import type { GameStatus, HudConfig, Outcome, RecapItem, RunResult } from './types';
 import { isStreakMilestone, multiplierFor } from './scoring';
 
 export { MULTIPLIER_STEPS, isStreakMilestone, multiplierFor } from './scoring';
@@ -42,6 +42,8 @@ export interface SessionState {
   /** Increments on every restart; Phaser games restart their scenes when it changes. */
   run: number;
   lastEvent: SessionEvent | null;
+  /** "Ce ai învățat" items for the results screen (optional; see setRecap). */
+  recap: RecapItem[];
 }
 
 export interface GameSession {
@@ -63,7 +65,13 @@ export interface GameSession {
   nearWin: () => void;
   pause: (auto?: boolean) => void;
   resume: () => void;
-  finish: (outcome: Outcome) => void;
+  /** Ends the run. `recap` (optional) replaces the current recap first. */
+  finish: (outcome: Outcome, recap?: RecapItem[]) => void;
+  /**
+   * Sets the results-screen recap (max 3 items kept). Games that can end by losing their last life
+   * keep it up to date as they go, because the run may end inside loseLife().
+   */
+  setRecap: (recap: RecapItem[]) => void;
   /** New run straight into 'playing' (the "Din nou" / "Ia-o de la capăt" buttons). */
   restart: () => void;
   /** Back to the intro screen with a clean state. */
@@ -93,6 +101,7 @@ export function createGameSession(hud: HudConfig): GameSession {
     outcome: null,
     run,
     lastEvent: null,
+    recap: [],
   });
 
   const store = createStore<SessionState>(() => fresh(0, 'intro'));
@@ -112,9 +121,17 @@ export function createGameSession(hud: HudConfig): GameSession {
     return points;
   };
 
-  const finish = (outcome: Outcome) => {
+  const MAX_RECAP = 3;
+  const setRecap = (recap: RecapItem[]) => {
     const s = get().status;
     if (s !== 'playing' && s !== 'paused') return;
+    set({ recap: recap.slice(0, MAX_RECAP) });
+  };
+
+  const finish = (outcome: Outcome, recap?: RecapItem[]) => {
+    const s = get().status;
+    if (s !== 'playing' && s !== 'paused') return;
+    if (recap) setRecap(recap);
     set({ status: outcome, outcome, autoPaused: false });
   };
 
@@ -170,6 +187,7 @@ export function createGameSession(hud: HudConfig): GameSession {
       if (get().status === 'paused') set({ status: 'playing', autoPaused: false });
     },
     finish,
+    setRecap,
     restart: () => {
       nearWinShown = false;
       set(fresh(get().run + 1, 'playing'));
@@ -197,6 +215,7 @@ export function createGameSession(hud: HudConfig): GameSession {
         hits: s.hits,
         hintsUsed: s.hintsUsed,
         elapsedMs: s.elapsedMs,
+        ...(s.recap.length ? { recap: s.recap } : {}),
       };
     },
   };

@@ -1,6 +1,6 @@
 // Typed event bus between React and Phaser. Scenes never import zustand, React or the session:
 // they emit "what happened" and listen for "what to do". <PhaserGame> is the only translator.
-import type { Outcome } from '../core/types';
+import type { Outcome, RecapItem } from '../core/types';
 import type { SoundEvent } from '../feel/sfx';
 
 /** Logical scene coordinates (the game's design size, not device pixels). */
@@ -20,7 +20,10 @@ export interface SceneEvents {
   'life-lost': { at?: ScenePoint };
   /** The player is close to winning; the shell shows a near-win line once per run. */
   'near-win': Record<string, never>;
-  finished: { outcome: Outcome };
+  /** Ends the run; `recap` (optional) fills "Ce ai învățat" on the results screen. */
+  finished: { outcome: Outcome; recap?: RecapItem[] };
+  /** Keeps the results recap up to date (a run can end inside life-lost, before `finished`). */
+  recap: { items: RecapItem[] };
   /** A named one-off sound that the session events don't already cover (e.g. 'pop', 'whoosh'). */
   sfx: { name: SoundEvent };
 }

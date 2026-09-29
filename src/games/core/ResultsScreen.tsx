@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useId, useRef, type ReactNode } from 'react';
 import { motion } from 'motion/react';
 import { t } from '../../lib/i18n';
 import { spring } from '../../lib/motion';
@@ -33,9 +33,11 @@ interface Props extends ResultsData {
 /**
  * End of a run: score, stars, personal best, plays, and an honest stamp: "Completat" for a clean
  * win, "Completat cu ajutor" whenever a hint was used. "Din nou" / "Înapoi la lecție".
+ * When the game sent a recap (RunResult.recap), up to 3 "Ce ai învățat" items follow.
  */
 export default function ResultsScreen({ result, stars, bestBefore, plays, line, onAgain, backTo, preview = false }: Props) {
   const heading = useRef<HTMLHeadingElement>(null);
+  const recapId = useId();
   const won = result.outcome === 'won';
   const newBest = result.score > bestBefore && plays > 1;
   const best = Math.max(bestBefore, result.score);
@@ -96,6 +98,28 @@ export default function ResultsScreen({ result, stars, bestBefore, plays, line, 
           </BlobButton>
         </div>
       </div>
+
+      {!!result.recap?.length && (
+        <section aria-labelledby={recapId} className="flex flex-col gap-3 lg:col-span-2">
+          <h3 id={recapId} className="text-label text-ink-soft">
+            {t('games.results.recapHeading')}
+          </h3>
+          <ul className="grid gap-3 md:grid-cols-3">
+            {result.recap.slice(0, 3).map((item, i) => (
+              <motion.li
+                key={item.title}
+                className="flex flex-col gap-1.5 rounded-well border border-dashed border-ink-faint bg-paper px-4 py-3"
+                initial={preview ? false : { opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ ...spring, delay: preview ? 0 : 0.25 + i * 0.08 }}
+              >
+                <span className="font-display text-1 leading-heading">{item.title}</span>
+                <span className="text--1 leading-body">{item.text}</span>
+              </motion.li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   );
 }

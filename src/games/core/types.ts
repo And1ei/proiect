@@ -14,6 +14,12 @@ export interface GameControls {
   keyboard?: string;
 }
 
+/** One "Ce ai învățat" item on the results screen: a short title and one explanatory sentence. */
+export interface RecapItem {
+  title: string;
+  text: string;
+}
+
 /** Frozen numbers at the end of a run; what `stars()` and the results screen see. */
 export interface RunResult {
   outcome: Outcome;
@@ -25,6 +31,8 @@ export interface RunResult {
   hits: number;
   hintsUsed: number;
   elapsedMs: number;
+  /** Optional (added in G2): up to 3 "Ce ai învățat" items, e.g. from the player's most-missed items. */
+  recap?: RecapItem[];
 }
 
 export interface TimerConfig {
@@ -71,8 +79,15 @@ export interface GameDefinition {
   load: () => Promise<GameModule>;
   /** React.lazy wrapper around `load`, created by defineGame(). */
   Component: LazyExoticComponent<ComponentType<GameProps>>;
+  /**
+   * Optional (added in G2): an animated "Cum se joacă" shown on the intro screen instead of the plain
+   * instruction list. Loaded on intent like the game; keep it free of Phaser (it renders in the DOM).
+   */
+  howTo?: () => Promise<{ default: ComponentType }>;
+  /** React.lazy wrapper around `howTo`, created by defineGame(). */
+  HowTo?: LazyExoticComponent<ComponentType>;
   /** Dev-only reference game: shown with a "sandbox" tag and never in production builds. */
   sandbox?: boolean;
 }
 
-export type GameDefinitionInput = Omit<GameDefinition, 'Component'>;
+export type GameDefinitionInput = Omit<GameDefinition, 'Component' | 'HowTo'>;

@@ -7,5 +7,5 @@ export function defineGame(input: GameDefinitionInput): GameDefinition {
     if (!/^[a-z0-9-]+$/.test(input.id)) throw new Error(`[games] id "${input.id}" must be lowercase with hyphens`);
     if (input.instructions.length < 1) throw new Error(`[games] ${input.id}: add at least one instruction`);
   }
-  return { ...input, Component: lazy(input.load) };
+  return { ...input, Component: lazy(input.load), HowTo: input.howTo ? lazy(input.howTo) : undefined };
 }

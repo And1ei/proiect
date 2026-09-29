@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { t, tp } from '../../lib/i18n';
 import BlobButton from '../../components/primitives/BlobButton';
 import Stars from './Stars';
@@ -29,17 +30,30 @@ interface Props {
   onStart: () => void;
 }
 
-/** First screen: how to play, controls, length and difficulty, the player's record, "Începe". */
+/**
+ * First screen: how to play (the game's animated HowTo when it has one, else the instruction list),
+ * controls, length and difficulty, the player's record, "Începe".
+ */
 export default function IntroScreen({ definition, best, onStart }: Props) {
+  const { HowTo } = definition;
+  const list = (
+    <ol className="lesson-ol">
+      {definition.instructions.map((line) => (
+        <li key={line}>{line}</li>
+      ))}
+    </ol>
+  );
   return (
     <div className="grid gap-8 p-2 sm:p-4 lg:grid-cols-[1.3fr_1fr] lg:gap-12">
       <div className="flex flex-col gap-4">
         <h2 className="text-2">{t('games.shell.howTo')}</h2>
-        <ol className="lesson-ol">
-          {definition.instructions.map((line) => (
-            <li key={line}>{line}</li>
-          ))}
-        </ol>
+        {HowTo ? (
+          <Suspense fallback={list}>
+            <HowTo />
+          </Suspense>
+        ) : (
+          list
+        )}
       </div>
       <div className="flex flex-col items-start gap-6">
         <ControlsList controls={definition.controls} />
