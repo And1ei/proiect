@@ -4,7 +4,8 @@
 //          drawing's real bounds (measured with getBBox() in headless Chromium, when available) and
 //          squared with even padding (one scale grid for every sprite), then colours rewritten:
 //          'palette' → each colour snapped to the nearest stain-palette colour (CIELAB distance),
-//          'mono'    → every colour becomes currentColor (tinted later by <Sprite> or Phaser).
+//          'mono'    → every colour becomes currentColor (tinted later by <Sprite> or Phaser);
+//          with `hue`, palette assets snap into one stain family by lightness (multi-state sprites).
 //   Audio: ffmpeg → mono 64 kbps MP3, metadata stripped. Set FFMPEG_PATH if ffmpeg isn't on PATH;
 //          without ffmpeg, audio is skipped (existing MP3s are kept) and the script says so.
 // Usage: npm run assets:clean [-- <asset-id> ...]
@@ -74,6 +75,24 @@ function nearest(rgb) {
   return best.hex;
 }
 
+// 'hue' mode: every chromatic colour becomes the stop of one stain family closest in lightness, and
+// near-greys become the closest paper/ink neutral. The states of one object (a normal, a crenated
+// and a lysed red cell) then read as the same cell instead of drifting between hues.
+const NEUTRALS = ['paper-bright', 'paper', 'paper-deep', 'paper-shade', 'ink-soft', 'ink'];
+const GREY_CHROMA = 10;
+function nearestInFamily(rgb, family) {
+  const lab = toLab(rgb);
+  const chroma = Math.hypot(lab[1], lab[2]);
+  if (chroma < GREY_CHROMA) {
+    const pool = palette.filter((p) => NEUTRALS.includes(p.name));
+    return pool.reduce((a, b) => (dist(b.lab, lab) < dist(a.lab, lab) ? b : a)).hex;
+  }
+  const ramp = palette.filter((p) => p.name === family || p.name.startsWith(`${family}-`));
+  if (!ramp.length) throw new Error(`no palette colours for hue "${family}"`);
+  return ramp.reduce((a, b) => (Math.abs(b.lab[0] - lab[0]) < Math.abs(a.lab[0] - lab[0]) ? b : a)).hex;
+}
+const dist = (a, b) => (a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2 + (a[2] - b[2]) ** 2;
+
 const COLOR_PROPS = ['fill', 'stroke', 'stop-color', 'flood-color', 'lighting-color', 'color'];
 
 // SVGO plugin: drop the first drawn shape (artboard background)
@@ -95,14 +114,15 @@ const dropBackground = {
 };
 
 // SVGO plugin: square the viewBox and rewrite colours in attributes and inline styles
-const recolor = (mode, bbox) => ({
+const recolor = (mode, bbox, hue) => ({
   name: 'soft-educational-recolor',
   fn: () => {
     const map = (value) => {
       if (!value || /^(none|transparent|currentcolor|inherit|url\()/i.test(value.trim())) return value;
       const rgb = toRgb(value);
       if (!rgb) return value;
-      return mode === 'mono' ? 'currentColor' : nearest(rgb);
+      if (mode === 'mono') return 'currentColor';
+      return hue ? nearestInFamily(rgb, hue) : nearest(rgb);
     };
     return {
       element: {
@@ -162,7 +182,7 @@ function prepareSvg(entry) {
 }
 
 function finishSvg(entry, svg, bbox) {
-  return optimize(svg, { plugins: [recolor(entry.color ?? 'palette', bbox)] }).data;
+  return optimize(svg, { plugins: [recolor(entry.color ?? 'palette', bbox, entry.hue)] }).data;
 }
 
 // Real drawing bounds via getBBox() in headless Chromium (playwright-core is already a dev

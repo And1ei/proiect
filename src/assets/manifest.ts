@@ -53,6 +53,11 @@ export interface AssetEntry {
    * 'mono': single-colour silhouette, fills become currentColor so <Sprite> and Phaser can tint it.
    */
   color?: 'palette' | 'mono';
+  /**
+   * Palette mode only: snap every colour into one stain family by lightness (greys to paper/ink),
+   * so several states of one object stay the same colour (e.g. normal, crenated and lysed red cells).
+   */
+  hue?: 'eosin' | 'methylene' | 'iodine';
   /** Remove the first drawn shape: an artboard background some exports include. */
   dropBackground?: boolean;
   /** Sound only: which named event it plays. */
@@ -67,6 +72,7 @@ const KENNEY_INTERFACE = 'https://kenney.nl/assets/interface-sounds';
 
 const SVG_MODS = 'optimizat cu SVGO, metadate eliminate, încadrat într-un pătrat';
 const PALETTE_MODS = `${SVG_MODS}, culori aliniate la paleta site-ului`;
+const HUE_MODS = `${SVG_MODS}, recolorat în nuanțele unei singure culori din paleta site-ului`;
 const MONO_MODS = `${SVG_MODS}, recolorat într-o singură culoare`;
 const MP3_MODS = 'convertit din OGG în MP3 (mono, 64 kbps)';
 
@@ -170,6 +176,67 @@ export const ASSETS: readonly AssetEntry[] = [
     raw: 'bioicons/Phage.svg',
     color: 'palette',
     dropBackground: true,
+  },
+
+  // ── Membrane transport and osmosis (G2, "Poarta membranei") ─────
+  {
+    id: 'atp',
+    file: 'icons/atp.svg',
+    kind: 'icon',
+    title: 'ATP (adenozin trifosfat)',
+    sourceName: 'Bioicons',
+    sourceUrl: `${BIOICONS}/cc-0/Nucleic_acids/Simon_D%C3%BCrr/atp.svg`,
+    author: 'Simon Dürr',
+    license: 'CC0-1.0',
+    attributionRequired: false,
+    modifications: PALETTE_MODS,
+    raw: 'bioicons/atp.svg',
+    color: 'palette',
+  },
+  {
+    id: 'eritrocit',
+    file: 'icons/eritrocit.svg',
+    kind: 'icon',
+    title: 'Eritrocit (hematie)',
+    sourceName: 'Servier Medical Art, prin Bioicons',
+    sourceUrl: `${BIOICONS}/cc-by-3.0/Blood_Immunology/Servier/erythrocyte.svg`,
+    author: 'Servier',
+    license: 'CC-BY-3.0',
+    attributionRequired: true,
+    modifications: HUE_MODS,
+    raw: 'bioicons/erythrocyte.svg',
+    color: 'palette',
+    hue: 'eosin',
+  },
+  {
+    id: 'eritrocit-crenat',
+    file: 'icons/eritrocit-crenat.svg',
+    kind: 'icon',
+    title: 'Eritrocit în soluție hipertonică (crenare)',
+    sourceName: 'Servier Medical Art, prin Bioicons',
+    sourceUrl: `${BIOICONS}/cc-by-3.0/Blood_Immunology/Servier/hypertonic-erythrocyte.svg`,
+    author: 'Servier',
+    license: 'CC-BY-3.0',
+    attributionRequired: true,
+    modifications: HUE_MODS,
+    raw: 'bioicons/hypertonic-erythrocyte.svg',
+    color: 'palette',
+    hue: 'eosin',
+  },
+  {
+    id: 'eritrocit-liza',
+    file: 'icons/eritrocit-liza.svg',
+    kind: 'icon',
+    title: 'Eritrocit în soluție hipotonică (liză)',
+    sourceName: 'Servier Medical Art, prin Bioicons',
+    sourceUrl: `${BIOICONS}/cc-by-3.0/Blood_Immunology/Servier/hypotonic-erythrocyte-2.svg`,
+    author: 'Servier',
+    license: 'CC-BY-3.0',
+    attributionRequired: true,
+    modifications: HUE_MODS,
+    raw: 'bioicons/hypotonic-erythrocyte-2.svg',
+    color: 'palette',
+    hue: 'eosin',
   },
 
   // ── Organism silhouettes (PhyloPic) ─────────────────────────────
