@@ -202,6 +202,26 @@ const ui = {
     },
   },
 
+  landing: {
+    set: 'Set de lame 2026 · Biologie · clasa a IX-a',
+    title: 'Soft Educational',
+    leadA: 'Cinci lecții scurte de biologie, fiecare cu jocul ei. Citești o bucată, te joci, iar când greșești,',
+    leadMark: 'jocul îți arată paragraful',
+    leadB: ' care explică.',
+    lessons: { one: 'o lecție', few: '{n} lecții', other: '{n} de lecții' },
+    minutes: '{n} min de citit în total',
+    games: { one: 'un joc', few: '{n} jocuri', other: '{n} de jocuri' },
+    noGames: 'jocurile urmează',
+    sections: { one: 'o secțiune', few: '{n} secțiuni', other: '{n} de secțiuni' },
+    startHere: 'Începe de aici',
+    orRead: 'sau citește întâi lecția',
+    continue: 'Continuă: {label}',
+    path: 'Cele cinci preparate',
+    page: 'Deschide lecția pe pagina ei',
+    base: 'nivelul de bază',
+    advanced: 'avansat',
+  },
+
   topicPage: {
     reading: 'Lectura',
     games: 'Jocuri',
