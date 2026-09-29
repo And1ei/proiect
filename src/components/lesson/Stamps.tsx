@@ -28,7 +28,7 @@ export default function Stamps({ lesson, size = 'sm', className }: { lesson: Les
             aria-hidden="true"
             className={cx(
               'inline-flex items-center rounded-[3px] border px-1.5 py-px font-mono text-[0.66rem] uppercase leading-snug tracking-[0.08em]',
-              st[k] ? `${s.border} ${s.text}` : 'border-dashed border-ink-faint text-ink-faint',
+              st[k] ? `${s.border} ${s.text} bg-paper-bright` : 'border-dashed border-ink-faint text-ink-soft',
             )}
             style={{ rotate: `${[-2, 1.5, -1][i]}deg` }}
           >

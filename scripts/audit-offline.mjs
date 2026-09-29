@@ -16,7 +16,7 @@ const executablePath =
   process.env.CHROMIUM_PATH ?? path.join(os.homedir(), 'AppData/Local/Chromium/Application/chrome.exe');
 const GAMES = ['/joc/poarta-membranei', '/joc/poarta-membranei-avansat'];
 const DOM_GAMES = ['/joc/echilibrul', '/joc/echilibrul-avansat'];
-const ROUTES = ['/', '/jocuri', '/celula', '/ecosisteme', '/credite', ...GAMES, ...DOM_GAMES];
+const ROUTES = ['/', '/jocuri', '/celula', '/ecosisteme', '/diversitatea-vietii', '/impactul-uman', '/laboratorul', '/credite', ...GAMES, ...DOM_GAMES];
 const GAME = GAMES[0];
 
 const results = [];
@@ -76,7 +76,7 @@ for (const game of GAMES) {
   await page.goto(`${BASE}${game}`).catch(() => undefined);
   const howTo = await page.locator('ol canvas').first().waitFor({ timeout: 8000 }).then(() => true).catch(() => false);
   check(`offline: animated intro renders ${game}`, howTo);
-  await page.getByRole('button', { name: 'Începe' }).click();
+  await page.getByRole('button', { name: /^(Începe|Sari peste, joc direct)$/ }).click();
   const canvas = await page.locator('[data-game-stage] canvas').waitFor({ timeout: 10000 }).then(() => true).catch(() => false);
   check(`offline: Phaser game boots ${game}`, canvas);
   await page.waitForTimeout(3000);
@@ -91,7 +91,7 @@ for (const game of DOM_GAMES) {
   const onReq = (r) => /phaser-/.test(r.url()) && phaserRequests.push(r.url());
   page.on('request', onReq);
   await page.goto(`${BASE}${game}`).catch(() => undefined);
-  await page.getByRole('button', { name: 'Începe' }).click();
+  await page.getByRole('button', { name: /^(Începe|Sari peste, joc direct)$/ }).click();
   const running = await page.getByText(/Anul 1 din 10/).waitFor({ timeout: 8000 }).then(() => true).catch(() => false);
   await page.waitForTimeout(2500);
   const sprites = await page.evaluate(() => [...document.querySelectorAll('[data-game-stage] svg image')].length);

@@ -45,9 +45,14 @@ assets-src/               untouched asset originals (input of npm run assets:cle
 scripts/                  checks, audits, asset pipeline, PWA icon renderer
 ```
 
-## Topics
+## Lessons
 
-The five topics follow the content domains of the 2026 programa, in order. Each is a lesson file in `src/content/ro/lessons/` (see below).
+Five lessons in programa order, one file each in `src/content/ro/lessons/` (`celula`, `ecosisteme`,
+`diversitatea-vietii`, `impactul-uman`, `laboratorul`), listed in `index.ts`. A lesson has 4–5 short
+sections (one idea each; terms defined in bold where they first appear), "Pe scurt", "Verifică-te"
+and `games: [{ gameId, afterSection }]`. Routes, the landing page, the navigation and the counts are
+generated from these files and the game registry. `npm run lessons:check` enforces the rules. There
+is no glossary. Voice rules: `SITE-COPY.md`.
 
 ## Progress
 
@@ -63,6 +68,8 @@ lives in memory for the visit and the Cuprins page says so.
 npm run check:ro        # cedilla ş ţ in src/ text files, em dashes in strings
 npm run check:progress  # old / broken localStorage payloads never throw; saveGame rules
 npm run assets:check    # every shipped asset listed with an allowed license (build gate)
+npm run lessons:check   # lesson rules: sections, words, games, links from game data
+npm run site:check      # real browser, production build: every route, links, games, a11y, keyboard, Lighthouse
 npm run typecheck       # tsc --noEmit
 npm run audit:ds        # real browser: motion, cursor, focus, reduced motion, touch
 npm run audit:ro        # real browser: no English UI, glyphs, fonts, quotes, numbers

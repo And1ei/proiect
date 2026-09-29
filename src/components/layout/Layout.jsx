@@ -8,7 +8,7 @@ import ErrorBoundary from './ErrorBoundary';
 
 function PageLoading() {
   return (
-    <p role="status" className="text-label px-gutter pt-16 text-ink-soft">
+    <p role="status" className="text-label min-h-dvh px-gutter pt-16 text-ink-soft">
       {t('common.loading')}
     </p>
   );

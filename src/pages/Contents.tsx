@@ -83,7 +83,7 @@ function TopicBlock({ lesson, open, onToggle }: { lesson: LessonData; open: bool
               to={gamePath(g.id)}
               onPointerEnter={() => preloadGame(g)}
               onFocus={() => preloadGame(g)}
-              className={cx('text-label inline-flex min-h-11 items-center justify-between gap-3 rounded-btn-b border px-4 py-2 no-underline hover:bg-paper-bright', s.border, s.text)}
+              className={cx('inline-flex min-h-11 items-center justify-between gap-3 rounded-btn-b border px-4 py-2 text--1 font-medium no-underline hover:bg-paper-bright', s.border, s.text)}
             >
               <span>
                 {t('games.play')} „{g.title}”

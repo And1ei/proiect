@@ -42,7 +42,7 @@ export default function GameSlide({ gameId, stain, catalog, tilt = -1.2, compact
         style={{ background: 'linear-gradient(100deg, var(--paper-bright) 0%, var(--paper) 100%)' }}
       >
         {/* the frosted label end of the slide */}
-        <span className={cx('flex w-16 shrink-0 flex-col items-center justify-between py-3 font-mono text--2 uppercase tracking-[0.08em] text-paper-bright sm:w-20', s.bg)}>
+        <span className={cx('flex w-16 shrink-0 flex-col items-center justify-between py-3 font-mono text--2 uppercase tracking-[0.08em] text-paper-bright sm:w-20', s.bgDeep)}>
           <span>{t('lesson.slideGame')}</span>
           <span className="text-2 font-medium leading-none">{catalog}</span>
           <span>{advanced ? 'CS' : 'TC'}</span>

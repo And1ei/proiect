@@ -71,11 +71,11 @@ export default function LessonSheet({ target, onClose }: { target: string | null
           <header className="flex items-start justify-between gap-4 border-b border-dashed border-ink-faint px-5 pb-3 pt-[max(1rem,env(safe-area-inset-top))] sm:px-7">
             <div className="flex flex-col gap-1">
               <p className="text-label text-ink-soft">{t('lesson.preparat', { n: catalogNumber(lesson) })}</p>
-              <h2 id="lesson-sheet-title" className="text-2 leading-heading">
+              <h2 id="lesson-sheet-title" className="text-1 leading-heading sm:text-2">
                 {lesson.title}
               </h2>
             </div>
-            <BlobButton variant="paper" size="sm" shape="c" onClick={onClose} autoFocus={!section}>
+            <BlobButton variant="paper" size="sm" shape="c" className="shrink-0 whitespace-nowrap" onClick={onClose} autoFocus={!section}>
               {t('sheet.back')}
             </BlobButton>
           </header>
