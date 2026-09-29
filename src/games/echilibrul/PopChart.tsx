@@ -16,6 +16,8 @@ const NARROW = 480;
 interface Props {
   scenario: ScenarioText;
   history: { t: number; x: number[] }[];
+  /** history.length at render time: the engine appends to the same array, so memo compares this. */
+  points: number;
   events: GameEvent[];
   extinct: boolean[];
 }
@@ -86,8 +88,8 @@ function PopChart({ scenario, history, events, extinct }: Props) {
         const x0 = W - PAD.r + 8;
         return (
           <g key={i}>
-            <line x1={x0} y1={y - 3} x2={x0 + 16} y2={y - 3} stroke={`var(--${v.tone})`} strokeWidth="2.4" strokeLinecap="round" strokeDasharray={v.dash || undefined} />
-            <text x={x0 + 20} y={y} fontSize="10" className="fill-ink font-body" textDecoration={extinct[i] ? 'line-through' : undefined}>
+            <line x1={x0} y1={y - 3} x2={x0 + 22} y2={y - 3} stroke={`var(--${v.tone})`} strokeWidth="2.4" strokeLinecap="round" strokeDasharray={v.dash || undefined} />
+            <text x={x0 + 26} y={y} fontSize="10" className="fill-ink font-body" textDecoration={extinct[i] ? 'line-through' : undefined}>
               {name}
             </text>
           </g>
@@ -98,8 +100,8 @@ function PopChart({ scenario, history, events, extinct }: Props) {
         <ul aria-hidden="true" className="flex flex-wrap gap-x-4 gap-y-1 px-1 pt-1 text--2">
           {scenario.species.map((sp, i) => (
             <li key={sp.id} className={extinct[i] ? 'line-through' : undefined}>
-              <svg width="18" height="6" className="mr-1.5 inline-block align-middle">
-                <line x1="1" y1="3" x2="17" y2="3" stroke={`var(--${view.species[sp.id].tone})`} strokeWidth="2.4" strokeLinecap="round" strokeDasharray={view.species[sp.id].dash || undefined} />
+              <svg width="30" height="6" className="mr-1.5 inline-block align-middle">
+                <line x1="1" y1="3" x2="29" y2="3" stroke={`var(--${view.species[sp.id].tone})`} strokeWidth="2.4" strokeLinecap="round" strokeDasharray={view.species[sp.id].dash || undefined} />
               </svg>
               {sp.name}
             </li>
@@ -110,4 +112,7 @@ function PopChart({ scenario, history, events, extinct }: Props) {
   );
 }
 
-export default memo(PopChart);
+// A new point every 0.2 years is plenty for the chart (the history grows every 0.05 years)
+const visible = (p: Props) => [p.scenario.id, Math.floor(p.points / 4), p.events.map((e) => e.phase).join(','), p.extinct.join(',')].join('|');
+
+export default memo(PopChart, (a, b) => visible(a) === visible(b));

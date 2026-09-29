@@ -15,7 +15,8 @@ const BASE = process.argv[2] ?? 'http://localhost:4173';
 const executablePath =
   process.env.CHROMIUM_PATH ?? path.join(os.homedir(), 'AppData/Local/Chromium/Application/chrome.exe');
 const GAMES = ['/joc/poarta-membranei', '/joc/poarta-membranei-avansat'];
-const ROUTES = ['/', '/jocuri', '/celula', '/credite', ...GAMES];
+const DOM_GAMES = ['/joc/echilibrul', '/joc/echilibrul-avansat'];
+const ROUTES = ['/', '/jocuri', '/celula', '/ecosisteme', '/credite', ...GAMES, ...DOM_GAMES];
 const GAME = GAMES[0];
 
 const results = [];
@@ -84,6 +85,20 @@ for (const game of GAMES) {
   check(`offline: scene running, no load error ${game}`, loadError === 0 && gates > 0);
 }
 if (process.env.OFFLINE_SCREENSHOT) await page.screenshot({ path: process.env.OFFLINE_SCREENSHOT });
+// DOM games offline: they start and run from the precache, and never request the Phaser chunk
+for (const game of DOM_GAMES) {
+  const phaserRequests = [];
+  const onReq = (r) => /phaser-/.test(r.url()) && phaserRequests.push(r.url());
+  page.on('request', onReq);
+  await page.goto(`${BASE}${game}`).catch(() => undefined);
+  await page.getByRole('button', { name: 'Începe' }).click();
+  const running = await page.getByText(/Anul 1 din 10/).waitFor({ timeout: 8000 }).then(() => true).catch(() => false);
+  await page.waitForTimeout(2500);
+  const sprites = await page.evaluate(() => [...document.querySelectorAll('[data-game-stage] svg image')].length);
+  page.off('request', onReq);
+  check(`offline: ${game} runs, sprites drawn, no Phaser chunk requested`, running && sprites > 10 && phaserRequests.length === 0, `${sprites} sprites`);
+}
+
 const fonts = await page.evaluate(() => document.fonts.check('16px "DM Mono"') && document.fonts.check('500 32px "Fraunces Variable"'));
 check('offline: self-hosted fonts available', fonts);
 

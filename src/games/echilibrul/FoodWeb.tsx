@@ -103,4 +103,6 @@ function FoodWeb({ scenario, x, extinct, selected, reduced }: Props) {
   );
 }
 
-export default memo(FoodWeb);
+const visible = (p: Props) => [p.scenario.id, p.x.map((v) => Math.round(v * 50)).join(','), p.extinct.join(','), p.selected, p.reduced].join('|');
+
+export default memo(FoodWeb, (a, b) => visible(a) === visible(b));

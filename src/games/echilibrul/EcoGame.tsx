@@ -25,7 +25,7 @@ import PopChart from './PopChart';
 import Inventar from './Inventar';
 
 const TOOL_IDS: ToolId[] = ['protejeaza', 'regenereaza', 'reintroduce'];
-const RENDER_MS = 100;
+const RENDER_MS = 150;
 
 type Note = { n: number; kind: 'tip' | 'help' | 'crisis' | 'extinct' | 'tool' | 'hint' | 'year'; text: string };
 
@@ -207,7 +207,8 @@ export default function EcoGame({ session, scenario: scenarioId }: GameProps & {
       applyTool(armed, selected);
     } else if (e.key.toLowerCase() === 'h') {
       hint();
-    } else if (e.key === ' ' && (e.target as HTMLElement).tagName !== 'BUTTON') {
+    } else if (e.key === ' ') {
+      // Space always pauses in the game (buttons still activate with Enter)
       e.preventDefault();
       session.pause();
     }
@@ -414,7 +415,7 @@ export default function EcoGame({ session, scenario: scenarioId }: GameProps & {
           )}
           <section aria-label={ECO.chart} className="rounded-well bg-paper-bright px-3 py-3 shadow-well">
             <h3 className="text-label px-1 text-ink-soft">{ECO.chart}</h3>
-            <PopChart scenario={scenario} history={history} events={engine.events} extinct={s.extinct} />
+            <PopChart scenario={scenario} history={history} points={history.length} events={engine.events} extinct={s.extinct} />
             <p className="px-1 text--2 text-ink-soft">{ECO.chartLegend}</p>
           </section>
         </div>

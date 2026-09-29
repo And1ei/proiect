@@ -186,4 +186,16 @@ function ScenePlate({ scenario, t, x, extinct, bloom, crisis, selected, reduced 
   );
 }
 
-export default memo(ScenePlate);
+// Redraw only when something visible changes: a headcount, a colour step of the season, the water tint
+const visible = (p: Props) =>
+  [
+    p.scenario.id,
+    p.scenario.species.map((s, i) => headcount(VIEW[p.scenario.id].species[s.id], p.x[i], p.extinct[i])).join(','),
+    Math.round(p.t * 24),
+    Math.round(p.bloom * 20),
+    p.crisis,
+    p.selected,
+    p.reduced,
+  ].join('|');
+
+export default memo(ScenePlate, (a, b) => visible(a) === visible(b));

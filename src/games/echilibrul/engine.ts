@@ -168,7 +168,8 @@ export class EcoEngine {
 
     // yearly health
     if (s.x.some((x, i) => s.extinct[i] || x < SAFE_BAND[0] || x > SAFE_BAND[1])) this.outsideThisYear += h;
-    this.history.push({ t: s.t, x: [...s.x] });
+    // one chart point every HISTORY_EVERY years, however small the frames are
+    if (s.t - this.history[this.history.length - 1].t >= HISTORY_EVERY - 1e-9) this.history.push({ t: s.t, x: [...s.x] });
     const year = Math.floor(s.t + 1e-9);
     if (year > this.year) {
       this.year = year;

@@ -192,6 +192,23 @@ linear, no default easing. In Phaser, which has no springs, use `Back.Out` / `El
   `formulaRuns()` (canvas) or `<Formula>` (DOM, `<sub>`/`<sup>`).
 - **Adaptive help**: after 3 failures in a row, spawns slow down for a while and a kind line says so.
 
+## Echilibrul: the pattern for simulation games without Phaser
+
+`src/games/echilibrul/` (G3) is React + SVG, `usesPhaser: false`, so no Phaser chunk loads on its routes.
+
+- **Model → engine → view.** `ecosystemModel.ts` is pure and seeded (direction-of-effect tests, determinism).
+  `engine.ts` is a plain class that owns the run (events with telegraphs, tools and cooldowns, yearly
+  scoring, extinctions and their causes) and returns *happenings*; the component turns them into session
+  calls and announcements. Dev only: `window.__ecoEngine`.
+- **Loop:** one `requestAnimationFrame` advances the engine; React re-renders at most every 150 ms.
+  Heavy SVG pieces use `memo` with a comparator on what is *visible* (headcounts, rounded values,
+  a chart point every 0.2 years). Never compare an array the engine mutates in place: pass its length.
+- **Silhouettes in SVG:** `<image href={getAsset(id).url}>` inside a group with a tint + paper-cut
+  shadow filter (`SilhouetteFilters`), one filter per species group, not per individual.
+- **Charts on phones:** draw 1:1 in CSS pixels (measure the width) instead of scaling a viewBox, and
+  move series labels into an HTML legend below ~480 px.
+- 4× CPU-throttled: 45–54 fps (G3 report).
+
 ## Testing
 
 `npm test` runs Vitest (`src/**/*.test.ts`, Node environment): pure models, data rules, the session.
