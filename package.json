@@ -1,0 +1,35 @@
+{
+  "name": "soft-educational",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "prebuild": "node scripts/check-ro.mjs && node scripts/check-content.mjs",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check:ro": "node scripts/check-ro.mjs",
+    "audit:ds": "node scripts/audit-ds.mjs",
+    "audit:ro": "node scripts/audit-ro.mjs",
+    "check:content": "node scripts/check-content.mjs",
+    "audit:content": "node scripts/audit-content.mjs",
+    "audit:interactives": "node scripts/audit-interactives.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/fraunces": "^5.3.0",
+    "@fontsource/dm-mono": "^5.3.0",
+    "@fontsource/instrument-sans": "^5.3.0",
+    "motion": "^13.4.4",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-router-dom": "^7.18.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.1.1",
+    "autoprefixer": "^10.6.1",
+    "playwright-core": "^1.63.0",
+    "postcss": "^8.5.28",
+    "tailwindcss": "^3.4.19",
+    "vite": "^8.3.1"
+  }
+}

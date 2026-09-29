@@ -1,0 +1,129 @@
+/*
+ * Soft Educational — design tokens.
+ * Single source of truth. tailwind.config.js reads these by name; never hard-code values elsewhere.
+ * Contrast notes (vs --paper): ink 12.9, ink-soft 7.0, eosin-deep 5.3, methylene-deep 6.1, iodine-deep 5.5.
+ * Base accents (--eosin, --methylene, --iodine) are for fills and strokes, not body text.
+ */
+
+:root {
+  /* ── Paper ─────────────────────────────────────────── */
+  --paper: #F4EFE6;
+  --paper-bright: #FAF7F1;
+  --paper-deep: #E9E1D3;
+  --paper-shade: #DDD3C1;
+
+  /* ── Ink ───────────────────────────────────────────── */
+  --ink: #1E2B25;
+  --ink-soft: #46544D; /* secondary text, AA on paper + paper-deep */
+  --ink-faint: #8C958F; /* rules and outlines only, never text */
+
+  /* ── Eosin (primary accent) ────────────────────────── */
+  --eosin-50: #FBEFF1;
+  --eosin-100: #F6DCE1;
+  --eosin-200: #EFBFC9;
+  --eosin: #E48A9B;
+  --eosin-deep: #A63F58; /* text-safe */
+
+  /* ── Methylene (secondary accent) ──────────────────── */
+  --methylene-50: #EAF4F4;
+  --methylene-100: #D3E8E9;
+  --methylene-200: #A9D1D3;
+  --methylene: #3E8E93;
+  --methylene-deep: #276266; /* text-safe, also bg for paper text */
+
+  /* ── Iodine (highlight, sparingly) ─────────────────── */
+  --iodine-100: #F6E6CA;
+  --iodine-200: #EDCC95;
+  --iodine: #D99A3D;
+  --iodine-deep: #85561A; /* text-safe */
+
+  /* ── Semantic roles ────────────────────────────────── */
+  --surface: var(--paper);
+  --surface-raised: var(--paper-bright);
+  --surface-sunken: var(--paper-deep);
+  --text: var(--ink);
+  --text-muted: var(--ink-soft);
+  --focus: var(--methylene-deep);
+  --selection: var(--eosin-200);
+
+  /* ── Typography ────────────────────────────────────── */
+  --font-display: 'Fraunces Variable', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --font-body: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  /* Fraunces axes: display sizes go fully soft + wonky; smaller headings stay calmer */
+  --fraunces-display: 'SOFT' 100, 'WONK' 1;
+  --fraunces-text: 'SOFT' 50, 'WONK' 0;
+
+  /* Fluid scale, ~1.2 ratio at 375px widening to ~1.28 at 1280px */
+  --step--2: clamp(0.69rem, 0.67rem + 0.1vw, 0.75rem);
+  --step--1: clamp(0.83rem, 0.8rem + 0.15vw, 0.9rem);
+  --step-0: clamp(1rem, 0.95rem + 0.22vw, 1.125rem);
+  --step-1: clamp(1.2rem, 1.11rem + 0.4vw, 1.43rem);
+  --step-2: clamp(1.44rem, 1.28rem + 0.68vw, 1.83rem);
+  --step-3: clamp(1.73rem, 1.47rem + 1.1vw, 2.34rem);
+  --step-4: clamp(2.07rem, 1.66rem + 1.75vw, 3rem);
+  --step-5: clamp(2.49rem, 1.85rem + 2.72vw, 3.84rem);
+  --step-6: clamp(2.99rem, 2rem + 4.2vw, 5.2rem);
+
+  --leading-display: 1.02;
+  --leading-heading: 1.15;
+  --leading-body: 1.62;
+  --tracking-display: -0.02em;
+  --tracking-label: 0.08em;
+
+  /* ── Space & layout ────────────────────────────────── */
+  --gutter: clamp(1rem, 0.6rem + 2vw, 2.5rem);
+  --section-gap: clamp(4rem, 3rem + 5vw, 8rem);
+  --measure: 62ch;
+  --container: 76rem;
+  --container-narrow: 48rem;
+  --container-wide: 90rem;
+
+  /* ── Organic radii ─────────────────────────────────── */
+  --blob-a: 42% 58% 55% 45% / 50% 45% 55% 50%;
+  --blob-b: 58% 42% 48% 52% / 44% 56% 44% 56%;
+  --blob-c: 47% 53% 61% 39% / 55% 48% 52% 45%;
+  --blob-d: 63% 37% 45% 55% / 48% 60% 40% 52%;
+  /* Buttons are wide, so % radii collapse into ellipses; em radii keep a pebble shape at any width */
+  --btn-a: 1.2em 2.2em 1.6em 1em / 1.4em 1.1em 1.6em 1.2em;
+  --btn-b: 2em 1.1em 1.3em 1.9em / 1.1em 1.5em 1.2em 1.6em;
+  --btn-c: 1.4em 1.8em 2.2em 1.2em / 1.6em 1.2em 1.4em 1.3em;
+  --btn-d: 1.9em 1.3em 1.2em 2.1em / 1.3em 1.6em 1.5em 1.1em;
+  /* Cards hold text, so they use pixel radii: asymmetric but never clip content */
+  --radius-cell: 26px 40px 30px 46px / 38px 28px 44px 30px;
+  --radius-cell-alt: 42px 24px 44px 30px / 28px 42px 30px 40px;
+  --radius-tag: 3px 12px 12px 3px / 3px 14px 10px 3px;
+  --radius-well: 18px 26px 20px 28px / 24px 18px 28px 20px;
+
+  /* ── Tactile depth (inset only, no hard drops) ─────── */
+  --shadow-rest:
+    inset 0 1px 0 rgb(255 255 255 / 0.55),
+    inset 0 -3px 0 rgb(30 43 37 / 0.1),
+    inset 3px 4px 8px rgb(255 255 255 / 0.22),
+    inset -4px -5px 10px rgb(30 43 37 / 0.08);
+  --shadow-pressed:
+    inset 3px 4px 9px rgb(30 43 37 / 0.2),
+    inset -2px -2px 6px rgb(255 255 255 / 0.35),
+    inset 0 0 0 1px rgb(30 43 37 / 0.06);
+  --shadow-card:
+    inset 0 1px 0 rgb(255 255 255 / 0.85),
+    inset 0 0 0 1px rgb(30 43 37 / 0.07),
+    inset 8px 10px 22px rgb(255 255 255 / 0.5),
+    inset -8px -10px 22px rgb(30 43 37 / 0.045);
+  --shadow-well:
+    inset 2px 3px 10px rgb(30 43 37 / 0.11),
+    inset -3px -4px 10px rgb(255 255 255 / 0.7),
+    inset 0 0 0 1px rgb(30 43 37 / 0.06);
+
+  /* ── Motion ────────────────────────────────────────── */
+  /*
+   * CSS approximation of the JS spring (stiffness 180, damping 16, mass 1, ζ≈0.6),
+   * sampled over its 620ms settle time. Use only where Motion can't reach (pure CSS states).
+   */
+  --ease-spring: linear(0, 0.052, 0.179, 0.343, 0.515, 0.676, 0.815, 0.924, 1.004, 1.056, 1.085, 1.096, 1.094, 1.084, 1.069, 1.052, 1.036, 1.022, 1.01, 1.002, 0.996, 0.992, 0.991, 0.991, 1);
+  --dur-spring: 620ms;
+
+  /* ── Texture ───────────────────────────────────────── */
+  --grain-opacity: 0.075;
+}

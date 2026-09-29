@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="{{ lang }}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ meta.title }}</title>
+    <meta name="description" content="{{ meta.description }}" />
+    <meta name="theme-color" content="#F4EFE6" />
+    <meta name="color-scheme" content="light" />
+    <meta property="og:site_name" content="{{ brand }}" />
+    <meta property="og:title" content="{{ meta.title }}" />
+    <meta property="og:description" content="{{ meta.description }}" />
+    <meta property="og:locale" content="{{ ogLocale }}" />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <noscript>
+      <p style="margin: 2rem; font-family: Georgia, serif; font-size: 1.125rem; color: #1e2b25">{{ meta.noscript }}</p>
+    </noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

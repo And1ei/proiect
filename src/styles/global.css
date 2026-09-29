@@ -1,0 +1,279 @@
+@import './tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    background: var(--surface);
+    color: var(--text);
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    min-height: 100dvh;
+    background: var(--surface);
+    font-family: var(--font-body);
+    font-size: var(--step-0);
+    line-height: var(--leading-body);
+    font-weight: 400;
+    overflow-x: hidden;
+  }
+
+  /* Paper grain: fractal noise baked into an inline SVG, fixed above everything, never interactive */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: var(--grain-opacity);
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.12 0 0 0 0 0.17 0 0 0 0 0.15 0 0 0 1.1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+    background-size: 220px 220px;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-variation-settings: var(--fraunces-text);
+    font-weight: 500;
+    line-height: var(--leading-heading);
+    text-wrap: balance;
+  }
+
+  /* hyphens: auto uses the document language (lang="ro") for Romanian break points */
+  p,
+  li,
+  dd,
+  figcaption {
+    text-wrap: pretty;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+
+  a {
+    color: inherit;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  ::selection {
+    background: var(--selection);
+    color: var(--ink);
+  }
+
+  /* Focus ring follows each element's organic radius (outline respects border-radius) */
+  :focus-visible {
+    outline: 2.5px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* SoftCursor sets this attribute only while its ring is visible; text fields keep the I-beam */
+  html[data-soft-cursor],
+  html[data-soft-cursor] * {
+    cursor: none;
+  }
+
+  html[data-soft-cursor] :is(input, textarea, [contenteditable='true']) {
+    cursor: text;
+  }
+
+  hr {
+    border: 0;
+    height: 1px;
+    background: var(--ink-faint);
+    opacity: 0.5;
+  }
+}
+
+@layer components {
+  .text-display {
+    font-family: var(--font-display);
+    font-variation-settings: var(--fraunces-display);
+    font-optical-sizing: auto;
+    font-weight: 450;
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+  }
+
+  .text-label {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: var(--step--2);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    line-height: 1.4;
+  }
+
+  .prose-body {
+    max-width: var(--measure);
+    color: var(--text-muted);
+  }
+
+  /*
+   * Filled surfaces. Each one re-points --focus so the keyboard ring (drawn outside the
+   * focused element, on this surface) keeps at least 3:1 against it.
+   */
+  .surface-eosin {
+    background: var(--eosin);
+    color: var(--ink);
+    --focus: var(--ink); /* 5.9:1 */
+  }
+
+  .surface-methylene {
+    background: var(--methylene-deep);
+    color: var(--paper);
+    --focus: var(--paper-bright); /* 6.4:1 */
+  }
+
+  .surface-ink {
+    background: var(--ink);
+    color: var(--paper);
+    --focus: var(--eosin); /* 5.9:1 */
+  }
+
+  /* Reduced-motion feedback: a brief ring instead of movement (see FeedbackFlash) */
+  [data-flash='correct'] {
+    box-shadow: 0 0 0 3px var(--methylene-deep);
+  }
+
+  [data-flash='incorrect'] {
+    box-shadow: 0 0 0 3px var(--iodine-deep);
+  }
+
+  /* Clickable figure parts (heart): outline shows focus and traced state; <g> can't draw an outline */
+  .heart-part:focus {
+    outline: none;
+  }
+
+  .heart-part:focus-visible .shape {
+    stroke: var(--focus);
+    stroke-width: 3.5;
+  }
+
+  .heart-part[data-lit] .shape {
+    stroke: var(--iodine-deep);
+  }
+
+  /* Vessels keep their thick ink underlay; only its colour changes */
+  .heart-part:focus-visible .tube {
+    stroke: var(--focus);
+  }
+
+  .heart-part[data-lit] .tube {
+    stroke: var(--iodine-deep);
+  }
+
+  .heart-part:hover .shape {
+    stroke-width: 2.5;
+  }
+
+  /* Clickable graph bands (ventilation) */
+  .band:focus,
+  [role='button']:has(> .bracket):focus {
+    outline: none;
+  }
+
+  .band:hover,
+  .band:focus-visible {
+    stroke: var(--focus);
+    stroke-width: 2.5;
+  }
+
+  [role='button']:focus-visible > .bracket,
+  [role='button']:hover > .bracket {
+    stroke: var(--focus);
+    stroke-width: 3;
+  }
+
+  /* Lesson reading column */
+  .lesson p,
+  .lesson li {
+    color: var(--text);
+  }
+
+  .lesson-ol,
+  .lesson-ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .lesson-ol {
+    counter-reset: step;
+  }
+
+  .lesson-ol > li,
+  .lesson-ul > li {
+    position: relative;
+    padding-left: 2.25rem;
+  }
+
+  .lesson-ol > li::before {
+    counter-increment: step;
+    content: counter(step, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0.3em;
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    letter-spacing: var(--tracking-label);
+    color: var(--eosin-deep);
+  }
+
+  /* Hand-drawn dash as the bullet */
+  .lesson-ul > li::before {
+    content: '';
+    position: absolute;
+    left: 0.35rem;
+    top: 0.78em;
+    width: 0.9rem;
+    height: 0.3rem;
+    background: var(--methylene);
+    border-radius: var(--blob-b);
+  }
+
+  /* Faint ruled-notebook background for sections that want it */
+  .ruled {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0 31px,
+      color-mix(in srgb, var(--methylene) 14%, transparent) 31px 32px
+    );
+  }
+
+  .skip-link {
+    position: absolute;
+    left: var(--gutter);
+    top: -4rem;
+    z-index: 70;
+    padding: 0.6rem 1rem;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: var(--radius-tag);
+    transition: top var(--dur-spring) var(--ease-spring);
+  }
+
+  .skip-link:focus-visible {
+    top: 0.75rem;
+  }
+}
+
+/* Set by MotionPreferenceProvider from the OS setting or the dev simulation toggle */
+html[data-reduce-motion] *,
+html[data-reduce-motion] *::before,
+html[data-reduce-motion] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
