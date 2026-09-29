@@ -4,8 +4,9 @@ import type { GameDefinition } from './core/types';
 // Resolves to ./sandbox/index.ts on the dev server and in VITE_SANDBOX=1 builds, and to
 // ./sandbox/disabled.ts (empty) otherwise, so production builds contain no sandbox code at all.
 import { SANDBOX_GAMES } from '@games-sandbox';
+import { MEMBRANE_GAMES } from './celula/poarta-membranei/definitions';
 
-const REAL_GAMES: GameDefinition[] = [];
+const REAL_GAMES: GameDefinition[] = [...MEMBRANE_GAMES];
 
 /** Dev server, or a build made with VITE_SANDBOX=1 (only for the offline test; never deploy it). */
 export const SANDBOX_ENABLED = SANDBOX_GAMES.length > 0;

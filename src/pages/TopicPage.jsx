@@ -13,6 +13,7 @@ import BacQuiz from '../components/quiz/BacQuiz';
 import { useSectionTracking } from '../components/topic/useSectionTracking';
 import NotFound from './NotFound';
 import TopicComingSoon from './TopicComingSoon';
+import TopicGames from '../games/core/TopicGames';
 
 /**
  * Lesson template. From 1024px: section index | reading column (40rem, about 65 characters of text) | margin notes.
@@ -64,6 +65,8 @@ export default function TopicPage({ slug }) {
             </section>
           </article>
         </div>
+
+        <TopicGames slug={topic.slug} fig={topic.fig.number} />
 
         <TopicNav prev={prev} next={next} />
       </Container>

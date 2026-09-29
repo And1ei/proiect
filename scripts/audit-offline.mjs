@@ -1,13 +1,12 @@
 // Offline test in a real Chromium: first visit online (the service worker installs and precaches),
 // then the network is cut and each route is loaded again: by normal reload, by a fresh navigation
-// in a new tab, and by a hard reload (cache-bypassing). A Phaser game is started offline to prove the
-// lazy Phaser chunk, sprites and fonts come from the precache.
+// in a new tab, and by a hard reload (cache-bypassing). The real Phaser games are started offline to
+// prove the lazy Phaser chunk, scene code, sprites and fonts come from the precache.
 //
 // Usage:
-//   VITE_SANDBOX=1 npm run build      (sandbox games included, so there is a Phaser game to test)
+//   npm run build
 //   npx vite preview --port 4173
 //   node scripts/audit-offline.mjs [baseUrl]
-// Never deploy a VITE_SANDBOX=1 build.
 import { chromium } from 'playwright-core';
 import os from 'node:os';
 import path from 'node:path';
@@ -15,8 +14,9 @@ import path from 'node:path';
 const BASE = process.argv[2] ?? 'http://localhost:4173';
 const executablePath =
   process.env.CHROMIUM_PATH ?? path.join(os.homedir(), 'AppData/Local/Chromium/Application/chrome.exe');
-const ROUTES = ['/', '/jocuri', '/celula', '/credite', '/joc/sandbox-prinde-organismele'];
-const GAME = '/joc/sandbox-prinde-organismele';
+const GAMES = ['/joc/poarta-membranei', '/joc/poarta-membranei-avansat'];
+const ROUTES = ['/', '/jocuri', '/celula', '/credite', ...GAMES];
+const GAME = GAMES[0];
 
 const results = [];
 const check = (name, pass, detail = '') => {
@@ -70,14 +70,19 @@ await tab.goto(`${BASE}/jocuri`).catch(() => undefined);
 check('offline deep link in a new tab', Boolean(await heading(tab)));
 await tab.close();
 
-// Start the Phaser game offline: the chunk, scene, sprites and fonts must all load from the cache
-await page.goto(`${BASE}${GAME}`).catch(() => undefined);
-await page.getByRole('button', { name: 'Începe' }).click();
-const canvas = await page.locator('[data-game-stage] canvas').waitFor({ timeout: 10000 }).then(() => true).catch(() => false);
-check('offline: Phaser game boots (lazy chunk from precache)', canvas);
-await page.waitForTimeout(2500);
-const loadError = await page.getByText('Jocul nu s-a putut încărca').count();
-check('offline: no load error in the game area', loadError === 0);
+// Start each Phaser game offline: the chunk, scene, sprites and fonts must all load from the cache
+for (const game of GAMES) {
+  await page.goto(`${BASE}${game}`).catch(() => undefined);
+  const howTo = await page.locator('ol canvas').first().waitFor({ timeout: 8000 }).then(() => true).catch(() => false);
+  check(`offline: animated intro renders ${game}`, howTo);
+  await page.getByRole('button', { name: 'Începe' }).click();
+  const canvas = await page.locator('[data-game-stage] canvas').waitFor({ timeout: 10000 }).then(() => true).catch(() => false);
+  check(`offline: Phaser game boots ${game}`, canvas);
+  await page.waitForTimeout(3000);
+  const loadError = await page.getByText('Jocul nu s-a putut încărca').count();
+  const gates = await page.getByText('Dublul strat').count();
+  check(`offline: scene running, no load error ${game}`, loadError === 0 && gates > 0);
+}
 if (process.env.OFFLINE_SCREENSHOT) await page.screenshot({ path: process.env.OFFLINE_SCREENSHOT });
 const fonts = await page.evaluate(() => document.fonts.check('16px "DM Mono"') && document.fonts.check('500 32px "Fraunces Variable"'));
 check('offline: self-hosted fonts available', fonts);

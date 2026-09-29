@@ -43,35 +43,48 @@ export default function IntroScreen({ definition, best, onStart }: Props) {
       ))}
     </ol>
   );
+  const side = (
+    <div className="flex flex-col items-start gap-6">
+      <ControlsList controls={definition.controls} />
+      <p className="text-label flex flex-wrap gap-x-4 gap-y-1 text-ink-soft">
+        <span>{t('games.minutes', { n: definition.estimatedMinutes })}</span>
+        <span>{t(`games.difficulty.${definition.difficulty}`)}</span>
+      </p>
+      {best.plays > 0 && (
+        <p className="flex flex-wrap items-center gap-3 text--1 text-ink-soft">
+          <Stars value={best.stars as StarCount} size="sm" />
+          <span>{t('games.best', { score: best.bestScore })}</span>
+          <span>{tp('games.plays', best.plays)}</span>
+        </p>
+      )}
+      <BlobButton size="lg" onClick={onStart} data-autofocus>
+        {t('games.shell.start')}
+      </BlobButton>
+    </div>
+  );
+
+  // An animated HowTo gets the full width; the controls and "Începe" follow underneath
+  if (HowTo) {
+    return (
+      <div className="flex flex-col gap-8 p-2 sm:p-4">
+        <div className="flex flex-col gap-4">
+          <h2 className="text-2">{t('games.shell.howTo')}</h2>
+          <Suspense fallback={list}>
+            <HowTo />
+          </Suspense>
+        </div>
+        {side}
+      </div>
+    );
+  }
+
   return (
     <div className="grid gap-8 p-2 sm:p-4 lg:grid-cols-[1.3fr_1fr] lg:gap-12">
       <div className="flex flex-col gap-4">
         <h2 className="text-2">{t('games.shell.howTo')}</h2>
-        {HowTo ? (
-          <Suspense fallback={list}>
-            <HowTo />
-          </Suspense>
-        ) : (
-          list
-        )}
+        {list}
       </div>
-      <div className="flex flex-col items-start gap-6">
-        <ControlsList controls={definition.controls} />
-        <p className="text-label flex flex-wrap gap-x-4 gap-y-1 text-ink-soft">
-          <span>{t('games.minutes', { n: definition.estimatedMinutes })}</span>
-          <span>{t(`games.difficulty.${definition.difficulty}`)}</span>
-        </p>
-        {best.plays > 0 && (
-          <p className="flex flex-wrap items-center gap-3 text--1 text-ink-soft">
-            <Stars value={best.stars as StarCount} size="sm" />
-            <span>{t('games.best', { score: best.bestScore })}</span>
-            <span>{tp('games.plays', best.plays)}</span>
-          </p>
-        )}
-        <BlobButton size="lg" onClick={onStart} data-autofocus>
-          {t('games.shell.start')}
-        </BlobButton>
-      </div>
+      {side}
     </div>
   );
 }

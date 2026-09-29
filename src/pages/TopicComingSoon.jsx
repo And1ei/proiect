@@ -6,6 +6,7 @@ import Blob from '../components/primitives/Blob';
 import PageMeta from '../components/layout/PageMeta';
 import TopicNav from '../components/topic/TopicNav';
 import { neighbors } from '../content/ro/topics';
+import TopicGames from '../games/core/TopicGames';
 
 /** Page for a registered topic whose lesson isn't written yet (status 'coming-soon'). */
 export default function TopicComingSoon({ topic }) {
@@ -35,6 +36,8 @@ export default function TopicComingSoon({ topic }) {
             </BlobButton>
           </div>
         </section>
+
+        <TopicGames slug={topic.slug} fig={topic.fig.number} />
 
         <TopicNav prev={prev} next={next} />
       </Container>

@@ -30,6 +30,7 @@ src/games/
     palette.ts       design tokens → numbers/strings for scenes
     bridge.ts, fonts.ts
   sandbox/       dev-only reference games (A: Phaser, B: dnd-kit)
+  celula/poarta-membranei/   G2, the first real game: the pattern for G3–G6 (below)
   registry.ts    GAMES: every playable game
 src/assets/
   manifest.ts    every shipped image and sound: source, author, license, changes
@@ -85,7 +86,19 @@ defineGame({
 ```
 
 `stars(result)` gets a `RunResult`: `outcome, score, lives, maxLives, bestStreak, misses, hits,
-hintsUsed, elapsedMs`. Keep it pure. Hints never lower stars: the stamp tells that story.
+hintsUsed, elapsedMs` (and `recap`, below). Keep it pure. Hints never lower stars: the stamp tells that story.
+
+Two optional fields, added in G2 (games without them render exactly as before):
+
+- **`recap`**: up to 3 `{ title, text }` "Ce ai învățat" items on the results screen, usually built
+  from the player's most-missed items and their explanation sentences. DOM games call
+  `session.setRecap(items)` or `session.finish(outcome, items)`; Phaser scenes emit
+  `this.emit('recap', { items })` or `this.emit('finished', { outcome, recap })`. A run can end
+  inside `loseLife()`, so a game that can lose on lives keeps the recap current *before* each
+  `life-lost` (Poarta membranei emits `recap` right before `life-lost`).
+- **`howTo`**: `() => import('./HowTo')`, an animated "Cum se joacă" shown full width on the intro
+  screen instead of the plain instruction list. DOM only, no Phaser; preloaded with the game. The
+  instructions still appear in the HUD's help dialog.
 
 ## Session API
 
@@ -97,7 +110,8 @@ hintsUsed, elapsedMs`. Keep it pure. Hints never lower stars: the stamp tells th
 | `session.addScore(base, at?)` | bonus points × multiplier, streak untouched |
 | `session.useHint()` | counts a hint; the result becomes "Completat cu ajutor" |
 | `session.nearWin()` | one near-win reaction line per run |
-| `session.finish('won' \| 'lost')` | ends the run → results screen, progress saved |
+| `session.finish('won' \| 'lost', recap?)` | ends the run → results screen, progress saved |
+| `session.setRecap(items)` | "Ce ai învățat" items for the results screen (max 3) |
 | `session.pause()` / `resume()` / `restart()` / `reset()` | normally the shell's job |
 
 `at` is a viewport point (`clientX/clientY`, or an element's rect centre); DOM games get a
@@ -153,6 +167,36 @@ linear, no default easing. In Phaser, which has no springs, use `Back.Out` / `El
 - Hit areas at least 44 CSS px at a 375 px viewport (design size × scale; see `drift/config.ts`).
 - Dev only: `window.__phaserGame` is the running game, for audits and the console.
 
+## Poarta membranei: the pattern for G3–G6
+
+`src/games/celula/poarta-membranei/`: two registry entries (`poarta-membranei`,
+`poarta-membranei-avansat`) sharing one component with a `mode` prop.
+
+- **Content is data.** The biology is `src/content/ro/membrane-molecules.ts` (one entry per situation,
+  with a route and one explanation sentence per mode). It is checked by a data-driven unit test
+  (`membrane-molecules.test.ts`) that encodes the rules, e.g. the pump is always against the gradient.
+  Copy lives in `src/content/ro/games/<id>.js`, marked `// REVIEW`.
+- **Models are pure and tested.** `osmosisModel.ts` has no Phaser; `npm test` checks direction,
+  equilibrium and bounds. All tuning (waves, speeds, ATP, osmosis events) is in `config.ts`.
+- **Procedural art that isn't a living thing** (molecules, the bilayer, membrane proteins, cues,
+  formula chips) is drawn with Canvas 2D in `art.ts` and baked into Phaser textures once, at device
+  resolution. The intro's `HowTo.tsx` draws the same functions on DOM canvases, so both show the real
+  visuals. Cells and organelles still come from the manifest.
+- **Text sits in the DOM, over the canvas.** Gate names, key hints, banners and gauge labels are an
+  `aria-hidden` overlay positioned in % of the design size, so they stay crisp and legible at 375 px.
+  Explanations, notices and DOM controls sit in a strip under the canvas, with their own `LiveRegion`.
+- **A game link** (`link.ts`) carries what only this game shows (selection, explanations, osmosis
+  readouts, hint and control requests from DOM buttons). The scene gets it through a class factory
+  (`membraneScenes(mode, link)`), so there are no globals. Shell events still go through the bus.
+- **Formulas**: store real subscripts (`O₂`, `Na⁺`). DM Mono has no glyphs for them, so render with
+  `formulaRuns()` (canvas) or `<Formula>` (DOM, `<sub>`/`<sup>`).
+- **Adaptive help**: after 3 failures in a row, spawns slow down for a while and a kind line says so.
+
+## Testing
+
+`npm test` runs Vitest (`src/**/*.test.ts`, Node environment): pure models, data rules, the session.
+It also runs in `prebuild`.
+
 ## Assets: rules and pipeline
 
 **No placeholder art.** No coloured rectangles standing in for sprites, no organisms or cells
@@ -169,7 +213,8 @@ Adding an asset:
 3. Add an entry to `src/assets/manifest.ts`: `id`, `file`, `kind`, `title` (Romanian),
    `sourceName`, `sourceUrl` (the item page), `author`, `license`, `attributionRequired`,
    `modifications` (Romanian, shown on /credite), `raw`, and for SVGs `color: 'palette' | 'mono'`
-   (`dropBackground` if the export has an artboard rectangle). Sounds need an `event`.
+   (`dropBackground` if the export has an artboard rectangle; `hue: 'eosin'` etc. snaps every colour
+   into one stain family, so several states of one object stay the same colour). Sounds need an `event`.
 4. `npm run assets:clean -- <id>` (needs Chromium for bbox cropping and ffmpeg for audio; set
    `CHROMIUM_PATH` / `FFMPEG_PATH`). It runs SVGO, inlines styles, crops and squares the viewBox,
    and snaps every colour to the stain palette (`palette`) or to `currentColor` (`mono`). Audio

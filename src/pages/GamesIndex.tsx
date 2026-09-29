@@ -1,48 +1,26 @@
 import { TOPICS } from '../content/ro/topics';
-import { t, tp } from '../lib/i18n';
-import { useProgress } from '../lib/useProgress';
+import { useEffect } from 'react';
+import { t } from '../lib/i18n';
 import Container from '../components/primitives/Container';
 import SpecimenLabel from '../components/primitives/SpecimenLabel';
-import SpecimenCard from '../components/primitives/SpecimenCard';
 import PageMeta from '../components/layout/PageMeta';
 import Blob from '../components/primitives/Blob';
-import { GAMES, gamePath, gamesForTopic } from '../games/registry';
-import { preloadGame } from '../games/core/preload';
-import Stars from '../games/core/Stars';
-import type { GameDefinition, Stars as StarCount } from '../games/core/types';
-
-function GameCard({ game, fig }: { game: GameDefinition; fig: number }) {
-  const { game: progressOf } = useProgress();
-  const p = progressOf(game.id);
-  const intent = () => preloadGame(game);
-  return (
-    <li onPointerEnter={intent} onFocus={intent} className="flex">
-      <SpecimenCard
-        to={gamePath(game.id)}
-        fig={fig}
-        name={game.sandbox ? t('games.sandboxTag') : t('games.tag')}
-        labelTone={game.sandbox ? 'iodine' : 'methylene'}
-        title={game.title}
-        className="w-full"
-        meta={
-          <>
-            <span>{t('games.minutes', { n: game.estimatedMinutes })}</span>
-            <span>{t(`games.difficulty.${game.difficulty}`)}</span>
-            {p.plays > 0 && <span>{t('games.best', { score: p.bestScore })}</span>}
-            {p.plays > 0 && <span>{tp('games.plays', p.plays)}</span>}
-          </>
-        }
-      >
-        <p>{game.tagline}</p>
-        {p.plays > 0 && <Stars value={p.stars as StarCount} size="sm" className="mt-3" />}
-      </SpecimenCard>
-    </li>
-  );
-}
+import { GAMES, gamesForTopic } from '../games/registry';
+import GameCard from '../games/core/GameCard';
+import { preloadPhaser } from '../games/phaser/loadPhaser';
 
 /** Arcade index: every registered game, grouped by topic in programa order. */
 export default function GamesIndex() {
   const groups = TOPICS.map((topic) => ({ topic, games: gamesForTopic(topic.slug) })).filter((g) => g.games.length);
+
+  // Idle time on the arcade: fetch the Phaser chunk so the first Phaser game opens quickly
+  useEffect(() => {
+    if (!GAMES.some((game) => game.usesPhaser)) return undefined;
+    const idle = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 1200));
+    const cancel = window.cancelIdleCallback ?? window.clearTimeout;
+    const id = idle(() => preloadPhaser(), { timeout: 4000 });
+    return () => cancel(id);
+  }, []);
 
   return (
     <Container size="default" className="flex flex-col gap-12 pt-10 sm:pt-16">

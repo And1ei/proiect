@@ -147,6 +147,8 @@ const ui = {
     best: 'Record: {score}',
     plays: { one: 'Jucat o dată', few: 'Jucat de {n} ori', other: 'Jucat de {n} de ori' },
     stars: '{n} din 3 stele',
+    play: 'Joacă',
+    topicHeading: 'Joacă',
     shell: {
       start: 'Începe',
       howTo: 'Cum se joacă',
