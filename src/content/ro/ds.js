@@ -19,6 +19,7 @@ const ds = {
     motion: 'Mișcare',
     cursor: 'Cursor',
     focus: 'Focalizare',
+    games: 'Trusa de joc',
   },
 
   color: {
@@ -209,6 +210,49 @@ const ds = {
     button: 'Focalizează-mă',
     buttonAlt: 'Și pe mine',
     link: 'Un link în text',
+  },
+
+  games: {
+    name: 'Joc',
+    title: 'Trusa de joc',
+    intro:
+      'Piesele comune tuturor jocurilor: bara de stare, ecranul de rezultate, sprite-urile din manifest și efectele de joc. Toate vin din src/games, iar ghidul complet e în GAME-DEV.md.',
+    headings: {
+      hud: 'Bara de stare',
+      results: 'Ecranul de rezultate',
+      sprites: 'Sprite-uri din manifest',
+      feel: 'Efecte de joc',
+      sounds: 'Sunete',
+      lines: 'Replici de încurajare',
+    },
+    hudNote: 'Scor, vieți (celule, nu inimioare), timp, serie cu multiplicator și indiciile folosite.',
+    spriteNote:
+      'Același contur de cerneală și aceeași umbră de hârtie, indiferent de colecția din care vine desenul. Siluetele se colorează cu paleta; restul au culorile aliniate la paletă când sunt curățate.',
+    sizes: 'Mărimi: sm, md, lg, xl',
+    burstSuccess: 'Confetti: reușită',
+    burstStreak: 'Confetti: serie',
+    shake: 'Scutură',
+    float: 'Puncte plutitoare',
+    reducedNote: 'Cu mișcare redusă, confetti și scuturatul sunt oprite; textul, culorile și sunetul rămân.',
+    soundNote: 'Sunetul e oprit implicit. Pornește-l de aici ca să auzi efectele.',
+    another: 'Altă replică',
+    situations: { correct: 'Corect', wrong: 'Greșit', streak: 'Serie', nearWin: 'Aproape gata', finish: 'Final', tryAgain: 'Mai încearcă' },
+    events: {
+      click: 'clic',
+      correct: 'corect',
+      wrong: 'greșit',
+      streak: 'serie',
+      levelUp: 'nivel nou',
+      win: 'victorie',
+      lose: 'pierdere',
+      pop: 'pocnet',
+      whoosh: 'foșnet',
+    },
+    demo: {
+      title: 'Joc demonstrativ',
+      tagline: 'Doar pentru previzualizare.',
+      instructions: ['Previzualizare a trusei de joc.'],
+    },
   },
 };
 

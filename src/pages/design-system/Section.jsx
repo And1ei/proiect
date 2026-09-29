@@ -1,6 +1,15 @@
 import SpecimenLabel from '../../components/primitives/SpecimenLabel';
 
-/** One plate of the design-system page. */
+/**
+ * One plate of the design-system page.
+ * @param {Object} props
+ * @param {string} props.id
+ * @param {number} props.fig
+ * @param {string} props.name
+ * @param {string} props.title
+ * @param {string} [props.intro]
+ * @param {import('react').ReactNode} [props.children]
+ */
 export default function Section({ id, fig, name, title, intro, children }) {
   return (
     <section id={id} aria-labelledby={`${id}-title`} className="scroll-mt-8 border-t border-dashed border-ink-faint pt-10">

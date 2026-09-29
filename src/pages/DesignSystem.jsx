@@ -14,11 +14,12 @@ import AnnotationSection from './design-system/AnnotationSection';
 import MotionSection from './design-system/MotionSection';
 import CursorSection from './design-system/CursorSection';
 import FocusSection from './design-system/FocusSection';
+import GamesKitSection from './design-system/GamesKitSection';
 
 // This page's strings live outside ui.js so they never reach the production bundle
 addStrings('ds', ds);
 
-const PLATES = ['color', 'type', 'surface', 'buttons', 'cards', 'annotation', 'motion', 'cursor', 'focus'];
+const PLATES = ['color', 'type', 'surface', 'buttons', 'cards', 'annotation', 'motion', 'cursor', 'focus', 'games'];
 
 // Temporary review page. Remove or hide before launch.
 export default function DesignSystem() {
@@ -67,6 +68,7 @@ export default function DesignSystem() {
       <MotionSection />
       <CursorSection />
       <FocusSection />
+      <GamesKitSection />
     </Container>
   );
 }
