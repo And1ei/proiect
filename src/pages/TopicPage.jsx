@@ -1,5 +1,5 @@
 import { useMemo, useRef } from 'react';
-import { getTopic, neighbors, sectionIdsOf, UNITS } from '../content/ro/topics';
+import { getTopic, isPublished, neighbors, sectionIdsOf, UNITS } from '../content/ro/topics';
 import { t } from '../lib/i18n';
 import { useProgress } from '../lib/useProgress';
 import Container from '../components/primitives/Container';
@@ -12,6 +12,7 @@ import TopicNav from '../components/topic/TopicNav';
 import BacQuiz from '../components/quiz/BacQuiz';
 import { useSectionTracking } from '../components/topic/useSectionTracking';
 import NotFound from './NotFound';
+import TopicComingSoon from './TopicComingSoon';
 
 /**
  * Lesson template. From 1024px: section index | reading column (40rem, about 65 characters of text) | margin notes.
@@ -25,6 +26,7 @@ export default function TopicPage({ slug }) {
   const { topic: progressOf } = useProgress();
 
   if (!topic) return <NotFound />;
+  if (!isPublished(topic)) return <TopicComingSoon topic={topic} />;
   const progress = progressOf(slug);
   const unit = UNITS.find((u) => u.id === topic.unit);
   const { prev, next } = neighbors(slug);

@@ -3,7 +3,7 @@
 import { readdirSync } from 'node:fs';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { dirname, join } from 'node:path';
-import { TOPIC_SLUGS, UNITS } from '../src/content/ro/topics/registry.js';
+import { TOPIC_STUBS, TOPIC_SLUGS, TOPIC_STATUSES, UNITS } from '../src/content/ro/topics/registry.js';
 import glossary from '../src/content/ro/glossary.js';
 import { FIGURES } from '../src/content/ro/figures.js';
 import { INTERACTIVE_TYPES } from '../src/interactives/types.js';
@@ -52,14 +52,29 @@ for (const [i, g] of glossary.entries()) {
 }
 checkText('glossary', glossary);
 
-// ── Lessons ──
+// ── Registry stubs ──
 const owners = new Map();
 const usedIds = new Set();
 const unitIds = new Set(UNITS.map((u) => u.id));
 const files = readdirSync(topicsDir).filter((f) => f.endsWith('.js') && !['index.js', 'registry.js'].includes(f));
 for (const f of files) if (!TOPIC_SLUGS.includes(f.replace(/\.js$/, ''))) warn(f, 'file exists but is not in registry.js');
+if (new Set(TOPIC_SLUGS).size !== TOPIC_SLUGS.length) fail('registry', 'duplicate slug');
 
-for (const slug of TOPIC_SLUGS) {
+for (const stub of TOPIC_STUBS) {
+  const where = `registry.${stub.slug}`;
+  if (!isStr(stub.slug) || !/^[a-z0-9-]+$/.test(stub.slug)) fail(where, 'slug must be lowercase ASCII with hyphens');
+  for (const key of ['title', 'summary']) if (!isStr(stub[key])) fail(where, `missing ${key}`);
+  if (!unitIds.has(stub.unit)) fail(where, `unknown unit ${stub.unit}`);
+  if (!Number.isInteger(stub.order)) fail(where, 'missing order');
+  if (!Number.isInteger(stub.fig?.number) || !isStr(stub.fig?.label)) fail(where, 'fig needs { number, label }');
+  if (!TOPIC_STATUSES.includes(stub.status)) fail(where, `status must be one of ${TOPIC_STATUSES.join(', ')}`);
+  checkText(where, stub);
+}
+
+// ── Published lessons (full rules) ──
+for (const stub of TOPIC_STUBS) {
+  const slug = stub.slug;
+  if (!files.includes(`${slug}.js`)) continue;
   const where = slug;
   let topic;
   try {
@@ -68,6 +83,7 @@ for (const slug of TOPIC_SLUGS) {
     fail(where, `cannot load file: ${e.message}`);
     continue;
   }
+  if (topic.status !== 'published') fail(where, "a lesson file must set status: 'published'");
 
   for (const key of ['slug', 'title', 'summary', 'grade']) if (!isStr(topic[key])) fail(where, `missing ${key}`);
   if (topic.slug !== slug) fail(where, `slug "${topic.slug}" does not match file name`);
@@ -116,8 +132,9 @@ for (const slug of TOPIC_SLUGS) {
       for (const [, text] of strings(b, bw)) termIdsIn(text).forEach((id) => referenced.add(id));
     }
   }
-  if (interactiveBlocks !== 1) fail(where, `needs exactly one interactive block (has ${interactiveBlocks})`);
-  if (!INTERACTIVE_TYPES.includes(topic.interactive?.type)) fail(where, `interactive.type must be one of ${INTERACTIVE_TYPES.join(', ')}`);
+  if (interactiveBlocks > 1) fail(where, `at most one interactive block (has ${interactiveBlocks})`);
+  if (interactiveBlocks === 1 && !INTERACTIVE_TYPES.includes(topic.interactive?.type))
+    fail(where, `interactive.type must be one of: ${INTERACTIVE_TYPES.join(', ') || '(none registered)'}`);
   if (notes.retine < 2 || notes.retine > 3) fail(where, `needs 2 to 3 "retine" notes (has ${notes.retine})`);
   if (notes.stiai > 1) fail(where, `at most one "stiai" note (has ${notes.stiai})`);
   for (const id of gids) if (!referenced.has(id)) warn(where, `owns "${id}" but never marks it with [[${id}]]`);
@@ -168,5 +185,5 @@ for (const g of glossary) if (!usedIds.has(g.id)) warn(`glossary.${g.id}`, 'neve
 
 for (const w of warnings) console.warn(`warn  ${w}`);
 for (const e of errors) console.error(`FAIL  ${e}`);
-console.log(`\ncheck-content: ${TOPIC_SLUGS.length} lessons, ${glossary.length} glossary terms, ${errors.length} error(s), ${warnings.length} warning(s)`);
+console.log(`\ncheck-content: ${TOPIC_SLUGS.length} topics (${files.length} published), ${glossary.length} glossary terms, ${errors.length} error(s), ${warnings.length} warning(s)`);
 process.exitCode = errors.length ? 1 : 0;

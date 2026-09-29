@@ -10,8 +10,8 @@ import PageFrame from './PageFrame';
 function buildUsage() {
   const usage = new Map(glossary.map((g) => [g.id, new Set()]));
   for (const topic of TOPICS) {
-    topic.glossaryIds.forEach((id) => usage.get(id)?.add(topic.slug));
-    const text = JSON.stringify(topic.sections);
+    (topic.glossaryIds ?? []).forEach((id) => usage.get(id)?.add(topic.slug));
+    const text = JSON.stringify(topic.sections ?? []);
     termIdsIn(text).forEach((id) => usage.get(id)?.add(topic.slug));
   }
   return usage;
@@ -66,7 +66,9 @@ export default function Glossary() {
         </p>
       </div>
 
-      {results.length === 0 ? (
+      {ENTRIES.length === 0 ? (
+        <p className="prose-body">{t('glossary.none')}</p>
+      ) : results.length === 0 ? (
         <p className="prose-body">{t('glossary.empty', { query: quote(query.trim()) })}</p>
       ) : (
         <dl className="flex w-full flex-col">

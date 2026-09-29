@@ -1,18 +1,63 @@
-// Lesson registry. To add a lesson: create ./<slug>.js and add its slug below. That's all;
-// nav, routes, the table of contents and the content check all read from this list.
+// Topic registry: the only list you edit to add or reorder topics. Nav, routes, the table of
+// contents and the content check all read from it.
 //
-// Reserved, not built yet: 'tiroida-feedback' ("Tiroida și feedbackul hormonal",
-// FIG. 06 / ENDOCRIN). Its file should use unit 1 and order 6.
+// Every topic starts as a stub (status 'coming-soon'): its page shows an "În curând" state.
+// To publish one, create ./<slug>.js following ../schema.js; its fields are merged over the
+// stub and it must set status: 'published'.
+//
+// Order follows the five content domains of the 2026 programa for Biologie, clasa a IX-a.
 
-export const TOPIC_SLUGS = [
-  'neuron-arc-reflex',
-  'inima-circulatia',
-  'ventilatia-pulmonara',
-  'adn-proteine',
-  'mendel',
+export const UNITS = [{ id: 1, title: 'Domenii de conținut', grade: 'a IX-a' }];
+
+/** @type {import('../schema.js').TopicStub[]} */
+export const TOPIC_STUBS = [
+  {
+    slug: 'celula',
+    unit: 1,
+    order: 1,
+    fig: { number: 1, label: 'Celula' },
+    title: 'Celula și moleculele vieții',
+    summary: 'Din ce este făcută o celulă și ce molecule o țin în viață.',
+    status: 'coming-soon',
+  },
+  {
+    slug: 'ecosisteme',
+    unit: 1,
+    order: 2,
+    fig: { number: 2, label: 'Ecosisteme' },
+    title: 'Niveluri de organizare și ecosisteme',
+    summary: 'De la celulă la biosferă și relațiile dintre viețuitoarele unui ecosistem.',
+    status: 'coming-soon',
+  },
+  {
+    slug: 'diversitatea-vietii',
+    unit: 1,
+    order: 3,
+    fig: { number: 3, label: 'Diversitate' },
+    title: 'Diversitatea și clasificarea lumii vii',
+    summary: 'Cum grupăm organismele și după ce criterii le clasificăm.',
+    status: 'coming-soon',
+  },
+  {
+    slug: 'impactul-uman',
+    unit: 1,
+    order: 4,
+    fig: { number: 4, label: 'Impact' },
+    title: 'Impactul activităților umane asupra ecosistemelor',
+    summary: 'Cum schimbă activitățile oamenilor ecosistemele din jur.',
+    status: 'coming-soon',
+  },
+  {
+    slug: 'laboratorul',
+    unit: 1,
+    order: 5,
+    fig: { number: 5, label: 'Laborator' },
+    title: 'Știința ca proces: experimentul',
+    summary: 'Cum pui o întrebare, formulezi o ipoteză și proiectezi un experiment.',
+    status: 'coming-soon',
+  },
 ];
 
-export const UNITS = [
-  { id: 1, title: 'Organismul uman', grade: 'a XI-a' },
-  { id: 2, title: 'Genetică', grade: 'a XII-a' },
-];
+export const TOPIC_SLUGS = TOPIC_STUBS.map((t) => t.slug);
+
+export const TOPIC_STATUSES = ['coming-soon', 'published'];

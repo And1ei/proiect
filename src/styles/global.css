@@ -150,51 +150,6 @@
     box-shadow: 0 0 0 3px var(--iodine-deep);
   }
 
-  /* Clickable figure parts (heart): outline shows focus and traced state; <g> can't draw an outline */
-  .heart-part:focus {
-    outline: none;
-  }
-
-  .heart-part:focus-visible .shape {
-    stroke: var(--focus);
-    stroke-width: 3.5;
-  }
-
-  .heart-part[data-lit] .shape {
-    stroke: var(--iodine-deep);
-  }
-
-  /* Vessels keep their thick ink underlay; only its colour changes */
-  .heart-part:focus-visible .tube {
-    stroke: var(--focus);
-  }
-
-  .heart-part[data-lit] .tube {
-    stroke: var(--iodine-deep);
-  }
-
-  .heart-part:hover .shape {
-    stroke-width: 2.5;
-  }
-
-  /* Clickable graph bands (ventilation) */
-  .band:focus,
-  [role='button']:has(> .bracket):focus {
-    outline: none;
-  }
-
-  .band:hover,
-  .band:focus-visible {
-    stroke: var(--focus);
-    stroke-width: 2.5;
-  }
-
-  [role='button']:focus-visible > .bracket,
-  [role='button']:hover > .bracket {
-    stroke: var(--focus);
-    stroke-width: 3;
-  }
-
   /* Lesson reading column */
   .lesson p,
   .lesson li {

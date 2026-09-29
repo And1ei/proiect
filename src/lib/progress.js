@@ -1,36 +1,70 @@
-// Reading progress, kept only in this browser. No accounts, no network, no cookies.
-// Shape: { v: 1, topics: { [slug]: { sectionsRead: string[], quizBest: { score, total } | null, completed: boolean,
-//          interactive: { completed: true, assisted: boolean } | null } }, settings: { sound: boolean } }
+// Progress, kept only in this browser. No accounts, no network, no cookies.
+// Shape (v2):
+//   { v: 2,
+//     topics:   { [slug]: { sectionsRead: string[], quizBest: { score, total } | null, completed: boolean } },
+//     games:    { [gameId]: { bestScore: number, stars: 0-3, plays: number, usedHelp: boolean } },
+//     settings: { sound: boolean } }
 // Every storage access is wrapped: if storage is blocked, progress lives in memory for this visit.
+// Old or broken data never throws: it is migrated, sanitised, or dropped.
 
-const KEY = 'soft-educational:v1';
-const VERSION = 1;
+import { TOPIC_SLUGS } from '../content/ro/topics/registry.js';
+
+const KEY = 'soft-educational:v1'; // key name kept from v1 so migration can find old data
+const VERSION = 2;
 const DEFAULT_SETTINGS = Object.freeze({ sound: false });
-const empty = () => ({ v: VERSION, topics: {}, settings: { ...DEFAULT_SETTINGS } });
-export const EMPTY_TOPIC = Object.freeze({ sectionsRead: [], quizBest: null, completed: false, interactive: null });
+const empty = () => ({ v: VERSION, topics: {}, games: {}, settings: { ...DEFAULT_SETTINGS } });
+export const EMPTY_TOPIC = Object.freeze({ sectionsRead: [], quizBest: null, completed: false });
+export const EMPTY_GAME = Object.freeze({ bestScore: 0, stars: 0, plays: 0, usedHelp: false });
 
 let state = null;
 let blocked = false;
 const listeners = new Set();
 
+const isObj = (v) => Boolean(v) && typeof v === 'object' && !Array.isArray(v);
+const count = (v) => (Number.isFinite(v) && v >= 0 ? Math.floor(v) : 0);
+
 function sanitizeTopic(raw) {
-  if (!raw || typeof raw !== 'object') return { ...EMPTY_TOPIC };
+  if (!isObj(raw)) return { ...EMPTY_TOPIC };
   const sectionsRead = Array.isArray(raw.sectionsRead) ? raw.sectionsRead.filter((s) => typeof s === 'string') : [];
   const q = raw.quizBest;
   const quizBest =
     q && Number.isInteger(q.score) && Number.isInteger(q.total) && q.total > 0 ? { score: q.score, total: q.total } : null;
-  const i = raw.interactive;
-  const interactive = i && i.completed === true ? { completed: true, assisted: i.assisted === true } : null;
-  return { sectionsRead: [...new Set(sectionsRead)], quizBest, completed: raw.completed === true, interactive };
+  return { sectionsRead: [...new Set(sectionsRead)], quizBest, completed: raw.completed === true };
 }
 
-// Unknown versions or broken JSON start fresh; add migrations here when VERSION changes
-function sanitize(raw) {
-  if (!raw || typeof raw !== 'object' || raw.v !== VERSION || !raw.topics || typeof raw.topics !== 'object') return empty();
+function sanitizeGame(raw) {
+  if (!isObj(raw)) return { ...EMPTY_GAME };
+  return {
+    bestScore: count(raw.bestScore),
+    stars: Math.min(3, count(raw.stars)),
+    plays: count(raw.plays),
+    usedHelp: raw.usedHelp === true,
+  };
+}
+
+// v1 (grades XI–XII) → v2: every v1 topic slug is gone from the registry, so topics drop out in
+// sanitize(); the per-topic `interactive` field no longer exists. Only the sound setting survives.
+const MIGRATIONS = {
+  1: (raw) => ({ v: 2, topics: raw.topics, games: {}, settings: raw.settings }),
+};
+
+function migrate(raw) {
+  let data = raw;
+  while (isObj(data) && data.v !== VERSION && MIGRATIONS[data.v]) data = MIGRATIONS[data.v](data);
+  return data;
+}
+
+// Unknown versions or broken JSON start fresh. Unknown topic slugs are dropped.
+function sanitize(input) {
+  const raw = migrate(input);
+  if (!isObj(raw) || raw.v !== VERSION) return empty();
   const topics = {};
-  for (const [slug, t] of Object.entries(raw.topics)) topics[slug] = sanitizeTopic(t);
+  if (isObj(raw.topics))
+    for (const [slug, t] of Object.entries(raw.topics)) if (TOPIC_SLUGS.includes(slug)) topics[slug] = sanitizeTopic(t);
+  const games = {};
+  if (isObj(raw.games)) for (const [id, g] of Object.entries(raw.games)) games[id] = sanitizeGame(g);
   // Sound is opt-in: anything but an explicit true stays muted
-  return { v: VERSION, topics, settings: { sound: raw.settings?.sound === true } };
+  return { v: VERSION, topics, games, settings: { sound: raw.settings?.sound === true } };
 }
 
 function load() {
@@ -39,8 +73,18 @@ function load() {
     blocked = false;
     return raw ? sanitize(JSON.parse(raw)) : empty();
   } catch {
-    blocked = true;
+    // Blocked storage, or JSON so broken it can't be parsed: start fresh either way
+    blocked = !canUseStorage();
     return empty();
+  }
+}
+
+function canUseStorage() {
+  try {
+    window.localStorage.getItem(KEY);
+    return true;
+  } catch {
+    return false;
   }
 }
 
@@ -104,13 +148,6 @@ export const progressStore = {
     );
   },
 
-  // Best result wins: once completed without hints, a later assisted run doesn't downgrade it
-  saveInteractive(slug, assisted, sectionIds) {
-    updateTopic(slug, sectionIds, (t) =>
-      t.interactive && !t.interactive.assisted ? {} : { interactive: { completed: true, assisted: t.interactive ? t.interactive.assisted && assisted : assisted } },
-    );
-  },
-
   setSetting(key, value) {
     const current = get();
     commit({ ...current, settings: { ...current.settings, [key]: value } });
@@ -128,3 +165,6 @@ export const progressStore = {
     listeners.forEach((l) => l());
   },
 };
+
+// Exported for tests and the migration check script only
+export const __test = { sanitize, KEY, VERSION };

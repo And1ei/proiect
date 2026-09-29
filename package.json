@@ -5,15 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node scripts/check-ro.mjs && node scripts/check-content.mjs",
+    "prebuild": "node scripts/check-ro.mjs && node scripts/check-content.mjs && node scripts/check-progress.mjs && tsc --noEmit",
     "build": "vite build",
     "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
     "check:ro": "node scripts/check-ro.mjs",
-    "audit:ds": "node scripts/audit-ds.mjs",
-    "audit:ro": "node scripts/audit-ro.mjs",
     "check:content": "node scripts/check-content.mjs",
-    "audit:content": "node scripts/audit-content.mjs",
-    "audit:interactives": "node scripts/audit-interactives.mjs"
+    "check:progress": "node scripts/check-progress.mjs",
+    "audit:ds": "node scripts/audit-ds.mjs",
+    "audit:ro": "node scripts/audit-ro.mjs"
   },
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.3.0",
@@ -25,11 +25,14 @@
     "react-router-dom": "^7.18.4"
   },
   "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "^6.1.1",
     "autoprefixer": "^10.6.1",
     "playwright-core": "^1.63.0",
     "postcss": "^8.5.28",
     "tailwindcss": "^3.4.19",
+    "typescript": "7.0.2",
     "vite": "^8.3.1"
   }
 }

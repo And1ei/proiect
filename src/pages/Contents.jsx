@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { TOPICS, TOPICS_BY_UNIT, topicPath, sectionIdsOf } from '../content/ro/topics';
+import { TOPICS, TOPICS_BY_UNIT, topicPath, sectionIdsOf, isPublished } from '../content/ro/topics';
 import { t } from '../lib/i18n';
 import { useProgress } from '../lib/useProgress';
 import Container from '../components/primitives/Container';
@@ -9,6 +9,7 @@ import ProgressStamp from '../components/topic/ProgressStamp';
 import ResetProgress from '../components/topic/ResetProgress';
 
 function LessonRow({ topic, progress }) {
+  const published = isPublished(topic);
   const total = sectionIdsOf(topic).length;
   const read = progress.sectionsRead.filter((id) => sectionIdsOf(topic).includes(id)).length;
   return (
@@ -28,7 +29,7 @@ function LessonRow({ topic, progress }) {
           <span className="prose-body text--1 sm:text-0">{topic.summary}</span>
         </span>
         <span className="text-label flex flex-row flex-wrap gap-x-4 gap-y-1 text-ink-soft sm:flex-col sm:items-end sm:text-right">
-          <span>{t('common.readMinutes', { n: topic.readMinutes })}</span>
+          <span>{published ? t('common.readMinutes', { n: topic.readMinutes }) : t('common.comingSoon')}</span>
           {read > 0 && <span>{t('contents.sectionsRead', { read, total })}</span>}
           {progress.quizBest && <span>{t('contents.bestScore', progress.quizBest)}</span>}
         </span>

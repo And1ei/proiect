@@ -10,7 +10,7 @@ const executablePath =
   process.env.CHROMIUM_PATH ?? path.join(os.homedir(), 'AppData/Local/Chromium/Application/chrome.exe');
 
 const ROUTES = [
-  '/', '/neuron-arc-reflex', '/inima-circulatia', '/ventilatia-pulmonara', '/adn-proteine', '/mendel',
+  '/', '/celula', '/ecosisteme', '/diversitatea-vietii', '/impactul-uman', '/laboratorul', '/jocuri',
   '/dictionar', '/despre', '/credite', '/sistem-de-design', '/pagina-care-nu-exista', '/__eroare',
 ];
 
@@ -19,7 +19,7 @@ const ALLOW = [
   'Soft Educational', 'Undercase Type', 'Instrument Sans', 'Instrument', 'Colophon Foundry', 'DM Mono', 'Fraunces',
   'React Router', 'React', 'Tailwind CSS', 'Vite', 'Motion', 'SIL Open Font', 'MIT',
   'BlobButton', 'SpecimenCard', 'SpecimenLabel', 'HandUnderline', 'HandArrow', 'springSettle', 'spring',
-  'SOFT', 'WONK', 'Allium cepa', 'Pisum sativum', 'Watson', 'Crick', 'Punnett', 'Ranvier', 'Pavlov', 'H&E', 'WCAG AA', 'WCAG', 'latin-ext', 'JavaScript', 'SVG', 'Tab', 'Lugol', 'ATP', 'ARN', 'ADN', 'NaCl',
+  'SOFT', 'WONK', 'H&E', 'WCAG AA', 'WCAG', 'latin-ext', 'JavaScript', 'SVG', 'Tab', 'Lugol', 'ATP', 'ARN', 'ADN', 'NaCl',
 ];
 // Common English UI words; none are Romanian words
 const ENGLISH = new Set(

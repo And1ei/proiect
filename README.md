@@ -1,7 +1,7 @@
 # Soft Educational
 
-An interactive biology notebook for Romanian high school students (Bacalaureat, grades XI–XII).
-React + Vite, Tailwind CSS, Motion, React Router.
+An interactive biology notebook and game collection for Romanian high school students (Biologie, clasa a IX-a).
+React + Vite, Tailwind CSS, Motion, React Router. New code is TypeScript (`allowJs`: the older app code stays JS).
 
 ## Setup
 

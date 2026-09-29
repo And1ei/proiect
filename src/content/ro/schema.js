@@ -3,20 +3,35 @@
 // glossary term itself. See ./markup.js.
 
 /**
- * @typedef {Object} Topic
- * @property {string} slug            URL segment, also the file name in ./topics
+ * @typedef {'coming-soon' | 'published'} TopicStatus
+ *
+ * @typedef {Object} TopicStub        One entry in ./topics/registry.js
+ * @property {string} slug            URL segment, also the file name in ./topics once published
  * @property {number} unit            Unit id from ./topics/registry.js
  * @property {number} order           Position in the curriculum (nav order)
- * @property {{ number: number, label: string }} fig  Specimen tag, e.g. { number: 1, label: 'Nervos' }
+ * @property {{ number: number, label: string }} fig  Specimen tag, e.g. { number: 1, label: 'Celula' }
  * @property {string} title
- * @property {string} summary         One or two sentences, also used as meta description
- * @property {string} grade           e.g. 'a XI-a'
+ * @property {string} summary         One-line description, also used as meta description
+ * @property {TopicStatus} status     'coming-soon' renders the "În curând" page
+ */
+
+/**
+ * A published lesson: the stub fields plus everything below, from ./topics/<slug>.js.
+ * @typedef {Object} Topic
+ * @property {string} slug
+ * @property {number} unit
+ * @property {number} order
+ * @property {{ number: number, label: string }} fig
+ * @property {string} title
+ * @property {string} summary
+ * @property {'published'} status
+ * @property {string} grade           e.g. 'a IX-a'
  * @property {number} readMinutes     4 to 6
  * @property {string[]} objectives    Exactly 3, each starting with a verb
  * @property {Section[]} sections     4 to 6
  * @property {string[]} glossaryIds   4 to 8 ids this lesson owns; unique across lessons
  * @property {QuizItem[]} quiz        Exactly 5: 2 grila, 2 af, 1 completare
- * @property {{ type: InteractiveType, config: Object }} interactive
+ * @property {{ type: InteractiveType, config: Object }} [interactive]  Only with an interactive block
  * @property {boolean} reviewed       Set to true only after a subject-matter review
  */
 
@@ -38,7 +53,7 @@
  */
 
 /**
- * @typedef {'punnett' | 'decoder' | 'heart' | 'reflexArc' | 'ventilation'} InteractiveType
+ * @typedef {string} InteractiveType  One of INTERACTIVE_TYPES in src/interactives/types.js (none registered yet)
  */
 
 /**

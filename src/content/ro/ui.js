@@ -14,8 +14,7 @@ const ui = {
 
   meta: {
     title: 'Soft Educational · Biologie de liceu, pe care o poți atinge.',
-    description:
-      'Un caiet de biologie interactiv pentru Bacalaureat: sistemul nervos, inima, respirația, ADN-ul și legile lui Mendel, explicate pe înțeles.',
+    description: 'Biologie · clasa a IX-a. Un caiet de biologie interactiv.',
     titleTemplate: '{page} · Soft Educational',
     noscript:
       'Soft Educational are nevoie de JavaScript ca să funcționeze. Activează-l în browser și reîncarcă pagina.',
@@ -32,6 +31,7 @@ const ui = {
     grade: 'Clasa {grade}',
     unit: 'Unitatea {n}',
     lessonNumber: 'Lecția {n}',
+    comingSoon: 'În curând',
   },
 
   specimen: {
@@ -67,8 +67,7 @@ const ui = {
     title: 'Cuprins',
     label: 'Cuprins',
     heading: 'Cuprins',
-    intro:
-      'Cinci lecții pentru Bacalaureat, în ordinea din programă. Le poți citi pe rând sau poți sări direct la cea de care ai nevoie.',
+    intro: 'Biologie · clasa a IX-a. Cinci teme, în ordinea din programă.',
     sectionsRead: '{read} din {total} secțiuni citite',
     bestScore: 'Test: {score} din {total}',
   },
@@ -80,7 +79,7 @@ const ui = {
     blocked:
       'Browserul nu permite salvarea datelor locale. Lecțiile funcționează, dar progresul se pierde la reîncărcare.',
     reset: 'Șterge progresul',
-    confirm: 'Sigur? Se șterg secțiunile citite și scorurile de la toate testele.',
+    confirm: 'Sigur? Se șterg secțiunile citite, scorurile de la teste și rezultatele de la jocuri.',
     confirmYes: 'Da, șterge',
     confirmNo: 'Anulează',
     cleared: 'Progresul a fost șters.',
@@ -95,8 +94,11 @@ const ui = {
     next: 'Lecția următoare',
     lessonsNav: 'Alte lecții',
     quizHeading: 'Verifică-te',
-    quizIntro: 'Cinci întrebări în stilul Subiectului I de la Bacalaureat.',
+    quizIntro: 'Câteva întrebări, ca să verifici ce ai reținut.',
     notes: { retine: 'Reține', stiai: 'Știai că?' },
+    stubHeading: 'În curând',
+    stubBody: 'Tema aceasta este în pregătire.',
+    stubBack: 'Înapoi la cuprins',
   },
 
   term: {
@@ -111,13 +113,7 @@ const ui = {
     label: 'Interactiv',
     pending: 'În lucru',
     placeholder: 'Aici va apărea exercițiul interactiv al lecției „{topic}”.',
-    types: {
-      punnett: 'Constructor de pătrate Punnett',
-      decoder: 'Decodor ADN',
-      heart: 'Inima în mișcare',
-      reflexArc: 'Arcul reflex, pas cu pas',
-      ventilation: 'Mecanica ventilației',
-    },
+    types: {},
   },
 
   game: {
@@ -171,6 +167,7 @@ const ui = {
     searchPlaceholder: 'de exemplu: sinapsa',
     count: { one: '{n} termen', few: '{n} termeni', other: '{n} de termeni' },
     empty: 'Niciun termen nu se potrivește cu {query}.',
+    none: 'Dicționarul se completează odată cu lecțiile.',
     usedIn: 'Apare în',
     seeAlso: 'Vezi și',
   },
@@ -203,8 +200,7 @@ const ui = {
     figuresHeading: 'Figuri',
     figures: 'Toate figurile sunt desenate special pentru acest site. Nu reproducem imagini din manuale.',
     sourcesHeading: 'Conținut',
-    sources:
-      'Lecțiile urmează programa de Bacalaureat „Anatomie și fiziologie umană, genetică și ecologie umană”, pentru clasele a XI-a și a XII-a. Textele sunt originale și sunt încă în curs de verificare.',
+    sources: 'Temele urmează programa de biologie pentru clasa a IX-a. Textele sunt originale și sunt încă în pregătire.',
   },
 
   notFound: {
