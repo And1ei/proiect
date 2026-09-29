@@ -18,6 +18,21 @@ const tones = {
  * A mounted specimen: tag, title, body, optional "slide" window for a visual.
  * Becomes a single link target when given `to`; the whole card squashes on press.
  */
+/**
+ * @param {Object} props
+ * @param {number} [props.fig]
+ * @param {string} [props.name]
+ * @param {import('react').ReactNode} [props.title]
+ * @param {'paper' | 'eosin' | 'methylene' | 'iodine'} [props.tone]
+ * @param {'ink' | 'eosin' | 'methylene' | 'iodine'} [props.labelTone]
+ * @param {boolean} [props.alt]
+ * @param {import('react').ReactNode} [props.slide]
+ * @param {import('react').ReactNode} [props.meta]
+ * @param {string} [props.to]
+ * @param {string} [props.headingLevel]
+ * @param {string} [props.className]
+ * @param {import('react').ReactNode} [props.children]
+ */
 export default function SpecimenCard({
   fig,
   name,

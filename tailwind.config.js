@@ -5,7 +5,7 @@
 const v = (name) => `var(--${name})`;
 
 export default {
-  content: ['./index.html', './src/**/*.{js,jsx}'],
+  content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     colors: {
       transparent: 'transparent',

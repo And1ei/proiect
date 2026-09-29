@@ -9,6 +9,8 @@ const TopicPage = lazy(() => import('./pages/TopicPage'));
 const Glossary = lazy(() => import('./pages/Glossary'));
 const About = lazy(() => import('./pages/About'));
 const Credits = lazy(() => import('./pages/Credits'));
+const GamesIndex = lazy(() => import('./pages/GamesIndex'));
+const GamePage = lazy(() => import('./pages/GamePage'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Dev-only pages. In production import.meta.env.DEV is false, so these imports are dropped from the bundle.
@@ -26,6 +28,8 @@ export default function App() {
             {TOPICS.map((topic) => (
               <Route key={topic.slug} path={topic.slug} element={<TopicPage slug={topic.slug} />} />
             ))}
+            <Route path="jocuri" element={<GamesIndex />} />
+            <Route path="joc/:gameId" element={<GamePage />} />
             <Route path="dictionar" element={<Glossary />} />
             <Route path="despre" element={<About />} />
             <Route path="credite" element={<Credits />} />

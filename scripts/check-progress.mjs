@@ -56,5 +56,22 @@ expect('v2: section ids deduped and filtered', JSON.stringify(v2.topics.celula.s
 const g = sanitize(cases[7][1]).games.b;
 expect('v2: game fields clamped', g.bestScore === 0 && g.stars === 3 && g.plays === 1 && g.usedHelp === false);
 
+// saveGame semantics, in memory (Node has no localStorage; that must not throw either)
+globalThis.window = {
+  localStorage: { getItem: () => null, setItem: () => {}, removeItem: () => {} },
+  addEventListener() {},
+  removeEventListener() {},
+};
+const { progressStore } = await import('../src/lib/progress.js');
+const saved = () => progressStore.get().games.g;
+progressStore.saveGame('g', { score: 50, stars: 2, usedHelp: true });
+progressStore.saveGame('g', { score: 30, stars: 2, usedHelp: false });
+expect('saveGame: best score kept, plays counted', saved().bestScore === 50 && saved().plays === 2);
+expect('saveGame: unassisted run with equal stars clears usedHelp', saved().usedHelp === false);
+progressStore.saveGame('g', { score: 80, stars: 1, usedHelp: true });
+expect('saveGame: a weaker assisted run keeps usedHelp false', saved().usedHelp === false && saved().bestScore === 80 && saved().stars === 2);
+progressStore.saveGame('g', { score: 10, stars: 3, usedHelp: true });
+expect('saveGame: more stars with help sets usedHelp', saved().usedHelp === true && saved().stars === 3);
+
 console.log(`\ncheck-progress: ${failures} failure(s)`);
 process.exitCode = failures ? 1 : 0;

@@ -16,6 +16,7 @@ export const LESSON_GROUPS = TOPICS_BY_UNIT.map((unit) => ({
 // Pages outside the lessons; labels come from ui.js
 export const PAGE_LINKS = [
   { to: '/', labelKey: 'nav.items.contents' },
+  { to: '/jocuri', labelKey: 'nav.items.games' },
   { to: '/dictionar', labelKey: 'nav.items.glossary' },
   { to: '/despre', labelKey: 'nav.items.about' },
   { to: '/credite', labelKey: 'nav.items.credits' },

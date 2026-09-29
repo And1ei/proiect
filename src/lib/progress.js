@@ -148,6 +148,25 @@ export const progressStore = {
     );
   },
 
+  /**
+   * Records one finished game run. Best score and stars only go up; plays always counts.
+   * usedHelp describes the best-starred run: an unassisted run with as many stars clears it, so
+   * the "completat cu ajutor" stamp stays honest without punishing a later hint.
+   */
+  saveGame(gameId, { score, stars, usedHelp }) {
+    const current = get();
+    const before = current.games[gameId] ?? EMPTY_GAME;
+    const s = Math.min(3, count(stars));
+    const after = {
+      bestScore: Math.max(before.bestScore, count(score)),
+      stars: Math.max(before.stars, s),
+      plays: before.plays + 1,
+      usedHelp:
+        before.plays === 0 || s > before.stars ? usedHelp === true : s === before.stars ? before.usedHelp && usedHelp === true : before.usedHelp,
+    };
+    commit({ ...current, games: { ...current.games, [gameId]: after } });
+  },
+
   setSetting(key, value) {
     const current = get();
     commit({ ...current, settings: { ...current.settings, [key]: value } });

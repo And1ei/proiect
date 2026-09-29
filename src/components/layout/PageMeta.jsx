@@ -7,6 +7,11 @@ function setMeta(selector, value) {
 }
 
 /** Sets the document title and description for the current route. Renders nothing. */
+/**
+ * @param {Object} props
+ * @param {string} [props.title]
+ * @param {string} [props.description]
+ */
 export default function PageMeta({ title, description }) {
   useEffect(() => {
     const fullTitle = title ? t('meta.titleTemplate', { page: title }) : t('meta.title');

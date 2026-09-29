@@ -14,6 +14,16 @@ const pad = (n) => String(n).padStart(2, '0');
  * Specimen tag, e.g. "FIG. 01 / CELL". Punched hole on the left, string-tie notch on the right.
  * Pass `fig` + `name` for the standard format, or `children` for free text.
  */
+/**
+ * @param {Object} props
+ * @param {number} [props.fig]
+ * @param {string} [props.name]
+ * @param {'ink' | 'eosin' | 'methylene' | 'iodine'} [props.tone]
+ * @param {boolean} [props.tilt]
+ * @param {string} [props.as]
+ * @param {string} [props.className]
+ * @param {import('react').ReactNode} [props.children]
+ */
 export default function SpecimenLabel({
   fig,
   name,

@@ -23,6 +23,17 @@ const fills = {
  * Decorative organic shape. `membrane` draws a phospholipid-style double outline
  * (dotted heads + thin inner line). Breathes slowly unless reduced motion is on.
  */
+/**
+ * @param {Object & Record<string, unknown>} props
+ * @param {keyof typeof BLOB_PATHS} [props.shape]
+ * @param {'eosin' | 'methylene' | 'iodine' | 'paper'} [props.tone]
+ * @param {boolean} [props.membrane]
+ * @param {boolean} [props.breathe]
+ * @param {number} [props.duration]
+ * @param {number} [props.delay]
+ * @param {string} [props.className]
+ * @param {import('react').ReactNode} [props.children]
+ */
 export default function Blob({
   shape = 'cell',
   tone = 'eosin',

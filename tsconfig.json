@@ -17,7 +17,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "types": ["vite/client"]
+    "types": ["vite/client"],
+    "paths": { "@games-sandbox": ["./src/games/sandbox/index.ts"] }
   },
   "include": ["src"]
 }

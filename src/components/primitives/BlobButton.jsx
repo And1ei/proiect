@@ -22,13 +22,29 @@ const sizes = {
 };
 
 /**
+ * @typedef {Object} BlobButtonOwnProps
+ * @property {'eosin' | 'methylene' | 'paper' | 'iodine'} [variant]
+ * @property {'sm' | 'md' | 'lg'} [size]
+ * @property {'a' | 'b' | 'c' | 'd'} [shape]
+ * @property {import('react').ReactNode} [icon]
+ * @property {boolean} [disabled]
+ * @property {string} [className]
+ * @property {import('react').ReactNode} [children]
+ * @property {string} [to]    Renders a router <Link>
+ * @property {string} [href]  Renders an <a>
+ * @typedef {BlobButtonOwnProps & Omit<import('react').ButtonHTMLAttributes<HTMLButtonElement>, keyof BlobButtonOwnProps | 'onAnimationStart' | 'onDrag' | 'onDragStart' | 'onDragEnd'>} BlobButtonProps
+ */
+
+/**
  * Tactile, asymmetric button. Renders a router <Link> when given `to`, an <a> for `href`,
  * otherwise a <button>. On hover the outline morphs to the next blob shape; on press it squashes.
  */
-const BlobButton = forwardRef(function BlobButton(
-  { variant = 'eosin', size = 'md', shape = 'a', icon, disabled, className, children, ...rest },
-  ref,
-) {
+const BlobButton = forwardRef(
+  /**
+   * @param {BlobButtonProps} props
+   * @param {import('react').ForwardedRef<any>} ref
+   */
+  function BlobButton({ variant = 'eosin', size = 'md', shape = 'a', icon, disabled, className, children, ...rest }, ref) {
   const reduce = useReducedMotion();
   const from = token(`btn-${shape}`);
   const to = token(`btn-${BLOB_SHAPES[(BLOB_SHAPES.indexOf(shape) + 1) % BLOB_SHAPES.length]}`);

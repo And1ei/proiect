@@ -3,17 +3,24 @@ import { cx } from '../../lib/cx';
 import { t } from '../../lib/i18n';
 import { spring } from '../../lib/motion';
 
-const VARIANTS = {
+export type StampVariant = 'completat' | 'cu-ajutor';
+
+const VARIANTS: Record<StampVariant, { label: string; tone: string }> = {
   completat: { label: 'progress.stamp', tone: 'text-eosin-deep' },
   // Honest, not a failure: same stamp shape, calmer ink
   'cu-ajutor': { label: 'game.stampAssisted', tone: 'text-methylene-deep' },
 };
 
-/**
- * Hand-inked stamp. variant "completat" or "cu-ajutor" (completed using a hint).
- * `stampIn` plays one press-down, for the moment something is completed on screen.
- */
-export default function SpecimenStamp({ variant = 'completat', size = 'md', stampIn = false, className }) {
+interface Props {
+  variant?: StampVariant;
+  size?: 'sm' | 'md';
+  /** Plays one press-down, for the moment something is completed on screen. */
+  stampIn?: boolean;
+  className?: string;
+}
+
+/** Hand-inked stamp: "Completat", or "Completat cu ajutor" when hints were used. */
+export default function SpecimenStamp({ variant = 'completat', size = 'md', stampIn = false, className }: Props) {
   const small = size === 'sm';
   const v = VARIANTS[variant] ?? VARIANTS.completat;
   return (
