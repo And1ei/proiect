@@ -5,6 +5,7 @@ export const laboratorul: Lesson = {
   slug: 'laboratorul',
   number: 5,
   title: 'Laboratorul: cum se face un experiment',
+  navTitle: 'Laboratorul',
   stain: 'hematoxylin',
   hook: 'Dacă semințele din ghiveciul de pe calorifer au răsărit primele, e sigur din cauza căldurii?',
   sections: [

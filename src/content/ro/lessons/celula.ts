@@ -5,6 +5,7 @@ export const celula: Lesson = {
   slug: 'celula',
   number: 1,
   title: 'Celula și moleculele vieții',
+  navTitle: 'Celula',
   stain: 'eosin',
   hook: 'De ce o hematie pusă în apă distilată se umflă până se sparge, iar în ser fiziologic rămâne întreagă?',
   sections: [

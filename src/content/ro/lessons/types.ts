@@ -36,6 +36,8 @@ export interface Lesson {
   /** Catalog number, 1–5 ("Preparat 01"). */
   number: number;
   title: string;
+  /** Short name for the navigation tabs (one or two words). */
+  navTitle: string;
   stain: Stain;
   /** One concrete question a student would wonder about. */
   hook: string;

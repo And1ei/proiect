@@ -4,7 +4,8 @@ import SpecimenLabel from '../primitives/SpecimenLabel';
 import Blob from '../primitives/Blob';
 import Wordmark from '../brand/Wordmark';
 import { t } from '../../lib/i18n';
-import { PAGE_LINKS } from './navLinks';
+import { FOOTER_LINKS } from './navLinks';
+import ResetProgress from '../topic/ResetProgress';
 import { DESIGN_SYSTEM_PATH } from '../../pages/design-system/path';
 
 const linkClass = 'text-ink-soft underline decoration-ink-faint hover:text-ink hover:decoration-eosin';
@@ -31,7 +32,7 @@ export default function Footer() {
         <div className="flex flex-col gap-5 sm:items-end">
           <nav aria-label={t('footer.label')}>
             <ul className="flex flex-wrap gap-x-6 gap-y-2 sm:justify-end">
-              {PAGE_LINKS.map(({ to, labelKey }) => (
+              {FOOTER_LINKS.map(({ to, labelKey }) => (
                 <li key={to}>
                   <Link to={to} className={linkClass}>
                     {t(labelKey)}
@@ -47,6 +48,7 @@ export default function Footer() {
               )}
             </ul>
           </nav>
+          <ResetProgress />
           <SpecimenLabel tone="ink" className="self-start sm:self-end">
             {t('footer.slideSet', { year })}
           </SpecimenLabel>

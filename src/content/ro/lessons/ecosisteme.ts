@@ -5,6 +5,7 @@ export const ecosisteme: Lesson = {
   slug: 'ecosisteme',
   number: 2,
   title: 'Niveluri de organizare și ecosisteme',
+  navTitle: 'Ecosisteme',
   stain: 'methylene',
   hook: 'Dacă dispar vulpile dintr-o pădure, de ce ajung să sufere și stejarii?',
   sections: [

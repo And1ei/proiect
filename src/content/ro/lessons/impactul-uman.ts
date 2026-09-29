@@ -5,6 +5,7 @@ export const impactulUman: Lesson = {
   slug: 'impactul-uman',
   number: 4,
   title: 'Omul și mediul',
+  navTitle: 'Omul și mediul',
   stain: 'iodine',
   hook: 'Cum ajunge îngrășământul de pe un câmp să omoare peștii dintr-o baltă aflată la câțiva kilometri?',
   sections: [

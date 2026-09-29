@@ -5,6 +5,7 @@ export const diversitateaVietii: Lesson = {
   slug: 'diversitatea-vietii',
   number: 3,
   title: 'Diversitatea lumii vii',
+  navTitle: 'Diversitatea',
   stain: 'safranin',
   hook: 'De ce are vulpea un nume latin, *Vulpes vulpes*, și la ce folosește el, dacă toată lumea îi spune „vulpe”?',
   sections: [

@@ -46,6 +46,11 @@ const ui = {
     lessons: 'Lecții',
     lessonsLabel: 'Lecțiile, pe unități',
     otherPages: 'Alte pagini',
+    topics: 'Cele cinci preparate',
+    home: 'Acasă',
+    contentsSheet: 'Cuprins',
+    backToLesson: 'Înapoi la {title}',
+    backToGames: 'Înapoi la jocuri',
     items: {
       contents: 'Cuprins',
       games: 'Jocuri',
@@ -78,7 +83,7 @@ const ui = {
     stored: 'Progresul se păstrează doar în acest browser.',
     blocked:
       'Browserul nu permite salvarea datelor locale. Lecțiile funcționează, dar progresul se pierde la reîncărcare.',
-    reset: 'Șterge progresul',
+    reset: 'Resetează progresul',
     confirm: 'Sigur? Se șterg secțiunile citite, scorurile de la teste și rezultatele de la jocuri.',
     confirmYes: 'Da, șterge',
     confirmNo: 'Anulează',
