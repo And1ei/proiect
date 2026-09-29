@@ -176,6 +176,24 @@
     background-color: currentColor;
   }
 
+  /* Echilibrul: individuals breathe a little in place (the idle-loop exception to springs, like
+     breathing() in lib/motion.js). Not rendered at all under reduced motion. */
+  .eco-bob {
+    animation: eco-bob 4s ease-in-out infinite;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  @keyframes eco-bob {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-3px);
+    }
+  }
+
   /* Lesson reading column */
   .lesson p,
   .lesson li {

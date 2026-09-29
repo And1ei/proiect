@@ -32,7 +32,7 @@ export interface ScenarioConfig {
   inventory: number[];
 }
 
-const common = { season: 0.12, noise: 0.05, extinctAt: 0.06, bloomAt: 1.6, crisisAfter: 0.5, crisisMortality: 1.4 };
+const common = { season: 0.12, noise: 0.05, extinctAt: 0.12, bloomAt: 1.6, crisisAfter: 0.5, crisisMortality: 1.4 };
 
 export const SCENARIO_CONFIG: Record<ScenarioId, ScenarioConfig> = {
   padure: {
@@ -88,7 +88,7 @@ export const SCENARIO_CONFIG: Record<ScenarioId, ScenarioConfig> = {
       { kind: 'pescuit', at: 6.3, lasts: 1.5, effect: { target: 'platica', mortality: 1.2 } },
       { kind: 'seceta', at: 8.3, lasts: 1.1, effect: { target: 'producers', k: 0.6 } },
     ],
-    abundance: { fitoplancton: 300, daphnia: 180, platica: 30, stiuca: 4, pelican: 3 },
+    abundance: { fitoplancton: 200, daphnia: 180, platica: 30, stiuca: 4, pelican: 3 },
     inventory: [5, 10],
   },
 };
@@ -115,3 +115,8 @@ export const REINTRODUCE_LEVEL = 0.35;
 export const LIVES = 3;
 export const POINTS_PER_YEAR = 20;
 export const INVENTORY_POINTS = { dominant: 30, perSpecies: 10, question: 20 };
+/** Inventar: at x = 1 the producers make up about 48% of the sample; above this the community is
+ *  lopsided toward the producers (a bloom). The balance question is computed against it. */
+export const PRODUCER_HIGH_D = 55;
+/** A typed dominance within this many percentage points counts as right (rounding). */
+export const D_TOLERANCE = 0.6;

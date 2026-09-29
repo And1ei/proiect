@@ -131,3 +131,61 @@ describe('Inventar (dominanța)', () => {
     for (const n of counts) expect(Number.isInteger(n)).toBe(true);
   });
 });
+
+describe('Inventar grading', async () => {
+  const { gradeInventory, parsePercent } = await import('./inventory.ts');
+  it('accepts a decimal comma and grades against computed values', () => {
+    expect(parsePercent('22,5 %')).toBe(22.5);
+    const counts = [200, 180, 30, 4, 3]; // N = 417
+    const r = gradeInventory(counts, 0, ['48', '43,2', '7.2', '1', '0,7'], 0, 'normal');
+    expect(r.d).toEqual([48, 43.2, 7.2, 1, 0.7]);
+    expect(r.perSpecies.every(Boolean)).toBe(true);
+    expect(r.dominant).toBe(true);
+    expect(r.high).toBe(false);
+    expect(r.balance).toBe(true);
+  });
+  it('a bloom makes the producers lopsided, and wrong answers score nothing', () => {
+    const r = gradeInventory([420, 150, 20, 2, 3], 0, ['10', '', 'x', '5', '5'], 1, 'normal');
+    expect(r.high).toBe(true);
+    expect(r.balance).toBe(false);
+    expect(r.dominant).toBe(false);
+    expect(r.points).toBe(0);
+  });
+});
+
+describe('engine', async () => {
+  const { EcoEngine } = await import('./engine.ts');
+  const run = (scenario: 'padure' | 'balta') => {
+    const e = new EcoEngine(scenario, 9);
+    const seen: string[] = [];
+    for (let i = 0; i < 20000 && !e.done; i += 1) {
+      for (const h of e.advance(0.1, 2)) {
+        seen.push(h.type);
+        if (h.type === 'inventory') seen.push(...e.resume().map((x) => x.type));
+      }
+    }
+    return { e, seen };
+  };
+  it('forest: telegraphs every event before it starts and ends after ten years', () => {
+    const { e, seen } = run('padure');
+    expect(e.done).toBe(true);
+    expect(seen.filter((s) => s === 'year')).toHaveLength(10);
+    expect(seen.filter((s) => s === 'telegraph')).toHaveLength(e.events.length);
+    expect(seen.indexOf('telegraph')).toBeLessThan(seen.indexOf('event-start'));
+  });
+  it('pond: pauses for the Inventar at the end of years 5 and 10', () => {
+    const { seen } = run('balta');
+    expect(seen.filter((s) => s === 'inventory')).toHaveLength(2);
+    expect(seen[seen.length - 1]).toBe('end');
+  });
+  it('tools: cooldowns, and Reintrodu only for an extinct species, once', () => {
+    const e = new EcoEngine('padure', 1);
+    expect(e.apply('protejeaza', 3).ok).toBe(true);
+    expect(e.apply('protejeaza', 3).ok).toBe(false);
+    expect(e.apply('reintroduce', 3).reason).toBe('not-extinct');
+    e.state = { ...e.state, x: e.state.x.map((v, i) => (i === 3 ? 0 : v)), extinct: e.state.extinct.map((v, i) => i === 3 || v) };
+    expect(e.apply('reintroduce', 3).ok).toBe(true);
+    expect(e.state.extinct[3]).toBe(false);
+    expect(e.toolStatus('reintroduce').state).toBe('used');
+  });
+});
