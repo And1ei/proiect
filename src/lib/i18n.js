@@ -2,8 +2,8 @@
 // and register it below; components never change.
 import ro from '../content/ro/ui.js';
 
-const dictionaries = { ro };
-const active = { ...dictionaries.ro };
+const languages = { ro };
+const active = { ...languages.ro };
 
 /** Reads a dot-path key ("nav.items.about") and fills {placeholders} from `vars`. */
 export function lookup(dict, key, vars) {
@@ -40,9 +40,3 @@ export const formatNumber = (n, options) => new Intl.NumberFormat(locale, option
 /** Wraps text in the locale's quotation marks („…” for Romanian). */
 export const quote = (text) => `${active.quotes[0]}${text}${active.quotes[1]}`;
 
-/** Lowercases and strips diacritics, for matching only (never for display). */
-export const foldForSearch = (s) =>
-  s
-    .normalize('NFD')
-    .replace(/\p{M}/gu, '')
-    .toLocaleLowerCase(locale);

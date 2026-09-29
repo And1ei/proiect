@@ -23,11 +23,8 @@ not exist in the production build, and neither do the sandbox games.
 src/
   content/ro/
     ui.js                 every interface string (read with t() from lib/i18n.js)
-    schema.js             JSDoc types for topic stubs, lessons, blocks, quiz items, glossary terms
-    markup.js             [[id|text]] glossary markup parser (shared with the checks)
     topics/registry.js    the five topics (stubs until written): the only list you edit
     topics/<slug>.js      one file per published lesson, merged over its stub
-    glossary.js           global glossary, each id owned by one lesson (empty for now)
     figures.js            figure captions, alt text and part labels
     encouragement.js      game reaction lines (needs native review)
     about.js, ds.js       /despre page text; design-system page strings (dev only)
@@ -42,7 +39,7 @@ src/
   figures/                figure components, loaded on demand (none yet)
   interactives/           in-lesson interactive registry (none since G0; games replace them)
   lib/                    i18n, progress store (localStorage), useProgress, motion presets
-  pages/                  Contents, TopicPage/TopicComingSoon, GamesIndex, GamePage, Glossary,
+  pages/                  Contents, TopicPage/TopicComingSoon, GamesIndex, GamePage,
                           About, Credits, NotFound (all lazy)
 assets-src/               untouched asset originals (input of npm run assets:clean)
 scripts/                  checks, audits, asset pipeline, PWA icon renderer
@@ -50,13 +47,7 @@ scripts/                  checks, audits, asset pipeline, PWA icon renderer
 
 ## Topics
 
-The five topics follow the content domains of the 2026 programa, in order: `/celula`,
-`/ecosisteme`, `/diversitatea-vietii`, `/impactul-uman`, `/laboratorul`. Each is a stub in
-`registry.js` (`status: 'coming-soon'`, shown as "În curând") until its lesson file exists.
-
-To publish one: create `src/content/ro/topics/<slug>.js` following `schema.js`, with
-`status: 'published'`, add its glossary terms to `glossary.js`, then run `npm run check:content`.
-Routes, navigation, the table of contents and the glossary pick it up automatically.
+The five topics follow the content domains of the 2026 programa, in order. Each is a lesson file in `src/content/ro/lessons/` (see below).
 
 ## Progress
 
@@ -70,7 +61,6 @@ lives in memory for the visit and the Cuprins page says so.
 
 ```bash
 npm run check:ro        # cedilla ş ţ in src/ text files, em dashes in strings
-npm run check:content   # topic stubs, lesson structure, glossary refs, quiz shape
 npm run check:progress  # old / broken localStorage payloads never throw; saveGame rules
 npm run assets:check    # every shipped asset listed with an allowed license (build gate)
 npm run typecheck       # tsc --noEmit

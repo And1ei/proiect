@@ -1,5 +1,5 @@
 // All user-facing Romanian interface strings. Components read these through t() in src/lib/i18n.js.
-// Lesson text lives in ./topics, glossary in ./glossary.js, the about page in ./about.js.
+// Lesson text lives in ./lessons, the about page in ./about.js.
 // Diacritics use comma-below (ș ț Ș Ț), never cedilla. No em dashes. Quotes: „ ”.
 // Also imported by vite.config.js to fill index.html, so keep this file plain data.
 
@@ -49,7 +49,6 @@ const ui = {
     items: {
       contents: 'Cuprins',
       games: 'Jocuri',
-      glossary: 'Dicționar',
       about: 'Despre proiect',
       credits: 'Surse și credite',
     },
@@ -103,7 +102,6 @@ const ui = {
   },
 
   term: {
-    glossaryLink: 'Vezi în dicționar',
   },
 
   figure: {
@@ -229,19 +227,6 @@ const ui = {
     restart: 'Reia testul',
   },
 
-  glossary: {
-    title: 'Dicționar',
-    label: 'Dicționar',
-    heading: 'Dicționar',
-    intro: 'Toți termenii din lecții, în ordine alfabetică. Poți căuta și fără diacritice.',
-    searchLabel: 'Caută un termen',
-    searchPlaceholder: 'de exemplu: sinapsa',
-    count: { one: '{n} termen', few: '{n} termeni', other: '{n} de termeni' },
-    empty: 'Niciun termen nu se potrivește cu {query}.',
-    none: 'Dicționarul se completează odată cu lecțiile.',
-    usedIn: 'Apare în',
-    seeAlso: 'Vezi și',
-  },
 
   about: {
     title: 'Despre proiect',

@@ -6,7 +6,6 @@ import { TOPICS } from './content/ro/topics';
 
 const Contents = lazy(() => import('./pages/Contents'));
 const TopicPage = lazy(() => import('./pages/TopicPage'));
-const Glossary = lazy(() => import('./pages/Glossary'));
 const About = lazy(() => import('./pages/About'));
 const Credits = lazy(() => import('./pages/Credits'));
 const GamesIndex = lazy(() => import('./pages/GamesIndex'));
@@ -30,7 +29,6 @@ export default function App() {
             ))}
             <Route path="jocuri" element={<GamesIndex />} />
             <Route path="joc/:gameId" element={<GamePage />} />
-            <Route path="dictionar" element={<Glossary />} />
             <Route path="despre" element={<About />} />
             <Route path="credite" element={<Credits />} />
             {DesignSystem && <Route path={DESIGN_SYSTEM_ROUTE} element={<DesignSystem />} />}

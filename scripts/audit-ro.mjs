@@ -11,7 +11,7 @@ const executablePath =
 
 const ROUTES = [
   '/', '/celula', '/ecosisteme', '/diversitatea-vietii', '/impactul-uman', '/laboratorul', '/jocuri',
-  '/dictionar', '/despre', '/credite', '/sistem-de-design', '/pagina-care-nu-exista', '/__eroare',
+  '/despre', '/credite', '/sistem-de-design', '/pagina-care-nu-exista', '/__eroare',
 ];
 
 // Proper nouns and code identifiers that legitimately stay as they are
@@ -25,7 +25,7 @@ const ALLOW = [
 const ENGLISH = new Set(
   ('the and of to is with for your you this that page click home menu close skip content not found loading error ' +
     'back next small medium disabled hover press target input button label reduced motion focus surface color colour ' +
-    'type notes on off from by all every sample cell stain contents glossary about credits sources system ' +
+    'type notes on off from by all every sample cell stain contents about credits sources system ' +
     'here more read open learn start submit search cancel yes no ok please try again reload something went wrong ' +
     'figure plate module inline send release simulate enabled breathing').split(' '),
 );
@@ -134,7 +134,7 @@ const upper = await page.evaluate(() => {
 });
 check('DM Mono text-transform uppercase yields Ș/Ț (same width as real capitals)', Math.abs(upper.viaCss - upper.real) < 0.5, JSON.stringify(upper));
 
-// Hyphenation: a long Romanian word in a narrow box wraps with hyphens only if the ro dictionary works
+// Hyphenation: a long Romanian word in a narrow box wraps with hyphens only if the ro hyphenation data works
 const hyph = await page.evaluate(() => {
   const mk = (h, lang = 'ro', text = 'caracteristicile electroencefalografiei') => {
     const p = document.createElement('p');
@@ -150,8 +150,8 @@ const hyph = await page.evaluate(() => {
   return { auto: mk('auto'), none: mk('none'), enAuto: mk('auto', 'en', en), enNone: mk('none', 'en', en) };
 });
 if (hyph.enAuto === hyph.enNone) {
-  // Not even English hyphenates: this browser profile has no hyphenation dictionaries at all
-  console.log(`SKIP  hyphens:auto (this Chromium has no hyphenation dictionaries; English control failed too) ${JSON.stringify(hyph)}`);
+  // Not even English hyphenates: this browser profile has no hyphenation data at all
+  console.log(`SKIP  hyphens:auto (this Chromium has no hyphenation data; English control failed too) ${JSON.stringify(hyph)}`);
 } else check('hyphens:auto hyphenates Romanian in this browser', hyph.auto !== hyph.none, JSON.stringify(hyph));
 
 // Number and quote formatting from Intl ro-RO
