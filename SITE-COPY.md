@@ -9,7 +9,7 @@ dashes. The reader is addressed as "tu", never as "explorator" or "aventurier".
 1. **One idea per paragraph, one example per idea.** A real one (hematia în apă distilată), not three
    vague ones.
 2. **Define a term where it first appears**, in the same sentence, in bold: "**Osmoza** este deplasarea
-   apei printr-o membrană semipermeabilă spre soluția mai concentrată." No glossary, no popovers.
+   apei printr-o membrană semipermeabilă spre soluția mai concentrată." No separate word list, no popovers.
 3. **Titles are what you'll understand**, phrased as a question or a claim: "De ce nu trece orice prin
    membrană?", never a bare label ("Membrana").
 4. **Numbers are computed** (reading time, how many games, minutes), never typed.

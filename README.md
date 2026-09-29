@@ -51,8 +51,8 @@ Five lessons in programa order, one file each in `src/content/ro/lessons/` (`cel
 `diversitatea-vietii`, `impactul-uman`, `laboratorul`), listed in `index.ts`. A lesson has 4–5 short
 sections (one idea each; terms defined in bold where they first appear), "Pe scurt", "Verifică-te"
 and `games: [{ gameId, afterSection }]`. Routes, the landing page, the navigation and the counts are
-generated from these files and the game registry. `npm run lessons:check` enforces the rules. There
-is no glossary. Voice rules: `SITE-COPY.md`.
+generated from these files and the game registry. `npm run lessons:check` enforces the rules.
+Terms are explained inside the lessons only. Voice rules: `SITE-COPY.md`.
 
 ## Progress
 
