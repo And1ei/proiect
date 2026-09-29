@@ -192,6 +192,26 @@ linear, no default easing. In Phaser, which has no springs, use `Back.Out` / `El
   `formulaRuns()` (canvas) or `<Formula>` (DOM, `<sub>`/`<sup>`).
 - **Adaptive help**: after 3 failures in a row, spawns slow down for a while and a kind line says so.
 
+## Games and lessons (S1)
+
+Every game belongs to a lesson: `topicSlug` is the lesson's slug (`src/content/ro/lessons/<slug>.ts`),
+and the lesson places the game with `games: [{ gameId, afterSection }]`, right after the section
+that teaches what the game needs. Nothing new to declare on the `GameDefinition`.
+
+- **Lesson sheet.** The shell renders `<LessonSheet>` (a native `<dialog>` slide-over with the lesson,
+  games hidden). Anything inside a game can open it with `useLessonSheet().open('celula#membrana')`
+  (or `'celula'`). Opening pauses a running game; closing never resumes it (resuming is an explicit
+  press on "Continuă"). Esc closes the sheet, not the game.
+- **Intro.** The intro shows the lesson's "Pe scurt" and "Recitește lecția" (opens the sheet at the
+  game's `afterSection`). Until that section has been read, reading is the suggested button and
+  starting is "Sari peste, joc direct"; afterwards "Începe" is primary. Reading is never forced.
+- **Explanations.** Game data may carry an optional `lessonSection: 'slug#section'` next to each
+  explanation (`membrane-molecules.ts` per mode, `ecosystem-species.ts` per event). When present the
+  game shows "→ vezi în lecție". `npm run lessons:check` fails if a `lessonSection` doesn't exist.
+- **Results.** `RecapItem.section` (optional, `'slug#section'`) adds "→ vezi în lecție" to a recap
+  item. After a run with a hint or 3+ misses, one line names the section that explains it. The primary
+  button is "Înapoi la lecție" and goes to the next unread section of the lesson (else the topic page).
+
 ## Echilibrul: the pattern for simulation games without Phaser
 
 `src/games/echilibrul/` (G3) is React + SVG, `usesPhaser: false`, so no Phaser chunk loads on its routes.

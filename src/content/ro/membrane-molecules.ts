@@ -23,6 +23,8 @@ export type Species = 'O2' | 'CO2' | 'glucoza' | 'Na' | 'K' | 'proteina';
 
 export interface ModeRule {
   route: Route;
+  /** Optional (S1): the lesson section that explains it, 'slug#section' ("vezi în lecție"). */
+  lessonSection?: string;
   /** One sentence, shown after a wrong route and in the results recap. */
   explanation: string;
 }
@@ -76,11 +78,13 @@ export const MOLECULES: readonly MoleculeSituation[] = [
     modes: {
       baza: {
         route: 'dublu-strat',
+        lessonSection: 'celula#difuzie-osmoza',
         explanation:
           'Oxigenul este o moleculă mică și nepolară, deci trece direct prin dublul strat lipidic, spre interior, unde mitocondriile îl consumă și concentrația lui rămâne mai mică.',
       },
       avansat: {
         route: 'dublu-strat',
+        lessonSection: 'celula#difuzie-osmoza',
         explanation:
           'Oxigenul este mic și nepolar: trece direct prin dublul strat lipidic, în sensul gradientului, fără proteine și fără ATP (difuzie simplă).',
       },
@@ -101,11 +105,13 @@ export const MOLECULES: readonly MoleculeSituation[] = [
     modes: {
       baza: {
         route: 'dublu-strat',
+        lessonSection: 'celula#difuzie-osmoza',
         explanation:
           'Dioxidul de carbon se produce în celulă prin metabolism, deci e mai concentrat înăuntru, și, fiind mic și nepolar, iese direct prin dublul strat lipidic.',
       },
       avansat: {
         route: 'dublu-strat',
+        lessonSection: 'celula#difuzie-osmoza',
         explanation:
           'Dioxidul de carbon este mic și nepolar: iese direct prin dublul strat lipidic, în sensul gradientului, fără ATP (difuzie simplă).',
       },
@@ -126,11 +132,13 @@ export const MOLECULES: readonly MoleculeSituation[] = [
     modes: {
       baza: {
         route: 'blocat',
+        lessonSection: 'celula#membrana',
         explanation:
           'Glucoza este mare și polară, așa că membrana nu o lasă să treacă singură prin dublul strat lipidic; celula o primește totuși, cu ajutorul unor proteine transportoare din membrană.',
       },
       avansat: {
         route: 'canal',
+        lessonSection: 'celula#transport-activ',
         explanation:
           'Glucoza este mare și polară, deci intră printr-o proteină transportoare, în sensul gradientului și fără consum de ATP (difuzie facilitată).',
       },
@@ -151,11 +159,13 @@ export const MOLECULES: readonly MoleculeSituation[] = [
     modes: {
       baza: {
         route: 'blocat',
+        lessonSection: 'celula#membrana',
         explanation:
           'Ionul de sodiu are sarcină electrică, așa că nu poate trece singur prin dublul strat lipidic; intră în celulă prin canale proteice din membrană.',
       },
       avansat: {
         route: 'canal',
+        lessonSection: 'celula#transport-activ',
         explanation:
           'Sodiul este mai concentrat în exterior, deci ionul intră în sensul gradientului, printr-un canal proteic, fără consum de ATP (difuzie facilitată).',
       },
@@ -176,6 +186,7 @@ export const MOLECULES: readonly MoleculeSituation[] = [
     modes: {
       avansat: {
         route: 'pompa',
+        lessonSection: 'celula#transport-activ',
         explanation:
           'Sodiul este scos spre exterior, unde e deja mai concentrat, adică împotriva gradientului, ceea ce doar pompa poate face, cu consum de ATP (transport activ).',
       },
@@ -196,6 +207,7 @@ export const MOLECULES: readonly MoleculeSituation[] = [
     modes: {
       avansat: {
         route: 'pompa',
+        lessonSection: 'celula#transport-activ',
         explanation:
           'Potasiul este mai concentrat în interiorul celulei, deci ionul e adus înăuntru împotriva gradientului, de pompă, cu consum de ATP (transport activ).',
       },
@@ -216,11 +228,13 @@ export const MOLECULES: readonly MoleculeSituation[] = [
     modes: {
       baza: {
         route: 'blocat',
+        lessonSection: 'celula#membrana',
         explanation:
           'O proteină este mult prea mare pentru dublul strat lipidic; celulele pot prelua molecule mari prin vezicule (transport veziculos), dar acesta nu face parte din joc.',
       },
       avansat: {
         route: 'blocat',
+        lessonSection: 'celula#membrana',
         explanation:
           'O proteină este prea mare pentru dublul strat, pentru canale și pentru pompe; moleculele mari intră prin vezicule (transport veziculos), care nu face parte din joc.',
       },

@@ -19,6 +19,8 @@ import { GATE_PROTRUDE } from './art';
 import { OSMOSIS } from './osmosisModel';
 import { createMembraneLink, type LinkOut, type OsmosisInfo, type PhaseInfo } from './link';
 import Formula, { Keycap } from './Chem';
+import { useLessonSheet } from '../../core/lessonSheet';
+import { t } from '../../../lib/i18n';
 
 type Message =
   | { kind: 'explain'; id: string; how: LinkOut['explain']['kind'] }
@@ -153,6 +155,16 @@ function StripButton({ onClick, keyName, children, tone = 'paper' }: { onClick: 
   );
 }
 
+/** "→ vezi în lecție": opens the lesson sheet at the section (the shell pauses the game). */
+function SeeInLesson({ section }: { section: string }) {
+  const sheet = useLessonSheet();
+  return (
+    <button type="button" onClick={() => sheet.open(section)} className="text-label inline-flex min-h-8 items-center text-methylene-deep underline decoration-dotted underline-offset-4">
+      → {t('sheet.see')}
+    </button>
+  );
+}
+
 function StatusCard({ message, n, fresh, mode, osmosis, reduced }: { message: Message | null; n: number; fresh: boolean; mode: MembraneMode; osmosis: OsmosisInfo | null; reduced: boolean }) {
   const S = MEMBRANE;
   let body: ReactNode = <p className="text-ink-soft">{S.strip.idle}</p>;
@@ -169,7 +181,8 @@ function StatusCard({ message, n, fresh, mode, osmosis, reduced }: { message: Me
       ) : (
         <p>
           <Formula formula={m.formula} className="mr-2 rounded-tag bg-paper-bright px-1.5 py-0.5" />
-          <strong className="font-medium">{lead}</strong> {rule.explanation}
+          <strong className="font-medium">{lead}</strong> {rule.explanation}{' '}
+          {rule.lessonSection && <SeeInLesson section={rule.lessonSection} />}
         </p>
       );
     }

@@ -742,7 +742,8 @@ export class MembraneScene extends BaseScene {
       .slice(0, 3)
       .map(([id]) => {
         const m = this.pool.find((x) => x.id === id)!;
-        return { title: `${m.name}, ${m.situation}`, text: m.modes[this.mode]!.explanation };
+        const rule = m.modes[this.mode]!;
+        return { title: `${m.name}, ${m.situation}`, text: rule.explanation, ...(rule.lessonSection ? { section: rule.lessonSection } : {}) };
       });
   }
 

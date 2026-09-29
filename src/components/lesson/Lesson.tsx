@@ -18,6 +18,8 @@ interface Props {
   mode: 'inline' | 'page';
   /** Mark sections read while in view (off in previews). */
   track?: boolean;
+  /** No game launchers (inside the lesson sheet, which is already in a game). */
+  hideGames?: boolean;
   /** Extra content after "Pe scurt" (the topic page puts "Verifică-te" there). */
   children?: ReactNode;
 }
@@ -34,7 +36,7 @@ function SeenMark({ seen }: { seen: boolean }) {
   );
 }
 
-export default function Lesson({ lesson, mode, track = true, children }: Props) {
+export default function Lesson({ lesson, mode, track = true, hideGames = false, children }: Props) {
   const page = mode === 'page';
   const H = page ? 'h2' : 'h3';
   const s = STAIN[lesson.stain];
@@ -51,7 +53,7 @@ export default function Lesson({ lesson, mode, track = true, children }: Props) 
   return (
     <article ref={root} data-lesson={lesson.slug} className={cx('flex flex-col', page ? 'gap-14 sm:gap-16' : 'gap-10')}>
       {lesson.sections.map((sec, i) => {
-        const games = lesson.games.filter((g) => g.afterSection === sec.id);
+        const games = hideGames ? [] : lesson.games.filter((g) => g.afterSection === sec.id);
         const headingId = `${lesson.slug}-${sec.id}-h`;
         return (
           <Fragment key={sec.id}>
@@ -69,7 +71,7 @@ export default function Lesson({ lesson, mode, track = true, children }: Props) 
                   {sec.cs && <span className="text-label rounded-tag bg-iodine-100 px-2 py-0.5 text-iodine-deep">{t('lesson.cs')}</span>}
                   <SeenMark seen={read.includes(sec.id)} />
                 </p>
-                <H id={headingId} className={cx('text-balance', page ? 'text-3' : 'text-2')}>
+                <H id={headingId} tabIndex={-1} className={cx('text-balance', page ? 'text-3' : 'text-2')}>
                   {sec.title}
                 </H>
                 <div className="lesson-body flex max-w-[64ch] flex-col gap-3">
@@ -121,7 +123,7 @@ export default function Lesson({ lesson, mode, track = true, children }: Props) 
         </p>
       </section>
 
-      {lesson.games.length === 0 && <p className="max-w-[40rem] text--1 text-ink-soft">{t('lesson.noGame')}</p>}
+      {lesson.games.length === 0 && !hideGames && <p className="max-w-[40rem] text--1 text-ink-soft">{t('lesson.noGame')}</p>}
       {children}
     </article>
   );

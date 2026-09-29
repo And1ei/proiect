@@ -210,6 +210,15 @@ const ui = {
     progress: 'Progres',
   },
 
+  sheet: {
+    back: 'Înapoi la joc',
+    openPage: 'Deschide lecția pe pagina ei',
+    reread: 'Recitește lecția',
+    skip: 'Sari peste, joc direct',
+    see: 'vezi în lecție',
+    explains: 'Secțiunea {title} explică asta.',
+  },
+
   stamps: {
     citit: 'citit',
     jucat: 'jucat',

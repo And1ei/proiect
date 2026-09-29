@@ -18,6 +18,8 @@ export interface GameControls {
 export interface RecapItem {
   title: string;
   text: string;
+  /** Optional (S1): the lesson section that explains it, 'slug#section'. Shown as a link to the sheet. */
+  section?: string;
 }
 
 /** Frozen numbers at the end of a run; what `stars()` and the results screen see. */

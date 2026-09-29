@@ -19,6 +19,8 @@ import { levelOf, trendOf, type Level } from './ecosystemModel';
 import { EcoEngine, type GameEvent, type Happening } from './engine';
 import { POINTS_PER_YEAR, TOOLS, YEARS, type ToolId } from './scenarios';
 import { VIEW, seasonOf } from './view';
+import { useLessonSheet } from '../core/lessonSheet';
+import { t } from '../../lib/i18n';
 import ScenePlate from './ScenePlate';
 import FoodWeb from './FoodWeb';
 import PopChart from './PopChart';
@@ -67,6 +69,8 @@ export default function EcoGame({ session, scenario: scenarioId }: GameProps & {
   const names = scenario.species.map((s) => s.name);
   const headline = useCallback((e: GameEvent) => scenario.events.find((x) => x.kind === e.kind)!.headline, [scenario]);
   const mechanism = useCallback((e: GameEvent) => scenario.events.find((x) => x.kind === e.kind)!.mechanism, [scenario]);
+  const sectionOf = useCallback((e: GameEvent) => scenario.events.find((x) => x.kind === e.kind)!.lessonSection, [scenario]);
+  const sheet = useLessonSheet();
   const nameOf = useCallback((id: string) => scenario.species.find((s) => s.id === id)!.name, [scenario]);
 
   /** "Ce ai învățat": the events that caused losses first, then the rest that happened. */
@@ -82,9 +86,10 @@ export default function EcoGame({ session, scenario: scenarioId }: GameProps & {
           : e.critical.length
             ? ' ' + fill(ECO.recapCritical, { event: fill(ECO.eventYear, { n: Math.floor(e.at) + 1 }), names: e.critical.map(nameOf).join(', ') })
             : '';
-        return { title: headline(e), text: `${mechanism(e)}${consequence}` };
+        const section = sectionOf(e);
+        return { title: headline(e), text: `${mechanism(e)}${consequence}`, ...(section ? { section } : {}) };
       });
-  }, [engine, headline, mechanism, nameOf]);
+  }, [engine, headline, mechanism, nameOf, sectionOf]);
 
   // ── Happenings → session, announcements, notes ──
   const handle = useCallback(
@@ -449,7 +454,16 @@ export default function EcoGame({ session, scenario: scenarioId }: GameProps & {
                       </span>
                     </p>
                     <p className="mt-1 font-display text-1 leading-heading">{headline(e)}</p>
-                    {e.phase !== 'telegraphed' && <p className="mt-1 text--1 leading-body text-ink-soft">{mechanism(e)}</p>}
+                    {e.phase !== 'telegraphed' && (
+                      <p className="mt-1 text--1 leading-body text-ink-soft">
+                        {mechanism(e)}{' '}
+                        {sectionOf(e) && (
+                          <button type="button" onClick={() => sheet.open(sectionOf(e)!)} className="text-label text-methylene-deep underline decoration-dotted underline-offset-4">
+                            → {t('sheet.see')}
+                          </button>
+                        )}
+                      </p>
+                    )}
                   </motion.li>
                 ))}
               </AnimatePresence>

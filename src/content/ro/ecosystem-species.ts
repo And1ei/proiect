@@ -54,6 +54,8 @@ export interface EcoEventText {
   headline: string;
   /** One sentence: the ecological mechanism (event log and recap). */
   mechanism: string;
+  /** Optional (S1): the lesson section that explains it, 'slug#section' ("vezi în lecție"). */
+  lessonSection?: string;
 }
 
 export interface ScenarioText {
@@ -128,16 +130,19 @@ export const PADURE: ScenarioText = {
   events: [
     {
       kind: 'seceta',
+      lessonSection: 'ecosisteme#biotop-biocenoza',
       headline: 'Secetă: nu a plouat de două luni',
       mechanism: 'Fără apă, stejarul face mai puțină substanță organică, iar lipsa hranei ajunge, cu întârziere, la consumatori.',
     },
     {
       kind: 'omizi',
+      lessonSection: 'ecosisteme#retele-trofice',
       headline: 'Invazie de omizi în coroanele stejarilor',
       mechanism: 'Omizile foarte numeroase mănâncă frunzele mai repede decât le reface stejarul, așa că producătorul scade.',
     },
     {
       kind: 'vanatoare',
+      lessonSection: 'ecosisteme#echilibru',
       headline: 'Braconaj: vulpile sunt vânate ilegal',
       mechanism: 'Fără prădătorii lor, șoarecii se înmulțesc mult și consumă prea multe ghinde, apoi scad și ei din lipsă de hrană.',
     },
@@ -209,16 +214,19 @@ export const BALTA: ScenarioText = {
   events: [
     {
       kind: 'seceta',
+      lessonSection: 'ecosisteme#biotop-biocenoza',
       headline: 'Secetă: nivelul apei din baltă scade',
       mechanism: 'Cu mai puțină apă, algele au mai puțin loc și mai puține substanțe, iar scăderea lor se transmite pe rând în rețeaua trofică.',
     },
     {
       kind: 'ingrasaminte',
+      lessonSection: 'ecosisteme#echilibru',
       headline: 'Îngrășăminte scurse de pe câmpuri în baltă',
       mechanism: 'Nitrații și fosfații hrănesc algele, care se înmulțesc exploziv (înflorirea apelor), iar descompunerea lor consumă oxigenul din apă și peștii mor (eutrofizare).',
     },
     {
       kind: 'pescuit',
+      lessonSection: 'ecosisteme#echilibru',
       headline: 'Pescuit excesiv de plătică',
       mechanism: 'Când se pescuiește mai mult decât se pot reface peștii, plătica scade, prădătorii ei rămân fără hrană, iar zooplanctonul se înmulțește.',
     },

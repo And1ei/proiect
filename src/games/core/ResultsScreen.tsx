@@ -25,7 +25,12 @@ export interface ResultsData {
 
 interface Props extends ResultsData {
   onAgain: () => void;
+  /** "Înapoi la lecție": the next unread section of the lesson (primary button). */
   backTo: string;
+  /** Opens the lesson sheet at 'slug#section' (recap links). */
+  onOpenSection?: (ref: string) => void;
+  /** After a run with help or several misses: the section that explains it. */
+  explains?: { ref: string; title: string } | null;
   /** Design-system preview: no focus steal, no stamp animation. */
   preview?: boolean;
 }
@@ -35,7 +40,7 @@ interface Props extends ResultsData {
  * win, "Completat cu ajutor" whenever a hint was used. "Din nou" / "Înapoi la lecție".
  * When the game sent a recap (RunResult.recap), up to 3 "Ce ai învățat" items follow.
  */
-export default function ResultsScreen({ result, stars, bestBefore, plays, line, onAgain, backTo, preview = false }: Props) {
+export default function ResultsScreen({ result, stars, bestBefore, plays, line, onAgain, backTo, onOpenSection, explains, preview = false }: Props) {
   const heading = useRef<HTMLHeadingElement>(null);
   const recapId = useId();
   const won = result.outcome === 'won';
@@ -63,6 +68,13 @@ export default function ResultsScreen({ result, stars, bestBefore, plays, line, 
           {won && <SpecimenStamp variant={result.hintsUsed > 0 ? 'cu-ajutor' : 'completat'} stampIn={!preview} />}
         </div>
         <p className="prose-body text-1">{line}</p>
+        {explains && onOpenSection && (
+          <p className="text--1">
+            <button type="button" onClick={() => onOpenSection(explains.ref)} className="text-left text-methylene-deep underline underline-offset-4">
+              {t('sheet.explains', { title: `„${explains.title}”` })}
+            </button>
+          </p>
+        )}
         <div className="flex items-end gap-6">
           <div className="flex flex-col">
             <span className="text-label text-ink-soft">{t('games.results.score')}</span>
@@ -92,9 +104,9 @@ export default function ResultsScreen({ result, stars, bestBefore, plays, line, 
           ))}
         </dl>
         <div className="flex flex-wrap gap-3">
-          <BlobButton onClick={onAgain}>{t('games.results.again')}</BlobButton>
-          <BlobButton variant="paper" shape="b" to={backTo}>
-            {t('games.results.back')}
+          <BlobButton to={backTo}>{t('games.results.back')}</BlobButton>
+          <BlobButton variant="paper" shape="b" onClick={onAgain}>
+            {t('games.results.again')}
           </BlobButton>
         </div>
       </div>
@@ -115,6 +127,11 @@ export default function ResultsScreen({ result, stars, bestBefore, plays, line, 
               >
                 <span className="font-display text-1 leading-heading">{item.title}</span>
                 <span className="text--1 leading-body">{item.text}</span>
+                {item.section && onOpenSection && (
+                  <button type="button" onClick={() => onOpenSection(item.section!)} className="text-label mt-1 self-start text-methylene-deep underline decoration-dotted underline-offset-4">
+                    → {t('sheet.see')}
+                  </button>
+                )}
               </motion.li>
             ))}
           </ul>

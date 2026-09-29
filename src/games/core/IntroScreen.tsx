@@ -3,6 +3,8 @@ import { t, tp } from '../../lib/i18n';
 import BlobButton from '../../components/primitives/BlobButton';
 import Stars from './Stars';
 import type { GameControls, GameDefinition, Stars as StarCount } from './types';
+import type { Lesson } from '../../content/ro/lessons/index.ts';
+import Inline from '../../components/lesson/Inline';
 
 const INPUTS = ['touch', 'mouse', 'keyboard'] as const;
 
@@ -28,13 +30,18 @@ interface Props {
   definition: GameDefinition;
   best: { bestScore: number; stars: number; plays: number };
   onStart: () => void;
+  /** The game's lesson: its "Pe scurt" is shown, with "Recitește lecția" (opens the lesson sheet). */
+  lesson?: Lesson | null;
+  onReread?: () => void;
+  /** The section before this game was read: "Începe" is primary; otherwise reading is suggested. */
+  readBefore?: boolean;
 }
 
 /**
  * First screen: how to play (the game's animated HowTo when it has one, else the instruction list),
  * controls, length and difficulty, the player's record, "Începe".
  */
-export default function IntroScreen({ definition, best, onStart }: Props) {
+export default function IntroScreen({ definition, best, onStart, lesson, onReread, readBefore = false }: Props) {
   const { HowTo } = definition;
   const list = (
     <ol className="lesson-ol">
@@ -57,9 +64,33 @@ export default function IntroScreen({ definition, best, onStart }: Props) {
           <span>{tp('games.plays', best.plays)}</span>
         </p>
       )}
-      <BlobButton size="lg" onClick={onStart} data-autofocus>
-        {t('games.shell.start')}
-      </BlobButton>
+      {lesson && (
+        <div className="relative w-full max-w-[34rem] rotate-[0.4deg] rounded-[4px] bg-paper px-5 pb-4 pt-5 shadow-card">
+          <h3 className="text-label mb-2 text-ink-soft">{t('lesson.keyPoints')}</h3>
+          <ol className="lesson-ol text--1">
+            {lesson.keyPoints.map((k) => (
+              <li key={k}>
+                <Inline text={k} />
+              </li>
+            ))}
+          </ol>
+        </div>
+      )}
+      <div className="flex flex-wrap items-center gap-3">
+        {lesson && onReread && !readBefore && (
+          <BlobButton size="lg" variant="methylene" onClick={onReread}>
+            {t('sheet.reread')}
+          </BlobButton>
+        )}
+        <BlobButton size="lg" variant={lesson && !readBefore ? 'paper' : 'eosin'} shape="b" onClick={onStart} data-autofocus>
+          {t(lesson && !readBefore ? 'sheet.skip' : 'games.shell.start')}
+        </BlobButton>
+        {lesson && onReread && readBefore && (
+          <BlobButton size="lg" variant="paper" shape="c" onClick={onReread}>
+            {t('sheet.reread')}
+          </BlobButton>
+        )}
+      </div>
     </div>
   );
 

@@ -2,13 +2,15 @@
 // the clock, auto-pause, Escape, focus, aria-live, progress saving, and all shared game feel
 // (sound, bursts, shake, floating points, reaction lines), so individual games only report what
 // happened through the session.
-import { Suspense, useCallback, useEffect, useId, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { t, tp } from '../../lib/i18n';
 import { progressStore } from '../../lib/progress';
 import { useProgress } from '../../lib/useProgress';
 import { cx } from '../../lib/cx';
-import { getLesson, lessonPath } from '../../content/ro/lessons/index.ts';
+import { getLesson, lessonPath, sectionPath } from '../../content/ro/lessons/index.ts';
+import { nextUnread } from '../../lib/stamps';
+import LessonSheet, { LessonSheetContext, type LessonSheetApi } from './lessonSheet';
 import SpecimenLabel from '../../components/primitives/SpecimenLabel';
 import { play, preload as preloadSounds } from '../feel/sfx';
 import { burst } from '../feel/burst';
@@ -42,7 +44,7 @@ export default function GameShell({ definition }: { definition: GameDefinition }
   const status = useSessionState(session, (s) => s.status);
   const run = useSessionState(session, (s) => s.run);
   const autoPaused = useSessionState(session, (s) => s.autoPaused);
-  const { game: progressOf } = useProgress();
+  const { game: progressOf, data: progressData } = useProgress();
   const saved = progressOf(definition.id);
   const topic = getLesson(definition.topicSlug);
   const titleId = useId();
@@ -52,6 +54,18 @@ export default function GameShell({ definition }: { definition: GameDefinition }
   const lastReaction = useRef<Partial<Record<Situation, number>>>({});
   const scoreTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const [helpOpen, setHelpOpen] = useState(false);
+  const [sheet, setSheet] = useState<string | null>(null);
+  // The section right before this game in its lesson: what the game needs was taught there
+  const lessonSection = topic?.games.find((g) => g.gameId === definition.id)?.afterSection ?? null;
+  const sheetApi = useMemo<LessonSheetApi>(
+    () => ({
+      open: (ref: string) => {
+        session.pause();
+        setSheet(ref);
+      },
+    }),
+    [session],
+  );
   const [reaction, setReaction] = useState<{ id: number; text: string; tone: 'good' | 'bad' | 'neutral' } | null>(null);
   const [results, setResults] = useState<ResultsData | null>(null);
   const { polite, assertive, announce } = useAnnouncer();
@@ -110,14 +124,14 @@ export default function GameShell({ definition }: { definition: GameDefinition }
   // ── Escape pauses (the help dialog handles its own Escape) ──
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && !helpOpen && session.get().status === 'playing') {
+      if (e.key === 'Escape' && !helpOpen && !sheet && session.get().status === 'playing') {
         e.preventDefault();
         session.pause();
       }
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
-  }, [session, helpOpen]);
+  }, [session, helpOpen, sheet]);
 
   // ── Session events → feel ──
   useEffect(() => {
@@ -229,7 +243,18 @@ export default function GameShell({ definition }: { definition: GameDefinition }
 
   const playingOrPaused = status === 'playing' || status === 'paused';
 
+  // "Înapoi la lecție": the next unread section of this game's lesson (fallback: the topic page)
+  const unread = topic ? nextUnread(topic, progressData) : null;
+  const backTo = topic ? (unread ? sectionPath(topic.slug, unread.id) : lessonPath(topic.slug)) : '/jocuri';
+  // After a run with help or several misses, one line points to the section that explains it
+  const struggled = !!results && (results.result.hintsUsed > 0 || results.result.misses >= 3);
+  const explainRef = results?.result.recap?.find((r) => r.section)?.section ?? (topic && lessonSection ? `${topic.slug}#${lessonSection}` : null);
+  const [explainSlug, explainId] = explainRef ? explainRef.split('#') : [null, null];
+  const explainSection = explainSlug ? getLesson(explainSlug)?.sections.find((x) => x.id === explainId) : null;
+  const explains = struggled && explainRef && explainSection ? { ref: explainRef, title: explainSection.title } : null;
+
   return (
+    <LessonSheetContext.Provider value={sheetApi}>
     <section aria-labelledby={titleId} className="flex flex-col gap-6">
       <header className="flex flex-col items-start gap-3">
         <div className="flex flex-wrap items-center gap-3">
@@ -249,7 +274,16 @@ export default function GameShell({ definition }: { definition: GameDefinition }
         <span aria-hidden="true" className="pointer-events-none absolute left-3 top-3 size-3 border-l border-t border-ink-faint" />
         <span aria-hidden="true" className="pointer-events-none absolute bottom-3 right-3 size-3 border-b border-r border-ink-faint" />
 
-        {status === 'intro' && <IntroScreen definition={definition} best={saved} onStart={start} />}
+        {status === 'intro' && (
+          <IntroScreen
+            definition={definition}
+            best={saved}
+            onStart={start}
+            lesson={topic}
+            onReread={topic ? () => sheetApi.open(lessonSection ? `${topic.slug}#${lessonSection}` : topic.slug) : undefined}
+            readBefore={!!topic && !!lessonSection && (progressData.topics[topic.slug]?.sectionsRead ?? []).includes(lessonSection)}
+          />
+        )}
 
         {playingOrPaused && (
           <div className="flex flex-col gap-3">
@@ -290,12 +324,14 @@ export default function GameShell({ definition }: { definition: GameDefinition }
         )}
 
         {(status === 'won' || status === 'lost') && results && (
-          <ResultsScreen {...results} onAgain={() => session.restart()} backTo={topic ? lessonPath(topic.slug) : '/jocuri'} />
+          <ResultsScreen {...results} onAgain={() => session.restart()} backTo={backTo} onOpenSection={(ref) => sheetApi.open(ref)} explains={explains} />
         )}
       </div>
 
       <HelpDialog open={helpOpen} onClose={() => setHelpOpen(false)} definition={definition} />
+      <LessonSheet target={sheet} onClose={() => setSheet(null)} />
       <LiveRegion polite={polite} assertive={assertive} />
     </section>
+    </LessonSheetContext.Provider>
   );
 }
