@@ -16,4 +16,16 @@ const htmlStrings = () => ({
 export default defineConfig({
   plugins: [htmlStrings(), react()],
   server: { port: 3000, strictPort: true },
+  build: {
+    rolldownOptions: {
+      output: {
+        // Rolldown's replacement for Rollup's manualChunks (deprecated in Vite 8).
+        // Phaser (~1 MB) gets a chunk of its own. It is only reached through the dynamic
+        // import() in src/games/phaser/PhaserGame.tsx, so only Phaser game routes download it.
+        codeSplitting: {
+          groups: [{ name: 'phaser', test: /[\/]node_modules[\/]phaser[\/]/, priority: 10 }],
+        },
+      },
+    },
+  },
 });
