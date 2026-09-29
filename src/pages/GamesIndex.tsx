@@ -1,4 +1,4 @@
-import { TOPICS } from '../content/ro/topics';
+import { LESSONS as TOPICS } from '../content/ro/lessons/index.ts';
 import { useEffect } from 'react';
 import { t } from '../lib/i18n';
 import Container from '../components/primitives/Container';
@@ -46,7 +46,7 @@ export default function GamesIndex() {
             </h2>
             <ul className="grid gap-5 sm:grid-cols-2">
               {games.map((game) => (
-                <GameCard key={game.id} game={game} fig={topic.fig.number} />
+                <GameCard key={game.id} game={game} fig={topic.number} />
               ))}
             </ul>
           </section>

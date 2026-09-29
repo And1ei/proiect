@@ -2,7 +2,7 @@ import { lazy } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { MotionPreferenceProvider } from './lib/motionPreference';
 import Layout from './components/layout/Layout';
-import { TOPICS } from './content/ro/topics';
+import { LESSONS } from './content/ro/lessons/index.ts';
 
 const Contents = lazy(() => import('./pages/Contents'));
 const TopicPage = lazy(() => import('./pages/TopicPage'));
@@ -24,8 +24,8 @@ export default function App() {
         <Routes>
           <Route element={<Layout />}>
             <Route index element={<Contents />} />
-            {TOPICS.map((topic) => (
-              <Route key={topic.slug} path={topic.slug} element={<TopicPage slug={topic.slug} />} />
+            {LESSONS.map((lesson) => (
+              <Route key={lesson.slug} path={lesson.slug} element={<TopicPage slug={lesson.slug} />} />
             ))}
             <Route path="jocuri" element={<GamesIndex />} />
             <Route path="joc/:gameId" element={<GamePage />} />

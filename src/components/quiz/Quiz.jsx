@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react';
 import { t, tp } from '../../lib/i18n';
 import { useProgress } from '../../lib/useProgress';
-import { sectionIdsOf } from '../../content/ro/topics';
 import { cx } from '../../lib/cx';
 import BlobButton from '../primitives/BlobButton';
 import QuizItem from './QuizItem';
@@ -24,9 +23,14 @@ function Dots({ total, index, results }) {
   );
 }
 
-/** Bacalaureat-style quiz, one question at a time. Saves the best score to local progress. */
-export default function BacQuiz({ topic }) {
-  const items = topic.quiz;
+/**
+ * "Verifică-te": multiple-choice questions, one at a time, each with a one-sentence explanation and a
+ * link back to the section that explains it. Saves the best score to local progress.
+ * `lesson.check` items: { prompt, options, answer, explanation, section }.
+ */
+export default function Quiz({ lesson, sectionHref }) {
+  const topic = lesson;
+  const items = lesson.check.map((q) => ({ type: 'grila', ...q, link: sectionHref ? { href: sectionHref(q.section), label: t('quiz.seeSection') } : null }));
   const total = items.length;
   const { topic: progressOf, saveQuiz } = useProgress();
   const [index, setIndex] = useState(0);
@@ -40,7 +44,7 @@ export default function BacQuiz({ topic }) {
 
   const next = () => {
     if (index < total - 1) return setIndex(index + 1);
-    saveQuiz(topic.slug, score, total, sectionIdsOf(topic));
+    saveQuiz(topic.slug, score, total, lesson.sections.map((s) => s.id));
     setFinished(true);
     requestAnimationFrame(() => resultHeading.current?.focus());
   };

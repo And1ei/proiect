@@ -114,6 +114,13 @@
     line-height: 1.4;
   }
 
+  /* Lesson reading text: at least 17px on phones, about 60-70 characters a line */
+  .lesson-body {
+    font-size: max(1.0625rem, var(--step-0));
+    line-height: 1.62;
+    color: var(--text);
+  }
+
   .prose-body {
     max-width: var(--measure);
     color: var(--text-muted);

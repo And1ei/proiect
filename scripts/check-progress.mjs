@@ -21,6 +21,8 @@ const cases = [
   ['unknown future version', { v: 99, topics: {} }],
   ['v2 with unknown slug', { v: 2, topics: { nope: {}, celula: { sectionsRead: ['x', 'x', 3] } }, games: {}, settings: {} }],
   ['v2 broken games', { v: 2, topics: {}, games: { a: null, b: { bestScore: -5, stars: 9, plays: 1.7, usedHelp: 'yes' } } }],
+  ['v3 with a stale lastGame', { v: 3, topics: {}, games: {}, settings: {}, lastGame: 'gone' }],
+  ['v3 with lastGame not a string', { v: 3, topics: {}, games: { g: {} }, settings: {}, lastGame: 7 }],
   ['v2 topics as array', { v: 2, topics: [1], games: 'x' }],
   ['v1 without topics', { v: 1 }],
 ];
@@ -54,6 +56,9 @@ const v2 = sanitize(cases[6][1]);
 expect('v2: unknown slug dropped, known slug kept', !('nope' in v2.topics) && 'celula' in v2.topics);
 expect('v2: section ids deduped and filtered', JSON.stringify(v2.topics.celula.sectionsRead) === '["x"]');
 const g = sanitize(cases[7][1]).games.b;
+const v2full = sanitize({ v: 2, topics: { celula: { sectionsRead: ['membrana'] } }, games: { 'poarta-membranei': { bestScore: 40, stars: 2, plays: 1 } }, settings: { sound: true } });
+expect('v2 → v3: topics, games and sound carried over, lastGame empty', v2full.topics.celula.sectionsRead[0] === 'membrana' && v2full.games['poarta-membranei'].stars === 2 && v2full.settings.sound && v2full.lastGame === null);
+expect('v3: a lastGame without a saved game is dropped', sanitize(cases[8][1]).lastGame === null);
 expect('v2: game fields clamped', g.bestScore === 0 && g.stars === 3 && g.plays === 1 && g.usedHelp === false);
 
 // saveGame semantics, in memory (Node has no localStorage; that must not throw either)
@@ -67,6 +72,7 @@ const saved = () => progressStore.get().games.g;
 progressStore.saveGame('g', { score: 50, stars: 2, usedHelp: true });
 progressStore.saveGame('g', { score: 30, stars: 2, usedHelp: false });
 expect('saveGame: best score kept, plays counted', saved().bestScore === 50 && saved().plays === 2);
+expect('saveGame: remembers the last game', progressStore.get().lastGame === 'g');
 expect('saveGame: unassisted run with equal stars clears usedHelp', saved().usedHelp === false);
 progressStore.saveGame('g', { score: 80, stars: 1, usedHelp: true });
 expect('saveGame: a weaker assisted run keeps usedHelp false', saved().usedHelp === false && saved().bestScore === 80 && saved().stars === 2);

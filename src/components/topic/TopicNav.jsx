@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
 import { cx } from '../../lib/cx';
 import { t } from '../../lib/i18n';
-import { topicPath } from '../../content/ro/topics';
+import { lessonPath } from '../../content/ro/lessons/index.ts';
 import HandArrow from '../primitives/HandArrow';
 
 function NavCard({ topic, direction }) {
   const next = direction === 'next';
   return (
     <Link
-      to={topicPath(topic)}
+      to={lessonPath(topic.slug)}
       rel={direction}
       className={cx(
         'group flex flex-col gap-1 rounded-cell bg-paper-bright p-5 no-underline shadow-card hover:bg-eosin-50',

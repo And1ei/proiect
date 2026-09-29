@@ -1,18 +1,19 @@
 // Progress, kept only in this browser. No accounts, no network, no cookies.
-// Shape (v2):
-//   { v: 2,
+// Shape (v3):
+//   { v: 3,
 //     topics:   { [slug]: { sectionsRead: string[], quizBest: { score, total } | null, completed: boolean } },
 //     games:    { [gameId]: { bestScore: number, stars: 0-3, plays: number, usedHelp: boolean } },
-//     settings: { sound: boolean } }
+//     settings: { sound: boolean },
+//     lastGame: gameId | null }       (v3: the last game finished, for the "continuă" link)
 // Every storage access is wrapped: if storage is blocked, progress lives in memory for this visit.
 // Old or broken data never throws: it is migrated, sanitised, or dropped.
 
-import { TOPIC_SLUGS } from '../content/ro/topics/registry.js';
+import { LESSON_SLUGS as TOPIC_SLUGS } from '../content/ro/lessons/index.ts';
 
 const KEY = 'soft-educational:v1'; // key name kept from v1 so migration can find old data
-const VERSION = 2;
+const VERSION = 3;
 const DEFAULT_SETTINGS = Object.freeze({ sound: false });
-const empty = () => ({ v: VERSION, topics: {}, games: {}, settings: { ...DEFAULT_SETTINGS } });
+const empty = () => ({ v: VERSION, topics: {}, games: {}, settings: { ...DEFAULT_SETTINGS }, lastGame: null });
 export const EMPTY_TOPIC = Object.freeze({ sectionsRead: [], quizBest: null, completed: false });
 export const EMPTY_GAME = Object.freeze({ bestScore: 0, stars: 0, plays: 0, usedHelp: false });
 
@@ -46,6 +47,9 @@ function sanitizeGame(raw) {
 // sanitize(); the per-topic `interactive` field no longer exists. Only the sound setting survives.
 const MIGRATIONS = {
   1: (raw) => ({ v: 2, topics: raw.topics, games: {}, settings: raw.settings }),
+  // v2 → v3 (S1): lessons replace the topic stubs under the same slugs, so everything carries over;
+  // lastGame starts empty.
+  2: (raw) => ({ ...raw, v: 3, lastGame: null }),
 };
 
 function migrate(raw) {
@@ -64,7 +68,8 @@ function sanitize(input) {
   const games = {};
   if (isObj(raw.games)) for (const [id, g] of Object.entries(raw.games)) games[id] = sanitizeGame(g);
   // Sound is opt-in: anything but an explicit true stays muted
-  return { v: VERSION, topics, games, settings: { sound: raw.settings?.sound === true } };
+  const lastGame = typeof raw.lastGame === 'string' && raw.lastGame in games ? raw.lastGame : null;
+  return { v: VERSION, topics, games, settings: { sound: raw.settings?.sound === true }, lastGame };
 }
 
 function load() {
@@ -164,7 +169,7 @@ export const progressStore = {
       usedHelp:
         before.plays === 0 || s > before.stars ? usedHelp === true : s === before.stars ? before.usedHelp && usedHelp === true : before.usedHelp,
     };
-    commit({ ...current, games: { ...current.games, [gameId]: after } });
+    commit({ ...current, games: { ...current.games, [gameId]: after }, lastGame: gameId });
   },
 
   setSetting(key, value) {

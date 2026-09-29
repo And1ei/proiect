@@ -202,7 +202,41 @@ const ui = {
     },
   },
 
+  topicPage: {
+    reading: 'Lectura',
+    games: 'Jocuri',
+    gameCount: { one: 'un joc', few: '{n} jocuri', other: '{n} de jocuri' },
+    noGames: 'urmează',
+    progress: 'Progres',
+  },
+
+  stamps: {
+    citit: 'citit',
+    jucat: 'jucat',
+    stapanit: 'stăpânit',
+    aria: 'Progres: {list}',
+    none: 'Încă fără progres',
+  },
+
+  lesson: {
+    predict: 'Gândește-te',
+    showAnswer: 'Arată răspunsul',
+    hideAnswer: 'Ascunde răspunsul',
+    slideGame: 'Joc',
+    keyPoints: 'Pe scurt',
+    why: 'De ce contează:',
+    cs: 'Avansat · CS',
+    margin: 'Notă pe margine',
+    seen: 'citit',
+    noGame: 'Jocul pentru această temă urmează.',
+    readingTime: '{n} min de citit',
+    preparat: 'Preparat {n}',
+    check: 'Verifică-te',
+    checkIntro: 'Trei întrebări. Dacă greșești, linkul te duce la secțiunea care explică.',
+  },
+
   quiz: {
+    seeSection: 'Vezi secțiunea',
     progress: 'Întrebarea {n} din {total}',
     types: { grila: 'Grilă', af: 'Adevărat sau fals', completare: 'Completare' },
     optionsLabel: 'Variante de răspuns',

@@ -93,7 +93,14 @@ export default function QuizItem({ item, index, total, onFirstCheck, onNext, isL
             <p className={cx('text-label', status === 'correct' ? 'text-methylene-deep' : 'text-eosin-deep')}>
               {t(status === 'correct' ? 'quiz.correct' : 'quiz.retry')}
             </p>
-            <p className="text--1 leading-body">{item.explanation}</p>
+            <p className="text--1 leading-body">
+              {item.explanation}{' '}
+              {item.link && (
+                <a href={item.link.href} className="text-methylene-deep underline underline-offset-4">
+                  {item.link.label}
+                </a>
+              )}
+            </p>
           </div>
         )}
       </div>

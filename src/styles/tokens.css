@@ -37,6 +37,18 @@
   --iodine: #D99A3D;
   --iodine-deep: #85561A; /* text-safe */
 
+  /* ── Safranin and hematoxylin (added in S1: one stain per topic) ── */
+  --safranin-50: #FBEEE8;
+  --safranin-100: #F5DCD0;
+  --safranin-200: #EBB9A2;
+  --safranin: #CF7650;
+  --safranin-deep: #974223; /* text-safe */
+  --hematoxylin-50: #EFEFF6;
+  --hematoxylin-100: #DEDDEC;
+  --hematoxylin-200: #BDBBD8;
+  --hematoxylin: #7472A6;
+  --hematoxylin-deep: #484679; /* text-safe */
+
   /* ── Semantic roles ────────────────────────────────── */
   --surface: var(--paper);
   --surface-raised: var(--paper-bright);

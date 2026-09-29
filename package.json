@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node scripts/check-ro.mjs && node scripts/check-progress.mjs && node scripts/assets-check.mjs && vitest run && tsc --noEmit",
+    "prebuild": "node scripts/check-ro.mjs && node scripts/lessons-check.mjs && node scripts/check-progress.mjs && node scripts/assets-check.mjs && vitest run && tsc --noEmit",
     "build": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
@@ -17,7 +17,8 @@
     "assets:check": "node scripts/assets-check.mjs",
     "assets:clean": "node scripts/assets-clean.mjs",
     "audit:offline": "node scripts/audit-offline.mjs",
-    "pwa:icons": "node scripts/pwa-icons.mjs"
+    "pwa:icons": "node scripts/pwa-icons.mjs",
+    "lessons:check": "node scripts/lessons-check.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "6.3.1",

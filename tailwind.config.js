@@ -41,6 +41,20 @@ export default {
         DEFAULT: v('iodine'),
         deep: v('iodine-deep'),
       },
+      safranin: {
+        50: v('safranin-50'),
+        100: v('safranin-100'),
+        200: v('safranin-200'),
+        DEFAULT: v('safranin'),
+        deep: v('safranin-deep'),
+      },
+      hematoxylin: {
+        50: v('hematoxylin-50'),
+        100: v('hematoxylin-100'),
+        200: v('hematoxylin-200'),
+        DEFAULT: v('hematoxylin'),
+        deep: v('hematoxylin-deep'),
+      },
     },
     fontFamily: {
       display: v('font-display'),

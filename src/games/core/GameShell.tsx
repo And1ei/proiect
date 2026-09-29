@@ -8,7 +8,7 @@ import { t, tp } from '../../lib/i18n';
 import { progressStore } from '../../lib/progress';
 import { useProgress } from '../../lib/useProgress';
 import { cx } from '../../lib/cx';
-import { getTopic, topicPath } from '../../content/ro/topics';
+import { getLesson, lessonPath } from '../../content/ro/lessons/index.ts';
 import SpecimenLabel from '../../components/primitives/SpecimenLabel';
 import { play, preload as preloadSounds } from '../feel/sfx';
 import { burst } from '../feel/burst';
@@ -44,7 +44,7 @@ export default function GameShell({ definition }: { definition: GameDefinition }
   const autoPaused = useSessionState(session, (s) => s.autoPaused);
   const { game: progressOf } = useProgress();
   const saved = progressOf(definition.id);
-  const topic = getTopic(definition.topicSlug);
+  const topic = getLesson(definition.topicSlug);
   const titleId = useId();
 
   const stage = useRef<HTMLDivElement>(null);
@@ -234,7 +234,7 @@ export default function GameShell({ definition }: { definition: GameDefinition }
       <header className="flex flex-col items-start gap-3">
         <div className="flex flex-wrap items-center gap-3">
           <SpecimenLabel tone="methylene" tilt>
-            {topic ? `${t('games.tag')} / ${topic.fig.label}` : t('games.tag')}
+            {topic ? `${t('games.tag')} / ${topic.title}` : t('games.tag')}
           </SpecimenLabel>
           {definition.sandbox && <SpecimenLabel tone="iodine">{t('games.sandboxTag')}</SpecimenLabel>}
         </div>
@@ -290,7 +290,7 @@ export default function GameShell({ definition }: { definition: GameDefinition }
         )}
 
         {(status === 'won' || status === 'lost') && results && (
-          <ResultsScreen {...results} onAgain={() => session.restart()} backTo={topic ? topicPath(topic) : '/jocuri'} />
+          <ResultsScreen {...results} onAgain={() => session.restart()} backTo={topic ? lessonPath(topic.slug) : '/jocuri'} />
         )}
       </div>
 
