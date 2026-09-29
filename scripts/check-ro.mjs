@@ -7,10 +7,12 @@ const root = new URL('..', import.meta.url).pathname.replace(/^\/([A-Z]:)/, '$1'
 const CEDILLA = /[ŞşŢţ]/g;
 const EM_DASH = /—/g;
 
+// Text files only: binary assets (mp3, fonts) can contain any byte sequence
+const TEXT = /\.(jsx?|tsx?|mjs|css|html|json|md|svg)$/;
 const walk = (dir) =>
   readdirSync(dir).flatMap((name) => {
     const p = join(dir, name);
-    return statSync(p).isDirectory() ? walk(p) : [p];
+    return statSync(p).isDirectory() ? walk(p) : TEXT.test(p) ? [p] : [];
   });
 
 const problems = [];

@@ -150,6 +150,32 @@
     box-shadow: 0 0 0 3px var(--iodine-deep);
   }
 
+  /* Game dialogs (native <dialog>) */
+  .game-dialog::backdrop {
+    background: var(--scrim);
+  }
+
+  /*
+   * <Sprite>: the shared specimen-plate treatment. Four hairline drop-shadows make an ink outline
+   * that follows the silhouette; the fifth is the paper-cut shadow. Mono assets are painted with a
+   * CSS mask so they take any palette colour.
+   */
+  .sprite {
+    filter: drop-shadow(var(--sprite-outline) 0 0 var(--ink)) drop-shadow(calc(-1 * var(--sprite-outline)) 0 0 var(--ink))
+      drop-shadow(0 var(--sprite-outline) 0 var(--ink)) drop-shadow(0 calc(-1 * var(--sprite-outline)) 0 var(--ink))
+      drop-shadow(2px 3px 0 var(--sprite-shadow));
+  }
+
+  .sprite[data-outline='false'] {
+    filter: drop-shadow(2px 3px 0 var(--sprite-shadow));
+  }
+
+  .sprite-mask {
+    mask: var(--sprite-url) center / contain no-repeat;
+    -webkit-mask: var(--sprite-url) center / contain no-repeat;
+    background-color: currentColor;
+  }
+
   /* Lesson reading column */
   .lesson p,
   .lesson li {

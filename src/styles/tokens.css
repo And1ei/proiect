@@ -126,4 +126,14 @@
 
   /* ── Texture ───────────────────────────────────────── */
   --grain-opacity: 0.075;
+
+  /* ── Games (G0 additions) ──────────────────────────── */
+  --scrim: rgb(30 43 37 / 0.32); /* behind modal dialogs */
+  /* <Sprite> treatment: one ink outline + paper-cut shadow for every asset, whatever its source */
+  --sprite-outline: 0.75px;
+  --sprite-shadow: rgb(30 43 37 / 0.16);
+  --sprite-sm: 2rem;
+  --sprite-md: 3rem;
+  --sprite-lg: 4.5rem;
+  --sprite-xl: 7rem;
 }
