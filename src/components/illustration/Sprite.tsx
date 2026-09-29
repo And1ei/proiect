@@ -8,7 +8,7 @@ import { getAsset } from '../../assets/urls';
 import { cx } from '../../lib/cx';
 
 export type SpriteSize = 'sm' | 'md' | 'lg' | 'xl';
-export type SpriteTone = 'ink' | 'eosin' | 'eosin-deep' | 'methylene' | 'methylene-deep' | 'iodine' | 'iodine-deep';
+export type SpriteTone = 'ink' | 'eosin' | 'eosin-deep' | 'methylene' | 'methylene-deep' | 'iodine' | 'iodine-deep' | 'safranin-deep' | 'hematoxylin-deep';
 
 interface Props {
   /** Asset id from src/assets/manifest.ts. An unknown id throws: there is no placeholder art. */

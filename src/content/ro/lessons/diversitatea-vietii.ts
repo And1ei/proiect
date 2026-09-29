@@ -65,7 +65,10 @@ export const diversitateaVietii: Lesson = {
     'Trei domenii: bacterii și arhee (procariote, fără nucleu) și eucariote (cu nucleu).',
     'Ecosistemele cu multe specii se refac mai ușor; ariile protejate păstrează speciile amenințate.',
   ],
-  games: [],
+  games: [
+    { gameId: 'safari-microscop', afterSection: 'plante-animale' },
+    { gameId: 'safari-microscop-avansat', afterSection: 'plante-animale' },
+  ],
   whyItMatters: 'Multe medicamente, de la penicilină la aspirină, au pornit de la o ciupercă sau o plantă, adică de la biodiversitate.',
   check: [
     {

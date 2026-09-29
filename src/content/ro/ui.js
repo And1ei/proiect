@@ -244,6 +244,10 @@ const ui = {
     explains: 'Secțiunea {title} explică asta.',
   },
 
+  safari: {
+    count: { one: 'o specie', few: '{n} specii', other: '{n} de specii' },
+  },
+
   stamps: {
     citit: 'citit',
     jucat: 'jucat',

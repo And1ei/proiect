@@ -8,6 +8,9 @@ const COLOR_TOKENS = [
   'eosin-50', 'eosin-100', 'eosin-200', 'eosin', 'eosin-deep',
   'methylene-50', 'methylene-100', 'methylene-200', 'methylene', 'methylene-deep',
   'iodine-100', 'iodine-200', 'iodine', 'iodine-deep',
+  // added in S1 / G4a: one stain per topic
+  'safranin-100', 'safranin-200', 'safranin', 'safranin-deep',
+  'hematoxylin-100', 'hematoxylin-200', 'hematoxylin', 'hematoxylin-deep',
 ] as const;
 
 export type ColorToken = (typeof COLOR_TOKENS)[number];
