@@ -66,7 +66,8 @@ without errors; with storage blocked, progress lives in memory for the visit.
 
 ## Deploying
 
-Vercel, as a static SPA: `vercel.json` rewrites every route to `index.html`, never caches `sw.js`,
+Vercel, as a static SPA. Vercel runs only `vite build` (set in `vercel.json`); the checks run locally
+with `npm run build` / `npm run verify`, so the deploy doesn't depend on `scripts/`. `vercel.json` also rewrites every route to `index.html`, never caches `sw.js`,
 and caches fingerprinted assets for a year. Performance numbers in `SITE-CHECK.md` are measured on a
 local server without compression; re-measure on the deployed preview.
 
