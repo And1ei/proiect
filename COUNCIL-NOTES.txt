@@ -1,0 +1,35 @@
+SOFT EDUCATIONAL - notițe rapide
+
+CE ESTE
+Caiet interactiv de biologie pentru clasa a IX-a (programa 2026), totul în română.
+5 lecții, fiecare cu un test „Verifică-te”. 3 jocuri, fiecare cu nivel de bază și nivel avansat.
+Fără conturi, fără reclame, fără urmărire. Progresul rămâne în browser. Merge și offline.
+
+CUM SE PORNEȘTE
+  npm install       (o singură dată, instalează tot ce trebuie)
+  npm run dev       -> deschide http://localhost:3000
+  npm run build     -> site-ul final, în folderul dist/
+  npm run preview   -> servește local site-ul construit
+  npm run verify    -> rulează toate testele (cam 4 minute)
+
+CU CE E CONSTRUIT
+- React: paginile și interfața
+- Vite: construiește și servește site-ul
+- Tailwind CSS: aspectul (stilurile)
+- Motion: animațiile
+- Phaser 3: jocurile pe canvas (Poarta membranei, Safari la microscop)
+- Echilibrul e făcut doar cu React + SVG (fără Phaser)
+- TypeScript: cod cu tipuri, deci mai puține greșeli
+- PWA / service worker: merge offline după prima vizită
+- Găzduit pe Vercel ca site static (fără server, fără bază de date)
+
+CUM E VERIFICAT
+- Teste automate: logica jocurilor, regulile lecțiilor, licențele imaginilor
+- Un browser real deschide fiecare pagină: linkuri, accesibilitate (scor 100), tastatură, modul offline
+- Fiecare număr de pe site e calculat din date, nu scris de mână
+
+ÎNTREBĂRI PROBABILE
+- Imagini: doar licențe libere (CC0 etc.), toate trecute pe pagina „Surse și credite”.
+- Date: nu se trimite nimic nicăieri; progresul stă în memoria locală a browserului.
+- Offline: deschizi site-ul o dată cu internet, apoi merge și fără.
+- Un joc nou: urmezi GAME-DEV.md, îl înregistrezi și îl pui într-o lecție.
