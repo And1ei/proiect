@@ -31,7 +31,6 @@ const ui = {
     grade: 'Clasa {grade}',
     unit: 'Unitatea {n}',
     lessonNumber: 'Lecția {n}',
-    comingSoon: 'În curând',
   },
 
   specimen: {
@@ -46,7 +45,7 @@ const ui = {
     lessons: 'Lecții',
     lessonsLabel: 'Lecțiile, pe unități',
     otherPages: 'Alte pagini',
-    topics: 'Cele cinci preparate',
+    topics: 'Preparatele',
     home: 'Acasă',
     contentsSheet: 'Cuprins',
     backToLesson: 'Înapoi la {title}',
@@ -142,8 +141,9 @@ const ui = {
     label: 'Jocuri',
     heading: 'Jocuri',
     intro: 'Jocuri pentru temele din programă, grupate pe teme.',
-    empty: 'Jocurile apar aici pe măsură ce sunt gata.',
+    empty: 'Aici nu sunt jocuri. Lecțiile și testele „Verifică-te” sunt pe pagina principală.',
     tag: 'Joc',
+    levels: { label: 'Niveluri', base: 'Nivel de bază', advanced: 'Avansat · CS' },
     sandboxTag: 'Sandbox',
     minutes: 'aprox. {n} min',
     difficulty: { usor: 'Ușor', mediu: 'Mediu', greu: 'Greu' },
@@ -210,28 +210,23 @@ const ui = {
   landing: {
     set: 'Set de lame 2026 · Biologie · clasa a IX-a',
     title: 'Soft Educational',
-    leadA: 'Cinci lecții scurte de biologie, fiecare cu jocul ei. Citești o bucată, te joci, iar când greșești,',
+    leadA: 'Lecții scurte de biologie, cu jocuri printre paragrafe. Citești o bucată, te joci, iar când greșești,',
     leadMark: 'jocul îți arată paragraful',
     leadB: ' care explică.',
-    lessons: { one: 'o lecție', few: '{n} lecții', other: '{n} de lecții' },
+    // With no game at all (see stats.ts), the lead talks about the quizzes instead
+    leadNoGamesA: 'Lecții scurte de biologie, fiecare cu un test la final. Când greșești,',
+    leadNoGamesMark: 'testul îți arată paragraful',
     minutes: '{n} min de citit în total',
-    games: { one: 'un joc', few: '{n} jocuri', other: '{n} de jocuri' },
-    noGames: 'jocurile urmează',
-    sections: { one: 'o secțiune', few: '{n} secțiuni', other: '{n} de secțiuni' },
     startHere: 'Începe de aici',
     orRead: 'sau citește întâi lecția',
     continue: 'Continuă: {label}',
-    path: 'Cele cinci preparate',
+    path: 'Preparatele, în ordinea programei',
     page: 'Deschide lecția pe pagina ei',
-    base: 'nivelul de bază',
-    advanced: 'avansat',
   },
 
   topicPage: {
     reading: 'Lectura',
     games: 'Jocuri',
-    gameCount: { one: 'un joc', few: '{n} jocuri', other: '{n} de jocuri' },
-    noGames: 'urmează',
     progress: 'Progres',
   },
 
@@ -266,11 +261,10 @@ const ui = {
     cs: 'Avansat · CS',
     margin: 'Notă pe margine',
     seen: 'citit',
-    noGame: 'Jocul pentru această temă urmează.',
     readingTime: '{n} min de citit',
     preparat: 'Preparat {n}',
     check: 'Verifică-te',
-    checkIntro: 'Trei întrebări. Dacă greșești, linkul te duce la secțiunea care explică.',
+    checkIntro: '{count}. Dacă greșești, linkul te duce la secțiunea care explică.',
   },
 
   quiz: {
@@ -342,7 +336,7 @@ const ui = {
       kinds: { icon: 'Celule și organite', organism: 'Organisme', ui: 'Interfață', sound: 'Sunete', texture: 'Texturi' },
     },
     sourcesHeading: 'Conținut',
-    sources: 'Temele urmează programa de biologie pentru clasa a IX-a. Textele sunt originale și sunt încă în pregătire.',
+    sources: 'Temele sunt cele din programa de biologie pentru clasa a IX-a. Textele sunt originale și sunt încă în pregătire.',
   },
 
   notFound: {

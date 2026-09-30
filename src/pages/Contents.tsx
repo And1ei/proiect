@@ -4,7 +4,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
-import { t, tp } from '../lib/i18n';
+import { t } from '../lib/i18n';
 import { cx } from '../lib/cx';
 import { spring, springSettle } from '../lib/motion';
 import { useReducedMotion } from '../lib/motionPreference';
@@ -13,7 +13,8 @@ import { useProgress } from '../lib/useProgress';
 import { STAIN } from '../lib/stains';
 import { continueTarget, stampsOf } from '../lib/stamps';
 import { LESSONS, catalogNumber, lessonPath, readingMinutes, type Lesson as LessonData } from '../content/ro/lessons/index.ts';
-import { GAMES, gamePath, gamesForTopic } from '../games/registry';
+import { gamePath } from '../games/registry';
+import { firstPlayable, gameCount, gamesSummary, lessonCount, levelsForTopic, plural, readingMinutesTotal } from '../content/stats';
 import { preloadGame } from '../games/core/preload';
 import Container from '../components/primitives/Container';
 import PageMeta from '../components/layout/PageMeta';
@@ -23,21 +24,10 @@ import GameSlide from '../components/lesson/GameSlide';
 import Stamps from '../components/lesson/Stamps';
 import Inline from '../components/lesson/Inline';
 
-const realGames = GAMES.filter((g) => !g.sandbox);
-
-/** The first base-mode game in topic order (computed; null while no game ships). */
-function firstGame() {
-  for (const lesson of LESSONS) {
-    const entry = lesson.games.find((g) => !g.gameId.endsWith('-avansat') && realGames.some((x) => x.id === g.gameId));
-    if (entry) return { lesson, gameId: entry.gameId, afterSection: entry.afterSection };
-  }
-  return null;
-}
-
 function TopicBlock({ lesson, open, onToggle }: { lesson: LessonData; open: boolean; onToggle: () => void }) {
   const reduced = useReducedMotion();
   const s = STAIN[lesson.stain];
-  const games = gamesForTopic(lesson.slug).filter((g) => !g.sandbox);
+  const games = levelsForTopic(lesson.slug);
   const panelId = `panel-${lesson.slug}`;
   const titleId = `title-${lesson.slug}`;
 
@@ -70,28 +60,30 @@ function TopicBlock({ lesson, open, onToggle }: { lesson: LessonData; open: bool
           </p>
           <p className="text-label flex flex-wrap items-center gap-x-4 gap-y-2 text-ink-soft">
             <span>{t('lesson.readingTime', { n: readingMinutes(lesson) })}</span>
-            <span>{tp('landing.sections', lesson.sections.length)}</span>
+            <span>{plural(lesson.sections.length, 'sectiune')}</span>
             <Stamps lesson={lesson} />
           </p>
         </div>
 
-        {/* Quick play: a game is always at most two taps away */}
-        <div className="col-start-2 flex flex-wrap items-start gap-2 pb-2 lg:col-start-3 lg:row-start-1 lg:flex-col lg:items-stretch lg:pt-1">
-          {games.map((g) => (
-            <Link
-              key={g.id}
-              to={gamePath(g.id)}
-              onPointerEnter={() => preloadGame(g)}
-              onFocus={() => preloadGame(g)}
-              className={cx('inline-flex min-h-11 items-center justify-between gap-3 rounded-btn-b border px-4 py-2 text--1 font-medium no-underline hover:bg-paper-bright', s.border, s.text)}
-            >
-              <span>
-                {t('games.play')} „{g.title}”
-              </span>
-              <span aria-hidden="true">→</span>
-            </Link>
-          ))}
-        </div>
+        {/* Quick play: a game is always at most two taps away (nothing here for a topic without one) */}
+        {games.length > 0 && (
+          <div className="col-start-2 flex flex-wrap items-start gap-2 pb-2 lg:col-start-3 lg:row-start-1 lg:flex-col lg:items-stretch lg:pt-1">
+            {games.map((g) => (
+              <Link
+                key={g.id}
+                to={gamePath(g.id)}
+                onPointerEnter={() => preloadGame(g)}
+                onFocus={() => preloadGame(g)}
+                className={cx('inline-flex min-h-11 items-center justify-between gap-3 rounded-btn-b border px-4 py-2 text--1 font-medium no-underline hover:bg-paper-bright', s.border, s.text)}
+              >
+                <span>
+                  {t('games.play')} „{g.title}”
+                </span>
+                <span aria-hidden="true">→</span>
+              </Link>
+            ))}
+          </div>
+        )}
 
         <AnimatePresence initial={false}>
           {open && (
@@ -124,7 +116,7 @@ export default function Contents() {
   const { data } = useProgress();
   const { hash } = useLocation();
   const desktop = useMediaQuery('(min-width: 1024px)');
-  const start = useMemo(firstGame, []);
+  const start = useMemo(firstPlayable, []);
   const cont = continueTarget(data);
 
   // Default: the first topic not yet fully read is open (none when all are read). A deep link
@@ -147,8 +139,6 @@ export default function Contents() {
   const toggle = (slug: string) =>
     setOpen((o) => (o.includes(slug) ? o.filter((x) => x !== slug) : desktop ? [...o, slug] : [slug]));
 
-  const totalMinutes = LESSONS.reduce((n, l) => n + readingMinutes(l), 0);
-
   return (
     <>
       <PageMeta />
@@ -159,12 +149,14 @@ export default function Contents() {
             <p className="font-mono text--1 uppercase tracking-[0.1em] text-ink-soft">{t('landing.set')}</p>
             <h1 className="text-display text-5 sm:text-6">{t('landing.title')}</h1>
             <p className="lesson-body max-w-[52ch] text-1">
-              {t('landing.leadA')} <HandUnderline variant="scribble" className="">{t('landing.leadMark')}</HandUnderline>
+              {t(gameCount ? 'landing.leadA' : 'landing.leadNoGamesA')}{' '}
+              <HandUnderline variant="scribble" className="">
+                {t(gameCount ? 'landing.leadMark' : 'landing.leadNoGamesMark')}
+              </HandUnderline>
               {t('landing.leadB')}
             </p>
             <p className="text-label text-ink-soft">
-              {tp('landing.lessons', LESSONS.length)} · {t('landing.minutes', { n: totalMinutes })} ·{' '}
-              {realGames.length ? tp('landing.games', realGames.length) : t('landing.noGames')}
+              {[gamesSummary(), plural(lessonCount, 'lectie'), t('landing.minutes', { n: readingMinutesTotal })].filter(Boolean).join(' · ')}
             </p>
           </div>
 
@@ -173,7 +165,7 @@ export default function Contents() {
               <h2 id="start-here" className="text-label text-ink-soft">
                 {t('landing.startHere')}
               </h2>
-              <GameSlide gameId={start.gameId} stain={start.lesson.stain} catalog={catalogNumber(start.lesson)} compact tilt={0} />
+              <GameSlide gameId={start.game.id} stain={start.lesson.stain} catalog={catalogNumber(start.lesson)} compact tilt={0} />
               <Link to={`/#${start.lesson.slug}`} className="text--1 self-start text-ink-soft underline underline-offset-4 hover:text-ink">
                 {t('landing.orRead')}
               </Link>

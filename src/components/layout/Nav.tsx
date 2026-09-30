@@ -1,6 +1,6 @@
 // Site navigation, generated from the lessons and the registry.
 //   Desktop (md+): notebook index tabs hanging from the top edge, one per topic in programa order
-//   (catalog number, short name, stain edge, three progress dots), plus Jocuri. It scrolls away
+//   (catalog number, short name, stain edge, its progress dots), plus Jocuri. It scrolls away
 //   with the page, so it never covers content, and nothing depends on hover.
 //   Phone: a thumb bar at the bottom (Acasă, Jocuri, Cuprins); Cuprins opens a sheet with the topics.
 //   Game routes: the nav steps aside for the shell and leaves one clear way back.
@@ -17,6 +17,7 @@ import { getGame } from '../../games/registry';
 import Container from '../primitives/Container';
 import Wordmark from '../brand/Wordmark';
 import Stamps from '../lesson/Stamps';
+import { gameCount } from '../../content/stats';
 
 function IndexTabs() {
   const { pathname } = useLocation();
@@ -52,19 +53,21 @@ function IndexTabs() {
             </li>
           );
         })}
-        <li>
-          <NavLink
-            to="/jocuri"
-            className={({ isActive }) =>
-              cx(
-                'flex min-h-11 items-center rounded-b-[10px] border-x border-b border-t-4 border-ink-faint px-3 pb-2 pt-2 text--1 font-medium no-underline shadow-well',
-                isActive ? 'bg-paper-bright text-ink' : 'bg-paper-deep text-ink-soft hover:bg-paper-bright hover:text-ink',
-              )
-            }
-          >
-            {t('nav.items.games')}
-          </NavLink>
-        </li>
+        {gameCount > 0 && (
+          <li>
+            <NavLink
+              to="/jocuri"
+              className={({ isActive }) =>
+                cx(
+                  'flex min-h-11 items-center rounded-b-[10px] border-x border-b border-t-4 border-ink-faint px-3 pb-2 pt-2 text--1 font-medium no-underline shadow-well',
+                  isActive ? 'bg-paper-bright text-ink' : 'bg-paper-deep text-ink-soft hover:bg-paper-bright hover:text-ink',
+                )
+              }
+            >
+              {t('nav.items.games')}
+            </NavLink>
+          </li>
+        )}
       </ul>
     </nav>
   );
@@ -140,15 +143,17 @@ function BottomBar() {
               {t('nav.home')}
             </NavLink>
           </li>
-          <li className="flex flex-1">
-            <NavLink to="/jocuri" className={({ isActive }) => cx(item, isActive ? 'text-ink' : 'text-ink-soft')}>
-              <svg aria-hidden="true" viewBox="0 0 20 20" className="w-5">
-                <rect x="2.5" y="6" width="15" height="8" rx="2" fill="none" stroke="currentColor" strokeWidth="1.7" />
-                <path d="M5.5 6 V14" stroke="currentColor" strokeWidth="1.7" />
-              </svg>
-              {t('nav.items.games')}
-            </NavLink>
-          </li>
+          {gameCount > 0 && (
+            <li className="flex flex-1">
+              <NavLink to="/jocuri" className={({ isActive }) => cx(item, isActive ? 'text-ink' : 'text-ink-soft')}>
+                <svg aria-hidden="true" viewBox="0 0 20 20" className="w-5">
+                  <rect x="2.5" y="6" width="15" height="8" rx="2" fill="none" stroke="currentColor" strokeWidth="1.7" />
+                  <path d="M5.5 6 V14" stroke="currentColor" strokeWidth="1.7" />
+                </svg>
+                {t('nav.items.games')}
+              </NavLink>
+            </li>
+          )}
           <li className="flex flex-1">
             <button type="button" aria-haspopup="dialog" aria-expanded={open} onClick={() => setOpen(true)} className={cx(item, onTopic ? 'text-ink' : 'text-ink-soft')}>
               <svg aria-hidden="true" viewBox="0 0 20 20" className="w-5">

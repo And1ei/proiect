@@ -21,7 +21,7 @@ export const SAFARI = {
     instructions: [
       'Patru lame, printre ele un lac sărat și o baltă cu animale mici.',
       'Atinge un organism, citește-i fișa și alege grupul după semnul care decide.',
-      'La protozoare, ciuperci și Chromista urmează un al doilea pas: tipul (de exemplu ciliat sau amibă).',
+      'La protozoare, ciuperci și Chromista mai e un pas: tipul (de exemplu ciliat sau amibă).',
       'Un grup greșit sparge o lamă. Ce scapă sau greșești revine mai târziu.',
     ],
   },

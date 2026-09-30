@@ -28,7 +28,7 @@ export type LicenseId =
   | 'OFL-1.1';
 
 /** Named sound events (see src/games/feel/sfx.ts). */
-export type SoundEvent = 'click' | 'correct' | 'wrong' | 'streak' | 'levelUp' | 'win' | 'lose' | 'pop' | 'whoosh';
+export type SoundEvent = 'click' | 'correct' | 'wrong' | 'streak' | 'win' | 'lose' | 'pop' | 'whoosh';
 
 export interface AssetEntry {
   /** Stable id used in code: <Sprite id>, sfx, Phaser texture keys. */
@@ -93,48 +93,6 @@ export const ASSETS: readonly AssetEntry[] = [
     color: 'palette',
   },
   {
-    id: 'reticul-endoplasmatic',
-    file: 'icons/reticul-endoplasmatic.svg',
-    kind: 'icon',
-    title: 'Reticul endoplasmatic',
-    sourceName: 'Bioicons',
-    sourceUrl: `${BIOICONS}/cc-0/Intracellular_components/jaiganesh/Endoplasmic_Reticulum.svg`,
-    author: 'jaiganesh',
-    license: 'CC0-1.0',
-    attributionRequired: false,
-    modifications: PALETTE_MODS,
-    raw: 'bioicons/Endoplasmic_Reticulum.svg',
-    color: 'palette',
-  },
-  {
-    id: 'ribozom',
-    file: 'icons/ribozom.svg',
-    kind: 'icon',
-    title: 'Ribozom',
-    sourceName: 'Bioicons',
-    sourceUrl: `${BIOICONS}/cc-0/Intracellular_components/jaiganesh/ribosome.svg`,
-    author: 'jaiganesh',
-    license: 'CC0-1.0',
-    attributionRequired: false,
-    modifications: PALETTE_MODS,
-    raw: 'bioicons/ribosome.svg',
-    color: 'palette',
-  },
-  {
-    id: 'aparat-golgi',
-    file: 'icons/aparat-golgi.svg',
-    kind: 'icon',
-    title: 'Aparat Golgi',
-    sourceName: 'Servier Medical Art, prin Bioicons',
-    sourceUrl: `${BIOICONS}/cc-by-3.0/Intracellular_components/Servier/golgi-2d-1.svg`,
-    author: 'Servier',
-    license: 'CC-BY-3.0',
-    attributionRequired: true,
-    modifications: PALETTE_MODS,
-    raw: 'bioicons/golgi-2d-1.svg',
-    color: 'palette',
-  },
-  {
     id: 'celula',
     file: 'icons/celula.svg',
     kind: 'icon',
@@ -147,35 +105,6 @@ export const ASSETS: readonly AssetEntry[] = [
     modifications: PALETTE_MODS,
     raw: 'bioicons/simple_cell1.svg',
     color: 'palette',
-  },
-  {
-    id: 'bacterie',
-    file: 'icons/bacterie.svg',
-    kind: 'icon',
-    title: 'Bacterie',
-    sourceName: 'Bioicons',
-    sourceUrl: `${BIOICONS}/cc-0/Microbiology/Pauline_Franz/generic-bacterium.svg`,
-    author: 'Pauline Franz',
-    license: 'CC0-1.0',
-    attributionRequired: false,
-    modifications: PALETTE_MODS,
-    raw: 'bioicons/generic-bacterium.svg',
-    color: 'palette',
-  },
-  {
-    id: 'bacteriofag',
-    file: 'icons/bacteriofag.svg',
-    kind: 'icon',
-    title: 'Bacteriofag',
-    sourceName: 'Bioicons',
-    sourceUrl: `${BIOICONS}/cc-0/Microbiology/James-Lloyd/Phage.svg`,
-    author: 'James Lloyd',
-    license: 'CC0-1.0',
-    attributionRequired: false,
-    modifications: PALETTE_MODS,
-    raw: 'bioicons/Phage.svg',
-    color: 'palette',
-    dropBackground: true,
   },
 
   // ── Membrane transport and osmosis (G2, "Poarta membranei") ─────
@@ -630,7 +559,6 @@ export const ASSETS: readonly AssetEntry[] = [
       ['correct', 'confirmation_001', 'Răspuns corect'],
       ['wrong', 'error_008', 'Răspuns greșit'],
       ['streak', 'maximize_006', 'Serie'],
-      ['levelUp', 'confirmation_004', 'Nivel nou'],
       ['win', 'confirmation_002', 'Victorie'],
       ['lose', 'error_006', 'Joc pierdut'],
       ['pop', 'drop_002', 'Pocnet'],

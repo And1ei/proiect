@@ -3,11 +3,11 @@
 
 export const DRIFT = {
   title: 'Sandbox A: Prinde organismele',
-  tagline: 'Joc de probă pentru stratul Phaser. Prinde protistele, ferește-te de bacteriofagi.',
+  tagline: 'Joc de probă pentru stratul Phaser. Prinde protistele, ferește-te de bacterii.',
   instructions: [
     'Organisme unicelulare trec prin câmpul microscopului.',
     'Atinge parameciul, euglena, amiba sau volvoxul ca să le prinzi.',
-    'Nu atinge bacteriofagii: fiecare te costă o viață.',
+    'Nu atinge bacteriile: fiecare te costă o viață.',
     'Prinde 15 organisme ca să câștigi.',
   ],
   controls: {

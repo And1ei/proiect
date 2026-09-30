@@ -242,7 +242,6 @@ const ds = {
       correct: 'corect',
       wrong: 'greșit',
       streak: 'serie',
-      levelUp: 'nivel nou',
       win: 'victorie',
       lose: 'pierdere',
       pop: 'pocnet',

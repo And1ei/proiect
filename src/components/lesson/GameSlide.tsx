@@ -7,6 +7,7 @@ import { useReducedMotion } from '../../lib/motionPreference';
 import { useProgress } from '../../lib/useProgress';
 import { getGame, gamePath } from '../../games/registry';
 import { preloadGame } from '../../games/core/preload';
+import { isAdvanced } from '../../content/stats';
 import Stars from '../../games/core/Stars';
 import type { Stars as StarCount } from '../../games/core/types';
 import { STAIN } from '../../lib/stains';
@@ -25,7 +26,7 @@ export default function GameSlide({ gameId, stain, catalog, tilt = -1.2, compact
   const p = progressOf(game.id);
   const s = STAIN[stain];
   const intent = () => preloadGame(game);
-  const advanced = game.id.endsWith('-avansat');
+  const advanced = isAdvanced(game);
 
   return (
     <motion.div

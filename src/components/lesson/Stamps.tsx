@@ -2,13 +2,12 @@ import { t } from '../../lib/i18n';
 import { cx } from '../../lib/cx';
 import { STAIN } from '../../lib/stains';
 import { useProgress } from '../../lib/useProgress';
-import { stampsOf } from '../../lib/stamps';
+import { stampKeys, stampsOf } from '../../lib/stamps';
 import type { Lesson } from '../../content/ro/lessons/index.ts';
 
-const KEYS = ['citit', 'jucat', 'stapanit'] as const;
-
 /**
- * The three progress stamps of a topic in its stain: citit, jucat, stăpânit. Earned stamps are
+ * The progress stamps of a topic in its stain: citit, jucat, stăpânit (no jucat for a topic without
+ * a game, since it could never be earned). Earned stamps are
  * inked; missing ones are a faint dashed outline (the text says which, never colour alone).
  * No percentages. `size="xs"` for the nav.
  */
@@ -16,6 +15,7 @@ export default function Stamps({ lesson, size = 'sm', className }: { lesson: Les
   const { data } = useProgress();
   const st = stampsOf(lesson, data);
   const s = STAIN[lesson.stain];
+  const KEYS = stampKeys(lesson);
   const earned = KEYS.filter((k) => st[k]);
   return (
     <span className={cx('inline-flex items-center gap-1', className)} role="img" aria-label={earned.length ? t('stamps.aria', { list: earned.map((k) => t(`stamps.${k}`)).join(', ') }) : t('stamps.none')}>

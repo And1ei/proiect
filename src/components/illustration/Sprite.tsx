@@ -1,7 +1,7 @@
 // One look for every asset, whatever pack it came from: the same ink outline and paper-cut
 // shadow, a fixed size scale, and palette colours (palette assets were snapped to the stain palette
 // by scripts/assets-clean.mjs; mono silhouettes are painted here with a palette `tone`).
-// Sits beside <Illustration> (schematic plates with labels); use <Sprite> for game pieces, icons
+// Use <Sprite> for game pieces, icons
 // and organisms. Phaser scenes get the same treatment from BaseScene.addSpecimen().
 import type { CSSProperties } from 'react';
 import { getAsset } from '../../assets/urls';

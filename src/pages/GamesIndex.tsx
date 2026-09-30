@@ -5,13 +5,17 @@ import Container from '../components/primitives/Container';
 import SpecimenLabel from '../components/primitives/SpecimenLabel';
 import PageMeta from '../components/layout/PageMeta';
 import Blob from '../components/primitives/Blob';
-import { GAMES, gamesForTopic } from '../games/registry';
+import { GAMES } from '../games/registry';
+import { familiesOf } from '../content/stats';
 import GameCard from '../games/core/GameCard';
 import { preloadPhaser } from '../games/phaser/loadPhaser';
 
-/** Arcade index: every registered game, grouped by topic in programa order. */
+/**
+ * Arcade index: every registered game, grouped by topic in programa order; a game's levels share
+ * one card. Topics without a game are not listed here.
+ */
 export default function GamesIndex() {
-  const groups = TOPICS.map((topic) => ({ topic, games: gamesForTopic(topic.slug) })).filter((g) => g.games.length);
+  const groups = TOPICS.map((topic) => ({ topic, families: familiesOf(GAMES.filter((g) => g.topicSlug === topic.slug)) })).filter((g) => g.families.length);
 
   // Idle time on the arcade: fetch the Phaser chunk so the first Phaser game opens quickly
   useEffect(() => {
@@ -39,14 +43,14 @@ export default function GamesIndex() {
           <p className="prose-body">{t('games.empty')}</p>
         </section>
       ) : (
-        groups.map(({ topic, games }) => (
+        groups.map(({ topic, families }) => (
           <section key={topic.slug} aria-labelledby={`games-${topic.slug}`} data-rail-mark={topic.stain} className="flex flex-col gap-4">
             <h2 id={`games-${topic.slug}`} className="flex flex-wrap items-baseline gap-x-4 text-2">
               <span>{topic.title}</span>
             </h2>
             <ul className="grid gap-5 sm:grid-cols-2">
-              {games.map((game) => (
-                <GameCard key={game.id} game={game} fig={topic.number} />
+              {families.map((family) => (
+                <GameCard key={family.id} family={family} fig={topic.number} />
               ))}
             </ul>
           </section>

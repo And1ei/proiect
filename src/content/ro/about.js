@@ -6,7 +6,7 @@ const about = {
     {
       heading: 'Ce este Soft Educational',
       paragraphs: [
-        'Soft Educational este un caiet de biologie interactiv pentru clasa a IX-a. Temele urmează programa de biologie, în aceeași ordine.',
+        'Soft Educational este un caiet de biologie interactiv pentru clasa a IX-a. Temele sunt cele din programa de biologie, în aceeași ordine.',
         'Scopul nu este să memorezi liste de denumiri, ci să înțelegi de ce lucrurile funcționează așa cum funcționează. Când înțelegi mecanismul, denumirile se rețin mai ușor.',
       ],
     },

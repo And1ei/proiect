@@ -47,7 +47,7 @@ function getDemo() {
   return demo;
 }
 
-const SOUNDS: SoundEvent[] = ['click', 'correct', 'wrong', 'streak', 'levelUp', 'win', 'lose', 'pop', 'whoosh'];
+const SOUNDS: SoundEvent[] = ['click', 'correct', 'wrong', 'streak', 'win', 'lose', 'pop', 'whoosh'];
 const SITUATIONS: Situation[] = ['correct', 'wrong', 'streak', 'nearWin', 'finish', 'tryAgain'];
 const SIZES: SpriteSize[] = ['sm', 'md', 'lg', 'xl'];
 const TONES: SpriteTone[] = ['methylene-deep', 'eosin-deep', 'iodine-deep'];
@@ -77,7 +77,7 @@ function FeelDemo() {
       </div>
       <div ref={ref} className="relative flex h-24 items-center gap-4 rounded-well bg-paper-deep px-5 shadow-well">
         <Sprite id="parameci" size="lg" tone="methylene-deep" />
-        <Sprite id="bacteriofag" size="lg" />
+        <Sprite id="streptococcus" size="lg" />
         <FloatingText items={floats.items} />
       </div>
       <p className="text--1 text-ink-soft">{g('reducedNote')}</p>

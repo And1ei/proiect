@@ -12,7 +12,7 @@ export const GOOD = [
 ] as const;
 
 /** Organisms that cost a life. Palette-coloured asset, so no tone. */
-export const BAD = ['bacteriofag'] as const;
+export const BAD = ['streptococcus'] as const;
 
 export const TARGET = 15;
 export const LIVES = 3;

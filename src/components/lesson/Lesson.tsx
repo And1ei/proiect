@@ -124,7 +124,6 @@ export default function Lesson({ lesson, mode, track = true, hideGames = false, 
         </p>
       </section>
 
-      {lesson.games.length === 0 && !hideGames && <p className="max-w-[40rem] text--1 text-ink-soft">{t('lesson.noGame')}</p>}
       {children}
     </article>
   );

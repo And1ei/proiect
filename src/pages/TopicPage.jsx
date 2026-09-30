@@ -1,8 +1,8 @@
 import { getLesson, neighbors, catalogNumber, readingMinutes, sectionPath } from '../content/ro/lessons/index.ts';
-import { t, tp } from '../lib/i18n';
+import { t } from '../lib/i18n';
 import { cx } from '../lib/cx';
 import { STAIN } from '../lib/stains';
-import { gamesForTopic } from '../games/registry';
+import { familiesForTopic, levelsForTopic, plural } from '../content/stats';
 import Container from '../components/primitives/Container';
 import PageMeta from '../components/layout/PageMeta';
 import Lesson from '../components/lesson/Lesson';
@@ -17,7 +17,8 @@ export default function TopicPage({ slug }) {
   if (!lesson) return <NotFound />;
   const { prev, next } = neighbors(slug);
   const s = STAIN[lesson.stain];
-  const games = gamesForTopic(slug);
+  const games = familiesForTopic(slug).length;
+  const levels = levelsForTopic(slug).length;
 
   return (
     <>
@@ -34,10 +35,14 @@ export default function TopicPage({ slug }) {
               <dt className="text-label text-ink-soft">{t('topicPage.reading')}</dt>
               <dd>{t('lesson.readingTime', { n: readingMinutes(lesson) })}</dd>
             </div>
-            <div>
-              <dt className="text-label text-ink-soft">{t('topicPage.games')}</dt>
-              <dd>{games.length ? tp('topicPage.gameCount', games.length) : t('topicPage.noGames')}</dd>
-            </div>
+            {games > 0 && (
+              <div>
+                <dt className="text-label text-ink-soft">{t('topicPage.games')}</dt>
+                <dd>
+                  {plural(games, 'joc')} · {plural(levels, 'nivel')}
+                </dd>
+              </div>
+            )}
             <div>
               <dt className="text-label text-ink-soft">{t('topicPage.progress')}</dt>
               <dd className="pt-1">
@@ -53,7 +58,7 @@ export default function TopicPage({ slug }) {
               <h2 id="verifica" className="text-3">
                 {t('lesson.check')}
               </h2>
-              <p className="lesson-body text-ink-soft">{t('lesson.checkIntro')}</p>
+              <p className="lesson-body text-ink-soft">{t('lesson.checkIntro', { count: plural(lesson.check.length, 'intrebare') })}</p>
               <Quiz lesson={lesson} sectionHref={(id) => sectionPath(slug, id)} />
             </section>
           </Lesson>

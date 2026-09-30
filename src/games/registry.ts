@@ -17,6 +17,5 @@ export const GAMES: readonly GameDefinition[] = [...REAL_GAMES, ...SANDBOX_GAMES
 
 export const getGame = (id: string | undefined): GameDefinition | null => GAMES.find((g) => g.id === id) ?? null;
 
-export const gamesForTopic = (slug: string) => GAMES.filter((g) => g.topicSlug === slug);
 
 export const gamePath = (id: string) => `/joc/${id}`;

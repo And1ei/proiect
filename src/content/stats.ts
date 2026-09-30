@@ -2,7 +2,7 @@
 // shown as a number anywhere is typed by hand: read it from here.
 //   family  a game (a base entry and its advanced twin are one game with two levels)
 //   level   a registry entry (/joc/:id)
-import { LESSONS, type Lesson } from './ro/lessons/index.ts';
+import { LESSONS, readingMinutes, type Lesson } from './ro/lessons/index.ts';
 import { GAMES } from '../games/registry';
 import type { GameDefinition } from '../games/core/types';
 
@@ -19,12 +19,16 @@ export interface GameFamily {
   base: GameDefinition;
 }
 
-export const FAMILIES: readonly GameFamily[] = PLAYABLE.reduce<GameFamily[]>((out, g) => {
-  const f = out.find((x) => x.id === familyOf(g));
-  if (f) f.levels.push(g);
-  else out.push({ id: familyOf(g), topicSlug: g.topicSlug, levels: [g], base: g });
-  return out;
-}, []);
+/** Groups registry entries into games, keeping registry order. */
+export const familiesOf = (games: readonly GameDefinition[]) =>
+  games.reduce<GameFamily[]>((out, g) => {
+    const f = out.find((x) => x.id === familyOf(g));
+    if (f) f.levels.push(g);
+    else out.push({ id: familyOf(g), topicSlug: g.topicSlug, levels: [g], base: g });
+    return out;
+  }, []);
+
+export const FAMILIES: readonly GameFamily[] = familiesOf(PLAYABLE);
 
 /** A level that is not the first of its family is the advanced one ("Avansat · CS"). */
 export const isAdvanced = (g: GameDefinition) => FAMILIES.some((f) => f.id === familyOf(g) && f.base.id !== g.id);
@@ -41,6 +45,7 @@ export const lessonCount = LESSONS.length;
 export const topicsWithGames: readonly Lesson[] = LESSONS.filter((l) => topicHasGames(l.slug));
 export const topicsWithoutGames: readonly Lesson[] = LESSONS.filter((l) => !topicHasGames(l.slug));
 export const playMinutes = PLAYABLE.reduce((n, g) => n + g.estimatedMinutes, 0);
+export const readingMinutesTotal = LESSONS.reduce((n, l) => n + readingMinutes(l), 0);
 
 export const perTopic = LESSONS.map((l) => ({
   slug: l.slug,
@@ -62,6 +67,15 @@ export function firstPlayable() {
   return null;
 }
 
+/** "3 jocuri, toate cu nivel avansat": the games summary line, or null with no game. */
+export function gamesSummary() {
+  if (gameCount === 0) return null;
+  const games = plural(gameCount, 'joc');
+  if (advancedCount === 0) return games;
+  if (advancedCount === gameCount) return gameCount === 1 ? `${games}, cu nivel avansat` : `${games}, toate cu nivel avansat`;
+  return `${games}, cu nivel avansat la ${advancedCount} dintre ele`;
+}
+
 // ── Romanian plurals: 1 joc, 2–19 jocuri, 20+ de jocuri (and 0 jocuri, 101 de jocuri…) ──
 type Forms = readonly [one: string, few: string, other: string];
 export const NOUNS = {
@@ -70,6 +84,7 @@ export const NOUNS = {
   nivel: ['nivel', 'niveluri', 'de niveluri'],
   minut: ['minut', 'minute', 'de minute'],
   intrebare: ['întrebare', 'întrebări', 'de întrebări'],
+  sectiune: ['secțiune', 'secțiuni', 'de secțiuni'],
 } as const satisfies Record<string, Forms>;
 
 /** Romanian plural category: "few" also covers 0 and numbers ending in 01–19 above 100. */
@@ -89,6 +104,7 @@ export const SITE_STATS = {
   advancedCount,
   lessonCount,
   playMinutes,
+  readingMinutesTotal,
   topicsWithGames: topicsWithGames.map((l) => l.slug),
   topicsWithoutGames: topicsWithoutGames.map((l) => l.slug),
   perTopic,
