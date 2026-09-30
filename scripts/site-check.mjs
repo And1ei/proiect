@@ -16,6 +16,7 @@ import { readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import os from 'node:os';
+import { railChecks } from './lib/rail-check.mjs';
 import { LESSONS } from '../src/content/ro/lessons/index.ts';
 
 const BASE = process.argv.find((a) => a.startsWith('http')) ?? 'http://localhost:4173';
@@ -247,6 +248,9 @@ for (const id of gameIds) {
   check('loop', 'v1 storage loads without errors (migrated on the next save)', errs.length === 0 && migrated !== null);
   await context.close();
 }
+
+// ── 5b. Scroll indicator (F1 regression test) ──
+await railChecks(async (w, h) => (await newPage(w, h)).page, BASE, check, LESSONS[0].slug);
 
 await browser.close();
 

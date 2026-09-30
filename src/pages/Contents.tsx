@@ -42,7 +42,7 @@ function TopicBlock({ lesson, open, onToggle }: { lesson: LessonData; open: bool
   const titleId = `title-${lesson.slug}`;
 
   return (
-    <li id={lesson.slug} className="scroll-mt-24">
+    <li id={lesson.slug} data-rail-mark={lesson.stain} className="scroll-mt-24">
       <div className="grid grid-cols-[3.25rem_minmax(0,1fr)] gap-x-4 sm:grid-cols-[4.5rem_minmax(0,1fr)] sm:gap-x-6 lg:grid-cols-[5rem_minmax(0,1fr)_17rem]">
         {/* Catalog number on the slide's stain strip */}
         <div className="row-span-2 flex flex-col items-center">

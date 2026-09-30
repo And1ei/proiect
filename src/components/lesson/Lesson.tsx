@@ -60,6 +60,7 @@ export default function Lesson({ lesson, mode, track = true, hideGames = false, 
             <section
               id={sec.id}
               data-lesson-section={sec.id}
+              data-rail-mark={page ? lesson.stain : undefined}
               aria-labelledby={headingId}
               className={cx('grid scroll-mt-28 gap-x-10 gap-y-4', page && 'lg:grid-cols-[minmax(0,40rem)_minmax(0,15rem)]')}
             >

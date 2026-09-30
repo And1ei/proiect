@@ -40,7 +40,7 @@ export default function GamesIndex() {
         </section>
       ) : (
         groups.map(({ topic, games }) => (
-          <section key={topic.slug} aria-labelledby={`games-${topic.slug}`} className="flex flex-col gap-4">
+          <section key={topic.slug} aria-labelledby={`games-${topic.slug}`} data-rail-mark={topic.stain} className="flex flex-col gap-4">
             <h2 id={`games-${topic.slug}`} className="flex flex-wrap items-baseline gap-x-4 text-2">
               <span>{topic.title}</span>
             </h2>

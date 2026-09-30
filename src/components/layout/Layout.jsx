@@ -5,6 +5,7 @@ import { t } from '../../lib/i18n';
 import Nav from './Nav';
 import Footer from './Footer';
 import ErrorBoundary from './ErrorBoundary';
+import ScrollRail from './ScrollRail';
 
 function PageLoading() {
   return (
@@ -36,6 +37,7 @@ export default function Layout() {
         </ErrorBoundary>
       </main>
       <Footer />
+      <ScrollRail />
       <SoftCursor />
     </div>
   );
