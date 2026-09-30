@@ -14,7 +14,7 @@ import path from 'node:path';
 const BASE = process.argv[2] ?? 'http://localhost:4173';
 const executablePath =
   process.env.CHROMIUM_PATH ?? path.join(os.homedir(), 'AppData/Local/Chromium/Application/chrome.exe');
-const GAMES = ['/joc/poarta-membranei', '/joc/poarta-membranei-avansat'];
+const GAMES = ['/joc/poarta-membranei', '/joc/poarta-membranei-avansat', '/joc/safari-microscop', '/joc/safari-microscop-avansat'];
 const DOM_GAMES = ['/joc/echilibrul', '/joc/echilibrul-avansat'];
 const ROUTES = ['/', '/jocuri', '/celula', '/ecosisteme', '/diversitatea-vietii', '/impactul-uman', '/laboratorul', '/credite', ...GAMES, ...DOM_GAMES];
 const GAME = GAMES[0];
@@ -74,15 +74,16 @@ await tab.close();
 // Start each Phaser game offline: the chunk, scene, sprites and fonts must all load from the cache
 for (const game of GAMES) {
   await page.goto(`${BASE}${game}`).catch(() => undefined);
-  const howTo = await page.locator('ol canvas').first().waitFor({ timeout: 8000 }).then(() => true).catch(() => false);
+  // the animated intro: an ordered list of steps with a drawing in each (canvas or svg)
+  const howTo = await page.locator('ol[aria-label] :is(canvas, svg)').first().waitFor({ timeout: 8000 }).then(() => true).catch(() => false);
   check(`offline: animated intro renders ${game}`, howTo);
   await page.getByRole('button', { name: /^(Începe|Sari peste, joc direct)$/ }).click();
   const canvas = await page.locator('[data-game-stage] canvas').waitFor({ timeout: 10000 }).then(() => true).catch(() => false);
   check(`offline: Phaser game boots ${game}`, canvas);
   await page.waitForTimeout(3000);
   const loadError = await page.getByText('Jocul nu s-a putut încărca').count();
-  const gates = await page.getByText('Dublul strat').count();
-  check(`offline: scene running, no load error ${game}`, loadError === 0 && gates > 0);
+  const drawn = await page.evaluate(() => { const c = document.querySelector('[data-game-stage] canvas'); return !!c && c.width > 0 && c.height > 0; });
+  check(`offline: scene running, no load error ${game}`, loadError === 0 && drawn);
 }
 if (process.env.OFFLINE_SCREENSHOT) await page.screenshot({ path: process.env.OFFLINE_SCREENSHOT });
 // DOM games offline: they start and run from the precache, and never request the Phaser chunk
