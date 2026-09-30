@@ -59,27 +59,43 @@ export const laboratorul: Lesson = {
   ],
   games: [],
   whyItMatters: 'Așa se verifică și un medicament nou: cu un grup martor, cu multe persoane și cu o singură diferență între grupuri.',
+  // REVIEW (F1): five questions, since this topic has no game; teacher please re-check
   check: [
     {
-      prompt: 'Testezi dacă lumina influențează creșterea plantelor. Care este variabila independentă?',
-      options: ['Înălțimea plantelor', 'Cantitatea de lumină', 'Cantitatea de apă', 'Tipul de sol'],
+      prompt: 'Care dintre acestea este o ipoteză care poate fi verificată?',
+      options: ['Plantele iubesc lumina', 'Fasolea udată zilnic crește în două săptămâni mai înaltă decât cea udată o dată pe săptămână', 'Fasolea este o plantă frumoasă', 'Toate plantele au nevoie de ceva'],
       answer: 1,
-      explanation: 'Variabila independentă este ce schimbi tu: aici, lumina.',
+      explanation: 'Spune ce schimbi (udarea) și ce măsori (înălțimea), deci un experiment o poate confirma sau infirma.',
+      section: 'intrebare-ipoteza',
+    },
+    {
+      prompt: 'Pui ghiveciul cald la lumină și pe cel rece la întuneric. De ce nu poți trage o concluzie despre temperatură?',
+      options: ['Ai schimbat două lucruri deodată', 'Ghivecele sunt prea mici', 'Lumina nu contează pentru semințe', 'Poți: temperatura e singura diferență'],
+      answer: 0,
+      explanation: 'Dacă schimbi și lumina, nu mai știi dacă diferența vine de la temperatură sau de la lumină.',
       section: 'variabile-martor',
     },
     {
-      prompt: 'La ce folosește grupul martor?',
-      options: ['Ca să ai mai multe date', 'Ca să compari rezultatele cu cele din condiții obișnuite', 'Ca să schimbi mai multe variabile', 'Ca să termini mai repede'],
+      prompt: 'Testezi un îngrășământ doar pe plante tratate, fără grup martor. Ce nu vei ști?',
+      options: ['Nimic, rezultatul e același', 'Dacă plantele ar fi crescut la fel și fără îngrășământ', 'Câte plante ai folosit', 'Cât de înalte au crescut plantele'],
       answer: 1,
-      explanation: 'Fără un grup de comparație nu știi dacă schimbarea ta a produs vreun efect.',
+      explanation: 'Grupul martor arată ce se întâmplă fără schimbarea ta; fără el nu ai cu ce compara.',
       section: 'variabile-martor',
+    },
+    {
+      prompt: 'Semințele de la 25 °C au germinat în medie în 4 zile, cele de la 10 °C în 11 zile. Ce concluzie este corectă?',
+      options: ['Toate plantele din lume cresc mai repede la căldură', 'Pentru aceste semințe și condiții, căldura a grăbit germinarea', 'Ipoteza este infirmată', 'Dintr-un experiment nu se poate spune nimic'],
+      answer: 1,
+      explanation: 'Concluzia răspunde la întrebare doar pentru condițiile testate, nu pentru orice plantă.',
+      section: 'date-concluzie',
     },
     {
       prompt: 'Ai folosit doar două semințe în fiecare grup. Ce e în neregulă?',
       options: ['Nimic', 'Eșantionul e prea mic, rezultatul poate fi întâmplător', 'Trebuia o singură sămânță', 'Semințele trebuiau să fie de soiuri diferite'],
       answer: 1,
-      explanation: 'Cu puține probe, o sămânță mai slabă schimbă tot rezultatul.',
+      explanation: 'Cu puține probe, o sămânță mai slabă din întâmplare schimbă tot rezultatul.',
       section: 'erori',
     },
+
   ],
 };

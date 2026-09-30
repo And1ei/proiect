@@ -39,7 +39,7 @@ export const celula: Lesson = {
         'Fiecare celulă este învelită de **membrana celulară**, un **dublu strat lipidic**: două rânduri de lipide cu „capetele” spre apă și „cozile” ascunse la mijloc. Printre lipide sunt prinse proteine.',
         'Mijlocul membranei este gras, deci nu lasă să treacă ușor moleculele care se amestecă bine cu apa. Moleculele mici și nepolare, ca oxigenul și dioxidul de carbon, trec direct. Glucoza este mare și polară, iar ionii (Na⁺, K⁺) au sarcină electrică: ei nu trec singuri, ci doar prin proteine speciale. De aceea spunem că membrana este **semipermeabilă**.',
       ],
-      margin: 'Proteinele mari nu trec deloc prin membrană: intră în vezicule, un transport care nu e în acest joc.',
+      margin: 'Proteinele mari nu trec nici prin dublul strat, nici prin canale: celula le primește învelite în vezicule.',
     },
     {
       id: 'difuzie-osmoza',

@@ -44,12 +44,13 @@ export const ecosisteme: Lesson = {
       title: 'Ce ține o pădure în echilibru?',
       body: [
         'Mărimea unei populații depinde de hrană, de prădători, de boli, de spațiu și de condițiile de mediu. Când hrana e multă, populația crește; când prădătorii se înmulțesc, prada scade, apoi scad și prădătorii. Așa se păstrează **echilibrul ecologic**.',
-        'Dacă un prădător dispare, legătura se rupe. Fără vulpi, șoarecii se înmulțesc foarte mult și mănâncă prea multe ghinde, așa că răsar mai puțini stejari. Apoi, fără destulă hrană, scad și șoarecii. Un singur dispărut schimbă tot ecosistemul.',
+        'Dacă un prădător dispare, de exemplu pentru că e vânat sau pescuit prea mult, legătura se rupe. Fără vulpi, șoarecii se înmulțesc foarte mult și mănâncă prea multe ghinde, așa că răsar mai puțini stejari. Apoi, fără destulă hrană, scad și șoarecii. Un singur dispărut schimbă tot ecosistemul.',
       ],
       predict: {
         question: 'Ce se întâmplă mai întâi când dispare prădătorul: scad plantele sau cresc prăzile?',
         answer: 'Cresc prăzile. Abia după aceea, pentru că mănâncă prea mult, scad plantele.',
       },
+      margin: 'Îngrășămintele scurse într-o baltă hrănesc algele, care se înmulțesc exploziv. Descompunerea lor consumă oxigenul din apă și peștii mor: **eutrofizare**.',
     },
     {
       id: 'dominanta',

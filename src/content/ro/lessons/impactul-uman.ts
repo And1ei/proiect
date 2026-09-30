@@ -59,7 +59,15 @@ export const impactulUman: Lesson = {
   ],
   games: [],
   whyItMatters: 'Ce ajunge în apa unei bălți se întoarce la noi prin peștii pe care îi mâncăm și prin apa pe care o bem.',
+  // REVIEW (F1): five questions, since this topic has no game; teacher please re-check
   check: [
+    {
+      prompt: 'O pădure este înlocuită cu un lan de porumb. De ce se pot înmulți mai ușor dăunătorii acolo?',
+      options: ['Porumbul îi atrage prin miros', 'Rețeaua trofică e simplă: rămân puține specii care să-i țină în frâu', 'Lanul primește mai multă apă decât pădurea', 'În pădure dăunătorii nu pot trăi deloc'],
+      answer: 1,
+      explanation: 'Cu o singură plantă rămân puține specii, iar dăunătorii au puțini dușmani naturali.',
+      section: 'omul-in-ecosistem',
+    },
     {
       prompt: 'De ce mor peștii într-o baltă în care au ajuns multe îngrășăminte?',
       options: ['Îngrășămintele sunt otrăvitoare pentru pești', 'Algele se înmulțesc, iar descompunerea lor consumă oxigenul', 'Apa devine prea rece', 'Peștii mănâncă îngrășămintele'],
@@ -68,18 +76,26 @@ export const impactulUman: Lesson = {
       section: 'poluare-deseuri',
     },
     {
-      prompt: 'Care afirmație despre efectul de seră este corectă?',
-      options: ['Este produs doar de om', 'Fără el, Pământul ar fi mult mai rece', 'Este produs de gaura din stratul de ozon', 'Răcește planeta'],
-      answer: 1,
-      explanation: 'Efectul de seră natural ține planeta caldă; omul l-a accentuat.',
+      prompt: 'Ce s-ar întâmpla dacă atmosfera nu ar avea deloc gaze cu efect de seră?',
+      options: ['Pământul ar fi mult mai rece, înghețat', 'Pământul s-ar încălzi mai repede', 'Nu s-ar schimba nimic', 'Ar ploua mai des'],
+      answer: 0,
+      explanation: 'Aceste gaze rețin o parte din căldură; fără efectul de seră natural, planeta ar fi înghețată.',
       section: 'clima',
     },
     {
-      prompt: 'Care exemplu ține de amprenta pozitivă?',
-      options: ['Folosești mai puțin plastic', 'Plantezi și îngrijești un copac', 'Faci dușuri mai scurte', 'Mergi pe jos la școală'],
+      prompt: 'De ce tăierea pădurilor accentuează efectul de seră?',
+      options: ['Copacii tăiați răcesc aerul', 'Pădurile absorb dioxid de carbon, iar fără ele rămâne mai mult în aer', 'Pădurile produc metan', 'Solul gol reflectă lumina înapoi'],
       answer: 1,
-      explanation: 'Amprenta pozitivă este ce adaugi în bine; celelalte reduc amprenta ecologică.',
+      explanation: 'Pădurile absorb o parte din dioxidul de carbon; fără ele, mai mult rămâne în atmosferă și reține căldură.',
+      section: 'clima',
+    },
+    {
+      prompt: 'De ce mărește amprenta ecologică o mâncare adusă cu avionul de pe alt continent?',
+      options: ['Transportul ei consumă mult combustibil', 'Are mai multe vitamine', 'Se strică mai repede', 'Nu o mărește: amprenta ține doar de deșeuri'],
+      answer: 0,
+      explanation: 'Amprenta cuprinde și energia folosită ca să aduci ce consumi, iar zborul arde mult combustibil.',
       section: 'amprenta',
     },
+
   ],
 };

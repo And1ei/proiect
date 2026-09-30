@@ -22,8 +22,8 @@ export const diversitateaVietii: Lesson = {
       id: 'trei-domenii',
       title: 'Care sunt cele trei mari ramuri ale vieții?',
       body: [
-        'Deasupra regnurilor stau trei **domenii**. **Bacteriile** și **arheele** au celule procariote, fără nucleu. Arheele seamănă la vedere cu bacteriile, dar diferă prin chimia lor și trăiesc des în medii extreme, ca izvoarele fierbinți sau apele foarte sărate.',
-        'Al treilea domeniu, al **eucariotelor**, cuprinde toate organismele cu celule cu nucleu: protiste, ciuperci, plante și animale. Omul face parte din el, la fel ca drojdia de pâine.',
+        'Deasupra regnurilor stau trei **domenii**. **Bacteriile** și **arheele** au celule procariote, fără nucleu. Unele bacterii, **cianobacteriile**, fac fotosinteză cu pigmenți verzi-albaștri. Arheele seamănă la vedere cu bacteriile, dar diferă prin chimia lor și trăiesc des în medii extreme, ca izvoarele fierbinți sau apele foarte sărate.',
+        'Al treilea domeniu, al **eucariotelor**, cuprinde toate organismele cu celule cu nucleu: protiste, ciuperci, plante și animale. Omul face parte din el, la fel ca drojdia de pâine. **Protistele**, eucariote de obicei unicelulare, se împart în **protozoare** și **Chromista**.',
       ],
       predict: {
         question: 'O bacterie și o ciupercă de mucegai: care are nucleu?',
@@ -34,8 +34,9 @@ export const diversitateaVietii: Lesson = {
       id: 'microorganisme',
       title: 'Ce fac viețuitoarele pe care nu le vedem?',
       body: [
-        '**Microorganismele** se văd doar la microscop. **Bacteriile** descompun resturile moarte, fac iaurtul și murăturile prin fermentație, dar unele produc boli. **Protozoarele**, ca parameciul și amiba, sunt eucariote unicelulare care trăiesc în apă și se hrănesc cu alte microorganisme.',
-        '**Ciupercile** nu fac fotosinteză: se hrănesc cu substanțe organice gata făcute. Drojdiile fac aluatul să crească, mucegaiurile descompun resturile, iar din unele se obțin antibiotice, ca penicilina.',
+        '**Microorganismele** se văd doar la microscop. **Bacteriile** descompun resturile moarte, fac iaurtul și murăturile prin fermentație, dar unele produc boli. **Protozoarele** sunt eucariote unicelulare fără perete celular, care trăiesc în apă. Se mișcă cu **cili** (parameciul), cu **pseudopode** (amiba) sau cu un **flagel** (euglena, care are și cloroplaste).',
+        '**Chromista** au adesea un înveliș tare: **diatomeele**, o căsuță de siliciu din două jumătăți, iar **dinoflagelatele**, plăci. Tot aici intră algele brune din mare.',
+        '**Ciupercile** nu fac fotosinteză: absorb prin perete substanțe organice gata făcute. **Drojdiile** se înmulțesc prin înmugurire și fac aluatul să crească. **Mucegaiurile** au filamente subțiri, numite **hife**, și fac spori; ele descompun resturile, iar din unele se obțin antibiotice, ca penicilina.',
       ],
       margin: 'Fără descompunători, frunzele căzute s-ar aduna an de an și solul ar rămâne fără substanțe minerale.',
     },
@@ -43,8 +44,8 @@ export const diversitateaVietii: Lesson = {
       id: 'plante-animale',
       title: 'Prin ce se deosebesc plantele de animale?',
       body: [
-        'Plantele sunt **autotrofe**: își fac singure hrana prin fotosinteză, din apă, dioxid de carbon și lumină, cu ajutorul clorofilei. Celulele lor au perete de celuloză, iar plantele nu se deplasează.',
-        'Animalele sunt **heterotrofe**: iau substanța organică din hrană. Celulele lor nu au perete celular, iar cele mai multe se deplasează ca să-și caute hrana. Diversitatea lor e uriașă, de la puricele de apă de câțiva milimetri la pelicanul din Delta Dunării.',
+        'Plantele sunt **autotrofe**: își fac singure hrana prin fotosinteză, din apă, dioxid de carbon și lumină, cu ajutorul clorofilei din cloroplaste. Celulele lor au perete de celuloză, iar plantele nu se deplasează. **Algele verzi**, chiar și cele dintr-o singură celulă, au și ele perete de celuloză și cloroplaste, așa că țin de plante.',
+        'Animalele sunt **heterotrofe**: iau substanța organică din hrană. Sunt pluricelulare, cu țesuturi și organe; celulele lor nu au perete celular, iar cele mai multe se deplasează ca să-și caute hrana. Diversitatea lor e uriașă, de la puricele de apă de câțiva milimetri la pelicanul din Delta Dunării.',
       ],
     },
     {
