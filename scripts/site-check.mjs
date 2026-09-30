@@ -42,6 +42,8 @@ const check = (area, name, pass, detail = '') => {
 const CEDILLA = new RegExp(`[${String.fromCharCode(0x15f, 0x163, 0x15e, 0x162)}]`);
 const FORBIDDEN = [
   [/lorem/i, 'Lorem'],
+  [/urmează/i, 'urmează'],
+  [/în curând/i, 'în curând'],
   [/\bTODO\b/, 'TODO'],
   [/\bFIXME\b/, 'FIXME'],
   [/placeholder/i, 'placeholder'],
@@ -80,6 +82,10 @@ async function newPage(width = 375, height = 812) {
 // ── 1. Every route ──
 const titles = new Map();
 const links = new Set();
+const texts = new Map();
+const linksBy = new Map();
+const blockText = new Map();
+let stats = null;
 for (const route of [...ROUTES, NOT_FOUND]) {
   const { page, context, errors, failed } = await newPage();
   await page.goto(BASE + route, { waitUntil: 'networkidle' });
@@ -98,7 +104,13 @@ for (const route of [...ROUTES, NOT_FOUND]) {
     overflow: document.documentElement.scrollWidth > window.innerWidth + 1,
     text: document.body.innerText,
     links: [...document.querySelectorAll('a[href]')].map((a) => a.getAttribute('href')),
+    stats: window.__siteStats ?? null,
+    blocks: [...document.querySelectorAll('li[data-rail-mark][id]')].map((li) => [li.id, li.innerText]),
   }));
+  texts.set(route, info.text);
+  linksBy.set(route, new Set(info.links));
+  for (const [id, text] of info.blocks) blockText.set(id, text);
+  stats ??= info.stats;
   const where = route;
   check('route', `${where}: no console errors`, errors.length === 0, errors.slice(0, 2).join(' | '));
   check('route', `${where}: no failed requests`, failed.length === 0, failed.slice(0, 3).join(', '));
@@ -126,6 +138,46 @@ for (const route of [...ROUTES, NOT_FOUND]) {
   await context.close();
 }
 for (const [title, routes] of titles) check('route', `unique <title>: "${title}"`, routes.length === 1, routes.join(', '));
+
+// ── 1b. Consistency with src/content/stats.ts (F1) ──
+if (!stats) check('consistency', 'window.__siteStats is exposed', false);
+else {
+  const topics = LESSONS.map((l) => l.slug);
+  // Every standalone number next to joc/jocuri/lecții/niveluri equals the computed value
+  const nouns = [
+    [/^joc/i, (t) => [stats.gameCount, t?.games]],
+    [/^lec/i, () => [stats.lessonCount]],
+    [/^nivel/i, (t) => [stats.levelCount, t?.levels]],
+  ];
+  for (const route of ['/', '/jocuri', ...topics.map((s) => `/${s}`)]) {
+    const text = texts.get(route) ?? '';
+    const topic = stats.perTopic.find((t) => `/${t.slug}` === route);
+    const wrong = [];
+    for (const m of text.matchAll(/(?<![\d.,])(\d+)[  ]+(?:de[  ]+)?(jocuri|joc|lecții|lecție|niveluri|nivel)\b/gi)) {
+      const [, n, noun] = m;
+      // A count reads "3 jocuri" or "3 JOCURI" (text-transform); "02 Niveluri de organizare" is a title
+      if (noun !== noun.toLowerCase() && noun !== noun.toUpperCase()) continue;
+      const allowed = nouns.find(([re]) => re.test(noun))[1](topic).filter((x) => x !== undefined);
+      if (!allowed.includes(+n)) wrong.push(`"${m[0]}" (expected ${allowed.join(' or ')})`);
+    }
+    check('consistency', `${route}: every count matches stats.ts`, wrong.length === 0, wrong.join(', '));
+  }
+  // Independent cross-check: /jocuri shows every level once and one card per game
+  const arcade = [...(linksBy.get('/jocuri') ?? [])].filter((l) => l.startsWith('/joc/'));
+  check('consistency', '/jocuri links every level of every game', arcade.length === stats.levelCount, `${arcade.length} links, ${stats.levelCount} levels`);
+  for (const g of stats.games)
+    for (const id of g.levels) {
+      const path = `/joc/${id}`;
+      check('consistency', `${id}: reachable from /${g.topic} and /jocuri`, linksBy.get(`/${g.topic}`)?.has(path) && linksBy.get('/jocuri')?.has(path));
+    }
+  for (const t of stats.perTopic) check('consistency', `${t.slug}: has a game or a quiz`, t.levels > 0 || t.quiz > 0, `${t.levels} levels, ${t.quiz} questions`);
+  // No stamp that can't be earned: no "jucat" on a topic without a game (topic page and landing block)
+  for (const slug of stats.topicsWithoutGames) {
+    const onPage = /\bjucat\b/i.test(texts.get(`/${slug}`) ?? '');
+    const onLanding = /\bjucat\b/i.test(blockText.get(slug) ?? '');
+    check('consistency', `${slug}: no unattainable "jucat" stamp`, !onPage && !onLanding);
+  }
+}
 
 // ── 2. Links and anchors ──
 {

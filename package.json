@@ -19,7 +19,8 @@
     "audit:offline": "node scripts/audit-offline.mjs",
     "pwa:icons": "node scripts/pwa-icons.mjs",
     "lessons:check": "node scripts/lessons-check.mjs",
-    "site:check": "node scripts/site-check.mjs"
+    "site:check": "node scripts/site-check.mjs",
+    "verify": "node scripts/verify.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "6.3.1",

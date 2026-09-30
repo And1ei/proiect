@@ -49,7 +49,7 @@ for (const lesson of LESSONS) {
   const placed = lesson.games.filter((g) => gameIds.has(g.gameId)).map((g) => lesson.sections.findIndex((s) => s.id === g.afterSection));
   lesson.sections.forEach((s, i) => {
     const text = [...s.body, s.margin ?? '', s.predict?.question ?? '', s.predict?.answer ?? '', s.title].join(' ');
-    if (/joc(ul|uri|urile|ului)?|joac[ăa]|juca/i.test(text) && !placed.some((k) => k === i || k === i + 1))
+    if (/(?<!\p{L})(joc|jocul|jocuri|jocurile|jocului|joac[ăa]|juca\p{L}*)(?!\p{L})/iu.test(text) &&!placed.some((k) => k === i || k === i + 1))
       fail(`${where}#${s.id}`, 'mentions a game, but no registered game is placed at or right after this section');
   });
   // F1: a topic without a game stands on its own with a richer check (5 questions); others keep 3

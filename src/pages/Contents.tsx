@@ -14,7 +14,7 @@ import { STAIN } from '../lib/stains';
 import { continueTarget, stampsOf } from '../lib/stamps';
 import { LESSONS, catalogNumber, lessonPath, readingMinutes, type Lesson as LessonData } from '../content/ro/lessons/index.ts';
 import { gamePath } from '../games/registry';
-import { firstPlayable, gameCount, gamesSummary, lessonCount, levelsForTopic, plural, readingMinutesTotal } from '../content/stats';
+import { firstPlayable, gameCount, isAdvanced, gamesSummary, lessonCount, levelsForTopic, plural, readingMinutesTotal } from '../content/stats';
 import { preloadGame } from '../games/core/preload';
 import Container from '../components/primitives/Container';
 import PageMeta from '../components/layout/PageMeta';
@@ -74,11 +74,11 @@ function TopicBlock({ lesson, open, onToggle }: { lesson: LessonData; open: bool
                 to={gamePath(g.id)}
                 onPointerEnter={() => preloadGame(g)}
                 onFocus={() => preloadGame(g)}
+                aria-label={`${t('games.play')} „${g.title}”`}
                 className={cx('inline-flex min-h-11 items-center justify-between gap-3 rounded-btn-b border px-4 py-2 text--1 font-medium no-underline hover:bg-paper-bright', s.border, s.text)}
               >
-                <span>
-                  {t('games.play')} „{g.title}”
-                </span>
+                {/* The advanced twin is labelled by its level: the title is already on the base button */}
+                <span>{isAdvanced(g) ? t('games.levels.advanced') : `${t('games.play')} „${g.title}”`}</span>
                 <span aria-hidden="true">→</span>
               </Link>
             ))}
