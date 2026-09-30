@@ -90,6 +90,11 @@ export interface GameDefinition {
   HowTo?: LazyExoticComponent<ComponentType>;
   /** Dev-only reference game: shown with a "sandbox" tag and never in production builds. */
   sandbox?: boolean;
+  /**
+   * Optional (added in F1): entries sharing a family are one game with several levels (the base
+   * entry first, then its advanced twin). Defaults to `id`. Counts on the site come from it.
+   */
+  family?: string;
 }
 
 export type GameDefinitionInput = Omit<GameDefinition, 'Component' | 'HowTo'>;

@@ -17,6 +17,7 @@ export const ecoStars = (r: RunResult): Stars => {
 };
 
 const shared = {
+  family: 'echilibrul',
   topicSlug: 'ecosisteme',
   controls: ECO.controls,
   usesPhaser: false,

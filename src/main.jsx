@@ -9,6 +9,10 @@ import '@fontsource/instrument-sans/500.css';
 import '@fontsource/dm-mono/400.css';
 import './styles/global.css';
 import App from './App';
+import { SITE_STATS } from './content/stats';
+
+// Read by the site check to compare every rendered count with the computed one
+window.__siteStats = SITE_STATS;
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

@@ -18,6 +18,7 @@ export const safariStars =
   };
 
 const shared = {
+  family: 'safari-microscop',
   topicSlug: 'diversitatea-vietii',
   controls: SAFARI.controls,
   usesPhaser: true,

@@ -100,6 +100,14 @@ Two optional fields, added in G2 (games without them render exactly as before):
   screen instead of the plain instruction list. DOM only, no Phaser; preloaded with the game. The
   instructions still appear in the HUD's help dialog.
 
+One more optional field, added in F1:
+
+- **`family`**: entries that share a family are **one game with several levels** (the base entry
+  first in the registry, then its advanced twin). Defaults to `id`. The site never types a count:
+  `src/content/stats.ts` computes games (families), levels (entries), topics with and without games,
+  play minutes and the Romanian plurals (`1 joc`, `3 jocuri`, `20 de jocuri`) from the registry.
+  Show numbers from there only; `site:check` compares the rendered text with it.
+
 ## Session API
 
 | Call | Effect |

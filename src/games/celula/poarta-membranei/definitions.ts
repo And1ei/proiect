@@ -25,6 +25,7 @@ export const starsFor =
   };
 
 const shared = {
+  family: 'poarta-membranei',
   topicSlug: 'celula',
   controls: MEMBRANE.controls,
   usesPhaser: true,
